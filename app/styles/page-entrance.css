@@ -1,0 +1,131 @@
+/* ============================================
+   ELECTROINSTALL - SCROLL REVEAL ANIMATIONS
+   Elements animate when scrolled into view
+   ============================================ */
+
+/* ============================================
+   BASE SCROLL REVEAL STATES
+   ============================================ */
+
+.scroll-reveal {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+/* Direction variants */
+.scroll-reveal-up {
+    transform: translateY(40px);
+}
+
+.scroll-reveal-down {
+    transform: translateY(-40px);
+}
+
+.scroll-reveal-left {
+    transform: translateX(-40px);
+}
+
+.scroll-reveal-right {
+    transform: translateX(40px);
+}
+
+.scroll-reveal-scale {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   SECTION-LEVEL REVEAL
+   Apply to entire sections
+   ============================================ */
+
+.section-scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   STAGGERED CHILDREN REVEAL
+   Children animate with delay when parent revealed
+   ============================================ */
+
+.stagger-reveal > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-reveal.revealed > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+.stagger-reveal.revealed > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 75ms; }
+.stagger-reveal.revealed > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 150ms; }
+.stagger-reveal.revealed > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 225ms; }
+.stagger-reveal.revealed > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
+.stagger-reveal.revealed > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 375ms; }
+.stagger-reveal.revealed > *:nth-child(7) { opacity: 1; transform: translateY(0); transition-delay: 450ms; }
+.stagger-reveal.revealed > *:nth-child(8) { opacity: 1; transform: translateY(0); transition-delay: 525ms; }
+
+/* ============================================
+   CARD REVEAL (Scale effect)
+   ============================================ */
+
+.card-scroll-reveal {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-scroll-reveal.revealed {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* ============================================
+   TEXT REVEAL (Blur effect)
+   ============================================ */
+
+.text-scroll-reveal {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(15px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-scroll-reveal.revealed {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+/* ============================================
+   ACCESSIBILITY - Reduced Motion
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-reveal,
+    .section-scroll-reveal,
+    .stagger-reveal > *,
+    .card-scroll-reveal,
+    .text-scroll-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+    }
+}

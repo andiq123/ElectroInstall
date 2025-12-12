@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ElectroInstall - Electrical Services Showcase Website
 
-## Getting Started
+A modern, clean, and minimal showcase website for an electrical company built with Next.js 16, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🚀 Features
+
+- **Modern Design**: Clean and minimal design focused on user experience
+- **Fully Responsive**: Works perfectly on all devices
+- **Fast Performance**: Built with Next.js 16 for optimal performance
+- **TypeScript**: Type-safe code for better development experience
+- **Tailwind CSS**: Modern utility-first CSS framework
+- **SEO Optimized**: Proper meta tags and semantic HTML
+
+## 📁 Project Structure
+
+```
+electroinstall/
+├── app/
+│   ├── layout.tsx      # Root layout with metadata
+│   ├── page.tsx        # Home page
+│   └── globals.css     # Global styles
+├── components/
+│   ├── Header.tsx      # Navigation header
+│   ├── Hero.tsx        # Hero section
+│   ├── Services.tsx    # Services showcase
+│   ├── About.tsx       # About section
+│   ├── Contact.tsx     # Contact form
+│   └── Footer.tsx      # Footer
+├── public/             # Static assets
+└── package.json       # Dependencies
+```
+
+## 🛠️ Technologies
+
+- **Next.js 16**: React framework with App Router
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **Heroicons**: Beautiful SVG icons
+- **React 19**: Latest React version
+
+## 📦 Installation
+
+1. Clone the repository (or use the existing project)
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+## 🚀 Running the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the website.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 📄 Available Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Customization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The website includes the following sections that you can customize:
 
-## Deploy on Vercel
+1. **Hero Section** - Main landing area with call-to-action
+2. **Services** - Showcase of electrical services offered
+3. **About** - Company information and trust indicators
+4. **Contact** - Contact form and company information
+5. **Footer** - Quick links and additional information
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+All components are in the `components/` folder and can be easily modified to match your brand.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 License
+
+This project is private and proprietary.

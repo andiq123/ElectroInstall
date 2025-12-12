@@ -1,0 +1,118 @@
+/* ============================================
+   ELECTROINSTALL - MOBILE & ACCESSIBILITY
+   Responsive design and accessibility features
+   ============================================ */
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+
+*:focus { outline: none; }
+*:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--text-inverted);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    z-index: 9999;
+}
+
+.skip-link:focus { top: 1rem; }
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 768px) {
+    .btn {
+        min-height: 52px;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .why-card,
+    .process-step,
+    .blog-card,
+    .faq-trigger {
+        padding: 1.25rem;
+    }
+    
+    section {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    
+    .contact-grid { gap: 1rem; }
+    .nav-mobile-menu { max-height: 80vh; overflow-y: auto; }
+}
+
+/* Better focus states for touch devices */
+@media (hover: none) {
+    .btn-primary:hover { transform: none; }
+    .why-card:hover, .process-step:hover, .service-card:hover { transform: none; }
+}
+
+/* Active state for touch devices */
+@media (hover: none) {
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
+    .why-card:active, .blog-card:active { transform: scale(0.99); }
+}
+
+/* Mobile typography */
+@media (max-width: 640px) {
+    h1, .text-4xl, .text-5xl, .text-6xl {
+        font-size: clamp(1.75rem, 8vw, 3rem);
+    }
+    h2, .text-3xl {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+    p, .text-base {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .mobile-safe-bottom {
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    }
+}
+
+/* ============================================
+   UTILITY HOVER EFFECTS
+   ============================================ */
+
+.hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.hover-glow {
+    transition: box-shadow var(--transition-base);
+}
+.hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+}
