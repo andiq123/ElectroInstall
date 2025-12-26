@@ -23,8 +23,7 @@
 /* Blog Styles */
 @import "./styles/blog.css";
 
-/* Floating Contact Button */
-@import "./styles/floating-button.css";
+
 
 /* Page Entrance Animations */
 @import "./styles/page-entrance.css";

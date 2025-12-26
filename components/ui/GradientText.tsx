@@ -14,11 +14,12 @@ interface GradientTextProps {
 }
 
 const gradientStyles = {
-  brand: 'bg-[image:var(--gradient-main)]',
-  amber: 'bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600',
-  violet: 'bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-500',
+  brand: 'bg-[var(--gradient-power)]',
+  amber: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 50%, var(--accent-dark) 100%)',
+  violet: 'linear-gradient(135deg, var(--info) 0%, var(--accent-cobalt) 100%)',
   custom: '',
 };
+
 
 export default function GradientText({
   children,

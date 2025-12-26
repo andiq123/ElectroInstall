@@ -22,19 +22,35 @@ export const metadata: Metadata = {
     template: "%s | ElectroInstall",
   },
   description:
-    "Servicii electrice profesionale în Chișinău, Moldova. Instalare prize, întrerupătoare, candelabre, conectare electrocasnice, montare cablaje. Apelați +373 061110314. Licențiat și asigurat.",
+    "Electrician autorizat în Chișinău, Moldova. Servicii electrice profesionale: montaj prize, tablouri electrice, reparații și intervenții rapide în toate sectoarele și suburbiile. Disponibil pentru urgențe.",
   keywords: [
-    "electrician Chișinău",
-    "servicii electrice Moldova",
-    "ElectroInstall",
+    "electrician Chisinau",
+    "electrician Moldova",
+    "servicii electrice Chisinau",
+    "reparatii electrice",
+    "montaj prize Chisinau",
+    "instalare tablouri electrice",
+    "electrician Botanica",
+    "electrician Buiucani",
+    "electrician Riscani",
+    "electrician Ciocana",
+    "electrician Centru",
+    "electrician Durlesti",
     "mester electric",
-    "instalare prize",
-    "montare candelabre",
-    "electrician profesionist",
-    "reparații electrice Chișinău",
-    "instalații electrice",
-    "electrician non-stop",
-    "servicii electrice urgente",
+    "ElectroInstall",
+    "servicii electrice Moldova",
+    "reparatii prize",
+    "montaj lustre Chisinau",
+    "электрик Кишинев",
+    "услуги электрика Кишинев",
+    "электромонтаж",
+    "ремонт электрики",
+    "вызов электрика",
+    "установка розеток",
+    "электрик ботаника",
+    "электрик чеканы",
+    "электрик рышкановка",
+    "электрик буюканы",
   ],
   authors: [{ name: "ElectroInstall" }],
   creator: "ElectroInstall",
@@ -76,6 +92,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://electroinstall.md",
+    languages: {
+      'ro-MD': 'https://electroinstall.md',
+      'ru-MD': 'https://electroinstall.md?lang=ru',
+    },
   },
   verification: {
     google: "your-google-verification-code",
@@ -103,10 +123,24 @@ const jsonLd = {
     latitude: 47.0105,
     longitude: 28.8638,
   },
-  areaServed: {
-    "@type": "City",
-    name: "Chișinău",
-  },
+  areaServed: [
+    {
+      "@type": "City",
+      "name": "Chișinău"
+    },
+    {
+      "@type": "City",
+      "name": "Durlești"
+    },
+    {
+      "@type": "City",
+      "name": "Ialoveni"
+    },
+    {
+      "@type": "City",
+      "name": "Codru"
+    }
+  ],
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: [
@@ -121,10 +155,18 @@ const jsonLd = {
     opens: "00:00",
     closes: "23:59",
   },
-  priceRange: "$$",
-  image: "https://mesterelectric.md/og-image.jpg",
+  priceRange: "MDL",
+  image: "https://electroinstall.md/og-image.jpg",
+  hasMap: "https://www.google.com/maps?q=Chisinau,Moldova",
+  contactPoint: {
+    "@type": "ContactPoint",
+    "telephone": "+373061110314",
+    "contactType": "customer service"
+  },
   sameAs: [],
 };
+
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export default function RootLayout({
   children,
@@ -132,7 +174,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className="dark">
+    <html lang="ro" className="dark" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#0a0a0b" />
         <meta name="color-scheme" content="dark" />
@@ -142,11 +184,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans m-0 p-0 antialiased`}>
-        <a href="#main-content" className="skip-link">
-          Sari la conținut
-        </a>
-        {children}
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans m-0 p-0 antialiased`} suppressHydrationWarning>
+        <LanguageProvider>
+          <a href="#main-content" className="skip-link">
+            Sari la conținut
+          </a>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -63,21 +63,29 @@ export default async function BlogPostPage({ params }: Props) {
       />
 
       {/* Article Header */}
-      <section className="relative pt-16 pb-8 sm:pt-20 sm:pb-12">
-        <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-        <div className="container relative z-10 px-6 sm:px-8 md:px-12 lg:px-20 max-w-4xl mx-auto">
-          <Link href="/blog" className="blog-back-link">
-            <ArrowLeftIcon size="md" />
-            Înapoi la Blog
+      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden bg-[var(--bg-secondary)]">
+        <div className="absolute inset-0 electricity-pattern opacity-10 pointer-events-none" />
+        <div className="container relative z-10 px-6 sm:px-8 max-w-4xl mx-auto">
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors mb-12"
+          >
+            <ArrowLeftIcon size="sm" />
+            Echipa ElectroInstall :: Blog
           </Link>
 
-          <div className="blog-meta mt-6">
-            <span className="blog-category">{post.category}</span>
-            <span className="blog-date">{post.date}</span>
-            <span className="blog-read-time">⏱ {post.readTime}</span>
+          <div className="flex flex-wrap items-center gap-4 mb-8">
+            <span className="px-3 py-1 rounded-md bg-[var(--accent)] text-black text-[10px] font-black uppercase tracking-widest">
+              {post.category}
+            </span>
+            <span className="text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">
+              {post.date} • {post.readTime}
+            </span>
           </div>
 
-          <h1 className="blog-page-title">{post.title}</h1>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter italic uppercase text-[var(--text-primary)] leading-[0.9]">
+            {post.title}
+          </h1>
         </div>
       </section>
 

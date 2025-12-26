@@ -8,7 +8,7 @@ export default function NavLogo() {
       className="flex items-center group"
       aria-label="ElectroInstall - Pagina principală"
     >
-      <Logo size="sm" />
+      <Logo size="sm" light={true} />
     </Link>
   );
 }

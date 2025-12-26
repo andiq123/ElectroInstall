@@ -1,85 +1,64 @@
-/**
- * SectionHeader Component - Reusable section headers
- */
-
-import Badge from "./Badge";
+import React from "react";
 
 interface SectionHeaderProps {
   badge?: string;
-  badgeVariant?: "accent" | "secondary" | "success" | "error" | "outline";
-  title: string;
-  titleGradient?: string;
-  subtitle?: string;
-  subtitleHighlight?: string;
-  align?: "left" | "center";
+  title: string | React.ReactNode;
+  subtitle?: string | React.ReactNode;
+  centered?: boolean;
   className?: string;
+  layout?: "split" | "standard";
 }
 
 export default function SectionHeader({
   badge,
-  badgeVariant = "accent",
   title,
-  titleGradient,
   subtitle,
-  subtitleHighlight,
-  align = "center",
+  centered = false,
   className = "",
+  layout = "standard",
 }: SectionHeaderProps) {
-  const alignStyles = {
-    left: "text-left",
-    center: "text-center",
-  };
-
-  // Split title by line breaks
-  const titleParts = title.split("\n");
-  const hasMultipleLines = titleParts.length > 1;
+  if (layout === "split") {
+    return (
+      <div className={`flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24 ${className}`}>
+        <div className="max-w-3xl">
+          {badge && (
+            <div className="flex items-center gap-3 mb-6 animate-fade-in">
+              <div className="w-10 h-px bg-[var(--accent)]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)] uppercase">
+                {badge}
+              </span>
+            </div>
+          )}
+          <h2 className="text-6xl sm:text-8xl font-black tracking-tighter italic uppercase text-[var(--text-primary)] leading-[0.85]">
+            {title}
+          </h2>
+        </div>
+        {subtitle && (
+          <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium leading-relaxed max-w-xl lg:mb-4 border-l-2 border-[var(--border-glass)] pl-8">
+            {subtitle}
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={`mb-16 sm:mb-20 lg:mb-24 ${alignStyles[align]} ${className}`}
-    >
-      {badge && (
-        <div
-          className={`${align === "center" ? "flex justify-center" : ""} mb-8`}
-        >
-          <Badge variant={badgeVariant}>{badge}</Badge>
-        </div>
-      )}
-
-      <h2
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
-        style={{
-          fontFamily: "var(--font-display), system-ui",
-          color: "var(--text-primary)",
-        }}
-      >
-        {hasMultipleLines ? (
-          titleParts.map((part, index) => (
-            <span key={index} className="block">
-              {index === 1 && titleGradient !== "none" ? (
-                <span className="text-gradient">{part}</span>
-              ) : (
-                <span>{part}</span>
-              )}
-            </span>
-          ))
-        ) : (
-          <span>{title}</span>
+    <div className={`mb-16 sm:mb-24 ${centered ? "text-center mx-auto" : ""} ${className}`}>
+      <div className={`relative inline-block ${centered ? "mx-auto text-center" : "text-left"}`}>
+        {badge && (
+          <span className="block text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)] mb-4">
+            {badge}
+          </span>
         )}
-      </h2>
+        <h2 className="text-5xl sm:text-8xl font-black tracking-tighter mb-4 italic uppercase text-[var(--text-primary)] leading-[0.85]">
+          {title}
+        </h2>
+        <div className={`h-1.5 w-20 bg-[var(--accent)] mt-8 rounded-full ${centered ? "mx-auto" : ""}`} />
+      </div>
 
       {subtitle && (
-        <p
-          className="text-lg sm:text-xl max-w-2xl mx-auto"
-          style={{ color: "var(--text-secondary)" }}
-        >
+        <p className={`mt-10 text-xl text-[var(--text-secondary)] font-medium leading-relaxed max-w-2xl ${centered ? "mx-auto" : ""}`}>
           {subtitle}
-          {subtitleHighlight && (
-            <span className="font-semibold" style={{ color: "var(--accent)" }}>
-              {" "}
-              {subtitleHighlight}
-            </span>
-          )}
         </p>
       )}
     </div>

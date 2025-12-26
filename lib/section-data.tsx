@@ -27,30 +27,30 @@ export interface ReasonItem {
 export const REASONS: ReasonItem[] = [
   {
     icon: <CertificateIcon className="w-8 h-8" />,
-    title: "Licențiat & Asigurat",
+    title: "Electrician Autorizat",
     description:
-      "Lucrăm oficial cu toate actele în regulă. Oferim garanție și factură pentru fiecare serviciu.",
+      "Lucrăm responsabil, cu respectarea normelor tehnice. Oferim garanție pentru fiecare intervenție.",
     color: "var(--color-success)",
   },
   {
     icon: <ClockIcon className="w-8 h-8" />,
-    title: "Disponibil 24/7",
+    title: "Program Flexibil",
     description:
-      "Urgențe electrice? Suntem disponibili non-stop pentru situații de urgență în Chișinău.",
+      "Ai nevoie de o programare după lucru? Găsim împreună momentul potrivit pentru vizită.",
     color: "var(--accent)",
   },
   {
     icon: <ToolIcon className="w-8 h-8" />,
-    title: "Experiență Vastă",
+    title: "Soluții Durabile",
     description:
-      "Peste 10 ani de experiență în instalații electrice rezidențiale și comerciale.",
+      "Folosesc doar materiale de calitate (cupru, protecții automate) pentru o instalație sigură pe termen lung.",
     color: "var(--accent-secondary)",
   },
   {
     icon: <CurrencyIcon className="w-8 h-8" />,
-    title: "Prețuri Transparente",
+    title: "Estimare Corectă",
     description:
-      "Fără costuri ascunse. Primești estimare clară înainte de a începe lucrarea.",
+      "Analizăm problema și stabilim prețul înainte de a începe. Fără surprize la finalul lucrării.",
     color: "var(--cat-panels)",
   },
 ];
@@ -63,9 +63,9 @@ export interface StatItem {
 }
 
 export const STATS: StatItem[] = [
-  { value: 500, suffix: "+", label: "Lucrări Finalizate" },
-  { value: 10, suffix: "+", label: "Ani Experiență" },
-  { value: 100, suffix: "%", label: "Clienți Mulțumiți" },
+  { value: 8, suffix: "+ ani", label: "Experiență" },
+  { value: 300, suffix: "+", label: "Case Sigure" },
+  { value: 100, suffix: "%", label: "Transparență" },
 ];
 
 // Process section data
@@ -79,30 +79,30 @@ export interface ProcessStep {
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     number: "01",
-    title: "Apelează-ne",
+    title: "Discuția",
     description:
-      "Sună sau completează formularul online pentru a ne descrie problema sau serviciul necesar.",
+      "Îmi spui care este problema. Analizăm împreună dacă necesită intervenție imediată sau o programare.",
     icon: <PhoneIcon className="w-10 h-10" />,
   },
   {
     number: "02",
-    title: "Evaluarea",
+    title: "Planificarea",
     description:
-      "Venim la locație pentru a evalua situația și oferim o estimare clară a costurilor.",
+      "Stabilim materialele necesare și ofer o estimare de preț pentru manoperă.",
     icon: <ClipboardIcon className="w-10 h-10" />,
   },
   {
     number: "03",
-    title: "Lucrarea",
+    title: "Execuția",
     description:
-      "Efectuăm lucrarea profesional, respectând toate standardele de siguranță.",
+      "Vin la locație și rezolv problema curat și eficient, fără să las mizerie în urmă.",
     icon: <ToolIcon className="w-10 h-10" />,
   },
   {
     number: "04",
-    title: "Garanție",
+    title: "Verificarea",
     description:
-      "Primești factură oficială și garanție. Oferim suport post-lucrare.",
+      "Mă asigur că totul funcționează corect și îți explic cum să eviți problemele pe viitor.",
     icon: <ShieldIcon className="w-10 h-10" />,
   },
 ];
@@ -115,43 +115,28 @@ export interface FAQItem {
 
 export const FAQ_ITEMS: FAQItem[] = [
   {
-    question: "Cât costă serviciile unui electrician?",
+    question: "Cât costă intervenția unui electrician?",
     answer:
-      "Prețurile variază în funcție de complexitatea lucrării. Oferim o evaluare gratuită și estimare clară înainte de a începe orice lucrare. Contactați-ne pentru o ofertă personalizată.",
+      "Fiecare lucrare este diferită. Înainte de a începe, îți spun exact cât va costa manopera. Pentru lucrări mici (schimbat o priză, un automat), am prețuri fixe, corecte.",
   },
   {
-    question: "Oferiți servicii în afara Chișinăului?",
+    question: "Vii și pentru lucrări mici?",
     answer:
-      "Da, oferim servicii în Chișinău și împrejurimi. Pentru localități mai îndepărtate, vă rugăm să ne contactați pentru a discuta detaliile și disponibilitatea.",
+      "Desigur. Nicio lucrare nu este prea mică. Fie că e vorba de un întrerupător defect sau de montarea unei lustre, mă ocup cu aceeași atenție.",
   },
   {
-    question: "Cât durează o lucrare obișnuită?",
+    question: "Puteți veni în aceeași zi?",
     answer:
-      "Durata depinde de tipul și complexitatea lucrării. O instalare simplă de priză poate dura 30-60 minute, în timp ce o instalație electrică completă poate necesita câteva zile.",
+      "Dacă programul îmi permite și este o problemă care nu poate aștepta, încerc să ajung în cel mai scurt timp posibil.",
   },
   {
-    question: "Oferiți garanție pentru lucrări?",
+    question: "Oferiți factură?",
     answer:
-      "Da, toate lucrările noastre vin cu garanție oficială. Termenul de garanție variază în funcție de tipul serviciului, dar lucrăm întotdeauna cu materiale de calitate.",
+      "Da, munca mea este transparentă. Primești dovadă pentru plată și garanție pentru lucrarea efectuată.",
   },
   {
-    question: "Puteți veni în urgență?",
+    question: "Ce materiale folosiți?",
     answer:
-      "Absolut! Suntem disponibili 24/7 pentru urgențe electrice în Chișinău. Apelați-ne direct pentru asistență imediată în caz de pană de curent sau probleme urgente.",
-  },
-  {
-    question: "Ce metode de plată acceptați?",
-    answer:
-      "Acceptăm plata cash, transfer bancar și card. Pentru lucrări mai ample, putem discuta un plan de plată în tranșe.",
-  },
-  {
-    question: "Aveți toate autorizațiile necesare?",
-    answer:
-      "Da, suntem licențiați și asigurați complet. Lucrăm oficial cu toate actele în regulă și eliberăm factură pentru fiecare serviciu prestat.",
-  },
-  {
-    question: "Cum pot programa o vizită?",
-    answer:
-      "Puteți suna la numărul nostru de telefon, completa formularul online sau folosi butonul de contact rapid. Vom răspunde în cel mai scurt timp posibil.",
+      "Prefer să lucrez cu mărci de încredere (Schneider, Legrand, Viko). Putem folosi materialele tale sau le pot cumpăra eu, oferindu-ți bonul fiscal.",
   },
 ];

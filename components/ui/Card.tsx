@@ -52,33 +52,34 @@ export default function Card({
   const variantStyles = {
     default: `
       bg-[var(--bg-elevated)]
-      border border-[var(--border-subtle)]
-      ${hoverEffect ? 'hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/10' : ''}
+      border border-[var(--border-glass)]
+      ${hoverEffect ? 'hover:border-[var(--accent)]/30 hover:shadow-lg hover:shadow-[var(--shadow-accent)]' : ''}
     `,
     glass: `
-      bg-[var(--bg-card)]
+      bg-[var(--glass-bg)]
       backdrop-blur-xl
-      border border-[var(--border-subtle)]
-      ${hoverEffect ? 'hover:border-violet-500/30 hover:bg-[var(--bg-elevated)]' : ''}
+      border border-[var(--border-glass)]
+      ${hoverEffect ? 'hover:border-[var(--accent)]/30 hover:bg-[var(--bg-elevated)]' : ''}
     `,
     elevated: `
       bg-[var(--bg-elevated)]
-      border border-[var(--border-subtle)]
+      border border-[var(--border-glass)]
       shadow-lg shadow-black/20
-      ${hoverEffect ? 'hover:shadow-xl hover:shadow-violet-500/10 hover:-translate-y-1' : ''}
+      ${hoverEffect ? 'hover:shadow-xl hover:shadow-[var(--shadow-accent)] hover:-translate-y-1' : ''}
     `,
     gradient: `
-      ${gradient || 'bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-500'}
-      text-white
+      ${gradient || 'bg-[var(--gradient-power)]'}
+      text-[var(--text-inverted)]
       shadow-2xl
-      ${hoverEffect ? 'hover:scale-[1.02] hover:shadow-violet-500/30' : ''}
+      ${hoverEffect ? 'hover:scale-[1.02] hover:shadow-[var(--shadow-accent)]' : ''}
     `,
     interactive: `
       bg-[var(--bg-elevated)]
-      border border-[var(--border-subtle)]
+      border border-[var(--border-glass)]
       cursor-pointer
-      ${hoverEffect ? 'hover:border-violet-500/50 hover:bg-violet-500/5 hover:-translate-y-1' : ''}
+      ${hoverEffect ? 'hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]/5 hover:-translate-y-1' : ''}
     `,
+
   };
 
   const Component = onClick ? 'button' : 'div';

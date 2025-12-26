@@ -1,94 +1,86 @@
 "use client";
 
 import { useState } from "react";
-import { SectionHeader } from "./ui";
 import { FAQ_ITEMS } from "@/lib/section-data";
-import { PlusIcon, MinusIcon } from "./ui/Icons";
+import { PlusIcon } from "./ui/Icons";
+import Section from "@/components/ui/Section";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function FAQSection() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const translatedItems = FAQ_ITEMS.map((item, index) => ({
+    ...item,
+    question: t.faq.items[index]?.question || item.question,
+    answer: t.faq.items[index]?.answer || item.answer,
+  }));
 
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  // FAQ Schema for SEO
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ_ITEMS.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
   return (
-    <section
-      className="relative py-20 sm:py-28 overflow-hidden"
-      style={{ background: "var(--bg-secondary)" }}
-      aria-labelledby="faq-heading"
-    >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+    <Section id="faq" bgType="wash-gold">
+      {/* Decorative Accents specific to FAQ */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--accent)]/5 blur-[100px] rounded-full" />
+      </div>
 
-      <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-
-      <div className="container relative z-10 px-6 sm:px-8 md:px-12 lg:px-20 max-w-4xl mx-auto">
-        <SectionHeader
-          badge="Întrebări Frecvente"
-          title="Ai Întrebări? Avem Răspunsuri"
-          subtitle="Găsește răspunsuri la cele mai comune întrebări despre serviciile noastre electrice."
+      <div className="max-w-4xl mx-auto">
+        <SectionHeader 
+          centered
+          title={
+            <>
+              {t.faq.title_part1} <br />
+              <span className="text-gradient not-italic">{t.faq.title_part2}</span>
+            </>
+          }
+          className="mb-24"
         />
 
         {/* FAQ Accordion */}
-        <div className="faq-list mt-12">
-          {FAQ_ITEMS.map((item, index) => (
-            <div
-              key={index}
-              className={`faq-item ${openIndex === index ? "active" : ""}`}
-            >
-              <button
-                onClick={() => toggleItem(index)}
-                className="faq-trigger"
-                aria-expanded={openIndex === index}
-                aria-controls={`faq-content-${index}`}
-              >
-                <span className="faq-question">{item.question}</span>
-                <span className="faq-icon">
-                  {openIndex === index ? <MinusIcon /> : <PlusIcon />}
-                </span>
-              </button>
+        <div className="faq-list space-y-6">
+          {translatedItems.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
               <div
-                id={`faq-content-${index}`}
-                className="faq-content"
-                role="region"
-                aria-labelledby={`faq-trigger-${index}`}
+                key={index}
+                className={`group relative rounded-[var(--radius-3xl)] border transition-all duration-700 ${
+                  isOpen 
+                  ? "border-[var(--accent)]/30 bg-[var(--bg-elevated)] shadow-xl" 
+                  : "border-[var(--border-glass)] bg-[var(--bg-base)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-strong)] shadow-sm"
+                }`}
               >
-                <p className="faq-answer">{item.answer}</p>
+                <button
+                  onClick={() => toggleItem(index)}
+                  className="w-full text-left p-8 flex items-center justify-between gap-8"
+                  aria-expanded={isOpen}
+                >
+                  <span className={`text-xl sm:text-3xl font-black tracking-tighter leading-tight transition-colors duration-500 ${isOpen ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
+                    {item.question}
+                  </span>
+                  <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border border-[var(--border-glass)] flex items-center justify-center transition-all duration-700 ${isOpen ? "rotate-[225deg] bg-[var(--accent)] text-black" : "bg-[var(--bg-accent)] text-[var(--accent)] group-hover:scale-110 group-hover:bg-[var(--accent)] group-hover:text-black"}`}>
+                    <PlusIcon />
+                  </div>
+                </button>
+                
+                <div 
+                  className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                >
+                  <div className="p-8 pt-0">
+                    <div className="h-px w-full bg-[var(--border-glass)] mb-8" />
+                    <p className="text-lg sm:text-xl text-[var(--text-secondary)] leading-relaxed font-medium max-w-2xl">
+                      {item.answer}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Contact link */}
-        <div className="text-center mt-12">
-          <p className="text-[var(--text-secondary)]">
-            Nu ai găsit răspunsul?{" "}
-            <a
-              href="#contact"
-              className="font-semibold text-[var(--accent)] hover:underline"
-            >
-              Contactează-ne mai jos
-            </a>
-          </p>
+            );
+          })}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

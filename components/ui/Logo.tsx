@@ -7,6 +7,7 @@ interface LogoProps {
   showText?: boolean;
   animated?: boolean;
   className?: string;
+  light?: boolean;
 }
 
 const sizes = {
@@ -45,7 +46,7 @@ export function LogoIcon({
           className="absolute inset-0 rounded-xl opacity-60 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-500"
           style={{
             background:
-              "linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%)",
+              "linear-gradient(135deg, var(--accent) 0%, var(--accent-cobalt) 100%)",
           }}
         />
       )}
@@ -55,7 +56,7 @@ export function LogoIcon({
         className="relative w-full h-full rounded-xl flex items-center justify-center overflow-hidden"
         style={{
           background:
-            "linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 50%, var(--accent-secondary) 100%)",
+            "linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 50%, var(--accent-cobalt) 100%)",
           boxShadow: "var(--shadow-accent)",
         }}
       >
@@ -126,9 +127,11 @@ export function LogoIcon({
 export function LogoText({
   size = "sm",
   className = "",
+  light = false,
 }: {
   size?: "sm" | "md" | "lg";
   className?: string;
+  light?: boolean;
 }) {
   const s = sizes[size];
 
@@ -136,7 +139,7 @@ export function LogoText({
     <div className={`flex flex-col leading-none ${className}`}>
       <span
         className={`${s.titleSize} font-black tracking-tight`}
-        style={{ color: "var(--text-primary)" }}
+        style={{ color: light ? "white" : "var(--text-primary)" }}
       >
         ELECTRO
       </span>
@@ -152,11 +155,12 @@ export default function Logo({
   showText = true,
   animated = true,
   className = "",
+  light = false,
 }: LogoProps) {
   return (
     <div className={`flex items-center gap-3 group ${className}`}>
       <LogoIcon size={size} animated={animated} />
-      {showText && <LogoText size={size} />}
+      {showText && <LogoText size={size} light={light} />}
     </div>
   );
 }

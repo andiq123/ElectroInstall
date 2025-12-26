@@ -4,11 +4,13 @@
  */
 
 // Core Components
-export { default as Badge } from "./Badge";
+
 export { default as Button } from "./Button";
 export { default as Card, GradientBorderCard } from "./Card";
 export { default as GradientText } from "./GradientText";
 export { default as SectionHeader } from "./SectionHeader";
+export { default as Section } from "./Section";
+export { default as ScrollReveal } from "./ScrollReveal";
 
 // Section Dividers
 export {

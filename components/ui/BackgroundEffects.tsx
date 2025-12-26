@@ -28,14 +28,14 @@ export default function BackgroundEffects({
       {
         position: "top-0 left-1/4",
         size: "w-[800px] h-[800px]",
-        gradient: "from-violet-500/10 to-fuchsia-500/10",
+        gradient: "from-[var(--info)]/5 to-transparent",
         blur: "blur-3xl",
         animate: true,
       },
       {
         position: "bottom-0 right-1/4",
         size: "w-[600px] h-[600px]",
-        gradient: "from-amber-500/15 to-orange-500/10",
+        gradient: "from-[var(--accent)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
         delay: "1s",
@@ -45,14 +45,14 @@ export default function BackgroundEffects({
       {
         position: "-top-40 -right-40",
         size: "w-[700px] h-[700px]",
-        gradient: "from-violet-500/20 to-fuchsia-500/15",
+        gradient: "from-[var(--accent)]/10 to-transparent",
         blur: "blur-3xl",
         animate: true,
       },
       {
         position: "-bottom-40 -left-40",
         size: "w-[600px] h-[600px]",
-        gradient: "from-amber-500/20 to-orange-500/15",
+        gradient: "from-[var(--info)]/10 to-transparent",
         blur: "blur-3xl",
         animate: true,
         delay: "1.5s",
@@ -60,7 +60,7 @@ export default function BackgroundEffects({
       {
         position: "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
         size: "w-[500px] h-[500px]",
-        gradient: "from-fuchsia-500/10 to-violet-500/10",
+        gradient: "from-[var(--accent)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
       },
@@ -69,14 +69,14 @@ export default function BackgroundEffects({
       {
         position: "top-0 right-0",
         size: "w-[600px] h-[600px]",
-        gradient: "from-amber-500/15 to-orange-500/10",
+        gradient: "from-[var(--accent)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
       },
       {
         position: "bottom-0 left-0",
         size: "w-[500px] h-[500px]",
-        gradient: "from-violet-500/15 to-fuchsia-500/10",
+        gradient: "from-[var(--info)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
       },
@@ -85,14 +85,14 @@ export default function BackgroundEffects({
       {
         position: "top-0 right-0",
         size: "w-[600px] h-[600px]",
-        gradient: "from-amber-500/15 to-orange-500/10",
+        gradient: "from-[var(--info)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
       },
       {
         position: "bottom-0 left-0",
         size: "w-[500px] h-[500px]",
-        gradient: "from-violet-500/15 to-fuchsia-500/10",
+        gradient: "from-[var(--accent)]/5 to-transparent",
         blur: "blur-3xl",
         animate: false,
       },
@@ -106,7 +106,7 @@ export default function BackgroundEffects({
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
     >
       {/* Gradient mesh overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-gradient-start)] via-transparent to-[var(--brand-gradient-end)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-base)] via-transparent to-[var(--bg-base)] opacity-50" />
 
       {/* Animated orbs */}
       {orbs.map((orb, index) => (
@@ -124,7 +124,7 @@ export default function BackgroundEffects({
 
       {/* Grid pattern */}
       {withGrid && (
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(var(--border-glass)_1px,transparent_1px),linear-gradient(90deg,var(--border-glass)_1px,transparent_1px)] bg-[size:64px_64px]" />
       )}
     </div>
   );
@@ -138,17 +138,19 @@ export function GlowOrb({
   animate = false,
   className = "",
 }: {
-  color?: "violet" | "amber" | "fuchsia" | "cyan";
+  color?: "violet" | "amber" | "fuchsia" | "cyan" | "accent" | "info";
   size?: "sm" | "md" | "lg" | "xl";
   position?: string;
   animate?: boolean;
   className?: string;
 }) {
   const colorStyles = {
-    violet: "from-violet-500/20 to-fuchsia-500/15",
-    amber: "from-amber-500/20 to-orange-500/15",
-    fuchsia: "from-fuchsia-500/20 to-pink-500/15",
-    cyan: "from-cyan-500/20 to-blue-500/15",
+    violet: "from-[var(--info)]/10 to-transparent",
+    amber: "from-[var(--accent)]/10 to-transparent",
+    fuchsia: "from-[var(--accent-light)]/10 to-transparent",
+    cyan: "from-[var(--info)]/10 to-transparent",
+    accent: "from-[var(--accent)]/10 to-transparent",
+    info: "from-[var(--info)]/10 to-transparent",
   };
 
   const sizeStyles = {

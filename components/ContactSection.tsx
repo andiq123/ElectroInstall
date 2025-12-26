@@ -1,109 +1,94 @@
 "use client";
 
 import { BUSINESS_INFO } from "@/lib/constants";
-import { SectionHeader } from "./ui";
-import { PhoneIcon, LocationIcon, MailIcon, CheckIcon } from "./ui/Icons";
+import { PhoneIcon, LocationIcon, MailIcon } from "./ui/Icons";
+import Section from "@/components/ui/Section";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { useLanguage } from "@/context/LanguageContext";
 
-export default function ContactSection() {
+interface ContactSectionProps {
+  onOpenModal?: () => void;
+}
+
+export default function ContactSection({ onOpenModal }: ContactSectionProps) {
+  const { t } = useLanguage();
+
   return (
-    <section
-      id="contact"
-      className="relative py-20 sm:py-28 overflow-hidden"
-      style={{ background: "var(--bg-primary)" }}
-      aria-labelledby="contact-heading"
-    >
-      <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-
-      <div className="container relative z-10 px-6 sm:px-8 md:px-12 lg:px-20 max-w-5xl mx-auto">
-        <SectionHeader
-          badge="Contact"
-          title="Contactează-ne"
-          subtitle="Suntem disponibili 24/7 pentru urgențe electrice. Răspundem rapid la toate solicitările."
+    <Section id="contact" bgType="base">
+      <div className="max-w-2xl mb-16 sm:mb-24">
+        <SectionHeader 
+          title={
+            <>
+              {t.contact.title_part1} <br />
+              <span className="text-gradient not-italic">{t.contact.title_part2}</span>
+            </>
+          }
+          subtitle={t.contact.subtitle}
         />
-
-        {/* Contact Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Phone */}
-          <a
-            href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-            className="group p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-accent)] hover:shadow-lg transition-all"
-          >
-            <div className="text-center">
-              <div
-                className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                style={{ background: "var(--gradient-accent)" }}
-              >
-                <PhoneIcon size="xl" className="text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-1">
-                Telefon
-              </h3>
-              <p className="text-xl font-bold text-[var(--accent)] mb-2">
-                {BUSINESS_INFO.phone}
-              </p>
-              <span className="text-sm text-[var(--text-tertiary)] group-hover:text-[var(--accent)] transition-colors">
-                Apasă pentru a suna →
-              </span>
-            </div>
-          </a>
-
-          {/* Location */}
-          <div className="p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)]">
-            <div className="text-center">
-              <div
-                className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center"
-                style={{ background: "var(--accent-secondary)" }}
-              >
-                <LocationIcon size="xl" className="text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-1">
-                Locație
-              </h3>
-              <p className="text-lg font-semibold text-[var(--text-primary)]">
-                {BUSINESS_INFO.location}
-              </p>
-              <span className="text-sm text-[var(--text-tertiary)]">
-                Servicii în toată regiunea
-              </span>
-            </div>
-          </div>
-
-          {/* Email */}
-          <a
-            href={`mailto:${BUSINESS_INFO.email}`}
-            className="group p-6 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] hover:border-[var(--border-default)] transition-all"
-          >
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center bg-[var(--color-success)]">
-                <MailIcon size="xl" className="text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mb-1">
-                Email
-              </h3>
-              <p className="text-base font-semibold text-[var(--text-primary)] break-all">
-                {BUSINESS_INFO.email}
-              </p>
-              <span className="text-sm text-[var(--text-tertiary)] group-hover:text-[var(--accent)] transition-colors">
-                Scrie-ne →
-              </span>
-            </div>
-          </a>
-        </div>
-
-        {/* Trust indicators */}
-        <div className="flex flex-wrap justify-center gap-6 mt-12 text-sm text-[var(--text-tertiary)]">
-          {BUSINESS_INFO.paymentMethods.map((method) => (
-            <div key={method} className="flex items-center gap-2">
-              <CheckIcon size="sm" className="text-[var(--color-success)]" />
-              <span>{method}</span>
-            </div>
-          ))}
-          <div className="flex items-center gap-2">
-            <CheckIcon size="sm" className="text-[var(--color-success)]" />
-            <span>{BUSINESS_INFO.guarantee}</span>
-          </div>
-        </div>
       </div>
-    </section>
+
+      {/* Contact Hubs */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-24">
+        {/* Phone Hub */}
+        <a
+          href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/50 text-center overflow-hidden"
+        >
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--accent)] text-black shadow-md group-hover:scale-110 transition-transform">
+             <PhoneIcon size="lg" />
+          </div>
+          
+          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
+            {t.common.phone_personal}
+          </h3>
+          <p className="text-xl sm:text-2xl font-black text-[var(--text-primary)] mb-4 tracking-tighter">
+            {BUSINESS_INFO.phone}
+          </p>
+          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--accent)] border-b border-[var(--accent)]/30 pb-1 hover:border-[var(--accent)] transition-all">
+            {t.common.call_now}
+          </span>
+        </a>
+
+        {/* Location Hub */}
+        <div 
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/30 text-center overflow-hidden"
+        >
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-accent)] group-hover:scale-110 transition-all">
+             <LocationIcon size="lg" />
+          </div>
+          
+          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
+            {t.common.location_central}
+          </h3>
+          <p className="text-xl sm:text-2xl font-black text-[var(--text-primary)] mb-4 tracking-tighter">
+            {BUSINESS_INFO.location}
+          </p>
+          <span className="text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-[0.2em] opacity-40">
+            {t.common.chisinau_suburbs}
+          </span>
+        </div>
+
+        {/* Email Hub - Now triggers modal */}
+        <button
+          onClick={onOpenModal}
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/50 text-center overflow-hidden w-full"
+        >
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-white shadow-md group-hover:scale-110 transition-transform">
+             <MailIcon size="lg" />
+          </div>
+          
+          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
+            {t.common.email_personal}
+          </h3>
+          <p className="text-lg font-black text-[var(--text-primary)] mb-6 tracking-tight break-all">
+            {BUSINESS_INFO.email}
+          </p>
+          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--accent)] border-b border-[var(--accent)]/30 pb-1 hover:border-[var(--accent)] transition-all">
+            {t.common.send_message}
+          </span>
+        </button>
+      </div>
+
+    </Section>
   );
 }

@@ -17,19 +17,18 @@ export default function BlogPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       {/* Hero */}
-      <section className="relative pt-16 pb-12 sm:pt-20 sm:pb-16">
-        <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-        <div className="container relative z-10 px-6 sm:px-8 md:px-12 lg:px-20 max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="badge badge-accent mb-6">Blog ElectroInstall</span>
+      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden bg-[var(--bg-secondary)]">
+        <div className="absolute inset-0 electricity-pattern opacity-10 pointer-events-none" />
+        <div className="container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto">
+          <div className="max-w-3xl">
             <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4"
-              style={{ fontFamily: "var(--font-display), system-ui", color: "var(--text-primary)" }}
+              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-8 italic uppercase text-[var(--text-primary)]"
             >
-              Sfaturi Electrice
+              SFATURI <br />
+              <span className="text-gradient not-italic">ELECTRICE</span>
             </h1>
-            <p className="text-lg text-[var(--text-secondary)] max-w-xl mx-auto">
-              Articole utile despre siguranță electrică și sfaturi de la profesioniști.
+            <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium opacity-80 leading-relaxed">
+              Resurse esențiale despre siguranța casei tale, noutăți tehnologice și ghiduri practice de la experții noștri.
             </p>
           </div>
         </div>

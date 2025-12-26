@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, FormEvent } from "react";
 import { Input, PhoneInput, Textarea } from "./Input";
 import Button from "./Button";
+import { useLanguage } from "@/context/LanguageContext";
+import { BUSINESS_INFO } from "@/lib/constants";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -12,6 +14,7 @@ interface ContactModalProps {
 type FormState = "idle" | "submitting" | "success" | "error";
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const { t } = useLanguage();
   const [shouldRender, setShouldRender] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
   
@@ -63,13 +66,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     const newErrors: typeof errors = {};
     
     if (!name.trim()) {
-      newErrors.name = "Numele este obligatoriu";
+      newErrors.name = t.contact_form.validation.name_required;
     }
     
     if (!phone.trim()) {
-      newErrors.phone = "Telefonul este obligatoriu";
+      newErrors.phone = t.contact_form.validation.phone_required;
     } else if (phone.replace(/\D/g, "").length < 8) {
-      newErrors.phone = "Introduceți un număr valid";
+      newErrors.phone = t.contact_form.validation.phone_invalid;
     }
     
     setErrors(newErrors);
@@ -85,14 +88,27 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setFormState("submitting");
     
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Form submitted:", { name, phone, message });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, phone, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error("API call failed");
+      }
+
+      const data = await response.json();
+      console.log("Form submitted success:", data);
       setFormState("success");
       
       setTimeout(() => {
         onClose();
       }, 2000);
-    } catch {
+    } catch (error) {
+      console.error("Submission error:", error);
       setFormState("error");
     }
   };
@@ -117,13 +133,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </svg>
         </button>
 
-        {/* Header - Minimal */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-            Solicită un Serviciu
+        {/* Header - Premium */}
+        <div className="text-left mb-12">
+          <h2 className="text-4xl sm:text-5xl font-black text-[var(--text-primary)] mb-4 tracking-tighter italic uppercase">
+            {t.contact_form.title}
           </h2>
-          <p className="text-sm text-[var(--text-secondary)]">
-            Te vom contacta în cel mai scurt timp
+          <p className="text-lg text-[var(--text-secondary)] font-medium">
+            {t.contact_form.subtitle}
           </p>
         </div>
 
@@ -131,18 +147,18 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         {formState === "success" ? (
           <div className="modal-success">
             <div className="modal-success-icon">
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-1">Mulțumim!</h3>
-            <p className="text-[var(--text-secondary)]">Te vom contacta în curând.</p>
+            <h3 className="text-4xl font-black text-[var(--text-primary)] mb-4 tracking-tighter uppercase italic">{t.contact_form.success_title}</h3>
+            <p className="text-lg text-[var(--text-secondary)] font-medium">{t.contact_form.success_subtitle}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="Nume"
-              placeholder="Numele dvs."
+              label={t.contact_form.name_label}
+              placeholder={t.contact_form.name_placeholder}
               value={name}
               onChange={(e) => setName(e.target.value)}
               error={errors.name}
@@ -151,8 +167,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
 
             <PhoneInput
-              label="Telefon"
-              placeholder="+373 XXX XXX XXX"
+              label={t.contact_form.phone_label}
+              placeholder={t.contact_form.phone_placeholder}
               value={phone}
               onChange={setPhone}
               error={errors.phone}
@@ -161,8 +177,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
 
             <Textarea
-              label="Mesaj (opțional)"
-              placeholder="Descrieți problema sau serviciul..."
+              label={t.contact_form.message_label}
+              placeholder={t.contact_form.message_placeholder}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
@@ -171,7 +187,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
             {formState === "error" && (
               <div className="modal-error">
-                <span>Eroare. Încercați din nou.</span>
+                <span>{t.contact_form.error_msg}</span>
               </div>
             )}
 
@@ -184,10 +200,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               {formState === "submitting" ? (
                 <>
                   <span className="modal-spinner" />
-                  Se trimite...
+                  {t.contact_form.submitting_btn}
                 </>
               ) : (
-                "Trimite Cererea"
+                t.contact_form.submit_btn
               )}
             </Button>
           </form>
@@ -195,9 +211,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         {/* Quick Call */}
         <div className="modal-quick-call">
-          <span>Sau sună:</span>
-          <a href="tel:+373061110314" className="modal-phone-link">
-            +373 061110314
+          <span>{t.contact_form.quick_call}</span>
+          <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`} className="modal-phone-link">
+            {BUSINESS_INFO.phone}
           </a>
         </div>
       </div>

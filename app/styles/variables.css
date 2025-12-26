@@ -1,160 +1,102 @@
-/* ============================================
-   ELECTROINSTALL - DESIGN TOKENS & VARIABLES
-   Single source of truth for all design tokens
-   ============================================ */
-
 :root {
-    /* === CORE PALETTE === */
+  /* === CORE THEME: PREMIUM DARK SYSTEM === */
+  /* This is the single source of truth for the entire application theme. */
 
-    /* Backgrounds */
-    --bg-primary: #09090b;
-    --bg-secondary: #0f0f12;
-    --bg-elevated: #18181b;
-    --bg-card: #1c1c21;
-    --bg-card-hover: #242429;
-    --bg-inset: #0a0a0c;
+  /* Background Palette - Grounding the layout in pure depth */
+  --bg-base: #050505;        /* Deepest layer */
+  --bg-elevated: #0a0a0b;    /* Card and section layer */
+  --bg-accent: #0f1115;      /* Subtle hover/active layer */
+  
+  /* Text Palette - Extreme Contrast for Accessibility */
+  --text-main: #ffffff;      /* Primary headings and content */
+  --text-primary: #ffffff;   /* Alias for main */
+  --text-secondary: #a1a1aa; /* Secondary info (Zinc 400) */
+  --text-muted: #71717a;     /* Supporting info (Zinc 500) */
+  --text-inverted: #000000;  /* For buttons on light backgrounds */
+  
+  /* Accent: Solar Gold - The energy source */
+  --accent: #facc15;        /* High-visibility yellow (Yellow 400) */
+  --accent-glow: rgba(250, 204, 21, 0.4);
+  --accent-muted: rgba(250, 204, 21, 0.1);
+  --accent-light: #fde047;  /* Yellow 300 */
+  --accent-dark: #eab308;   /* Yellow 500 */
+  --accent-cobalt: #3b82f6; /* Accent for electrical "cool" components */
 
-    /* Text */
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-tertiary: #71717a;
-    --text-inverted: #09090b;
+  /* Surface & Border System */
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  
+  /* Shadows & Depth */
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-accent: 0 0 30px -5px rgba(250, 204, 21, 0.25);
 
-    /* Accent - Electric Amber (Primary Brand) */
-    --accent: #f59e0b;
-    --accent-light: #fbbf24;
-    --accent-dark: #d97706;
-    --accent-muted: rgba(245, 158, 11, 0.15);
-    --accent-subtle: rgba(245, 158, 11, 0.08);
+  /* Radius System */
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2.5rem;
+  --radius-full: 9999px;
 
-    /* Secondary Accent - Electric Blue */
-    --accent-secondary: #3b82f6;
-    --accent-secondary-light: #60a5fa;
-    --accent-secondary-dark: #2563eb;
-    --accent-secondary-muted: rgba(59, 130, 246, 0.15);
+  /* Gradients */
+  --gradient-power: linear-gradient(135deg, #facc15 0%, #fbbf24 100%);
+  --gradient-dark: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
 
-    /* Semantic Colors */
-    --color-success: #22c55e;
-    --color-error: #ef4444;
-    --color-info: #3b82f6;
+  /* Semantic Feedback & State Tokens */
+  --info: #3b82f6;           /* Cobalt / Blue 500 */
+  --info-glow: rgba(59, 130, 246, 0.4);
+  --danger: #ef4444;         /* Red 500 */
+  --danger-glow: rgba(239, 68, 68, 0.4);
+  --success: #10b981;        /* Emerald 500 */
+  --warning: #f59e0b;        /* Amber 500 */
+  
+  /* Additional Surface Tokens */
+  --surface-white: #ffffff;
+  --surface-white-soft: rgba(255, 255, 255, 0.05);
+  --surface-white-strong: rgba(255, 255, 255, 0.1);
 
-    /* Borders */
-    --border-subtle: rgba(255, 255, 255, 0.06);
-    --border-default: rgba(255, 255, 255, 0.1);
-    --border-strong: rgba(255, 255, 255, 0.16);
-    --border-accent: rgba(245, 158, 11, 0.4);
+  /* Wash & Mood Tokens */
+  --bg-wash-slate: rgba(15, 23, 42, 0.3);
+  --bg-wash-gold: rgba(250, 204, 21, 0.02);
+  --bg-wash-cobalt: rgba(59, 130, 246, 0.05);
+  --text-accent-gradient: var(--gradient-power);
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
-    --shadow-accent: 0 4px 24px rgba(245, 158, 11, 0.25);
-    --shadow-glow: 0 0 32px rgba(245, 158, 11, 0.3);
-
-    /* Glass */
-    --glass-bg: rgba(15, 15, 18, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.08);
-
-    /* Gradients */
-    --gradient-accent: linear-gradient(
-        135deg,
-        #fbbf24 0%,
-        #f59e0b 50%,
-        #d97706 100%
-    );
-    --gradient-surface: linear-gradient(
-        180deg,
-        var(--bg-card) 0%,
-        var(--bg-elevated) 100%
-    );
-
-    /* Service Category Colors */
-    --cat-emergency: #ef4444;
-    --cat-installation: #f59e0b;
-    --cat-appliances: #3b82f6;
-    --cat-repair: #22c55e;
-    --cat-panels: #8b5cf6;
-    --cat-wiring: #06b6d4;
-
-    /* Radius */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-2xl: 1.25rem;
-    --radius-3xl: 1.5rem;
-    --radius-full: 9999px;
-
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-base: 250ms ease;
-    --transition-slow: 400ms ease;
+  /* Naming Aliases - Ensuring component compatibility */
+  --bg-primary: var(--bg-base);
+  --bg-secondary: var(--bg-elevated);
 }
 
-/* ============================================
-   LIGHT MODE
-   ============================================ */
+/* --- Atmospheric Utilities (Replacing "Ugly" Grids) --- */
 
-html.illuminated {
-    /* Backgrounds */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8f8f8;
-    --bg-elevated: #ffffff;
-    --bg-card: #ffffff;
-    --bg-card-hover: #f5f5f5;
-    --bg-inset: #f0f0f0;
+.mesh-subtle {
+  background-color: var(--bg-base);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(250, 204, 21, 0.04) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%);
+}
 
-    /* Text */
-    --text-primary: #171717;
-    --text-secondary: #525252;
-    --text-tertiary: #737373;
-    --text-inverted: #ffffff;
+/* Atmospheric Glow Nodes */
+.glow-gold {
+  background: radial-gradient(circle at center, rgba(250, 204, 21, 0.08) 0%, transparent 70%);
+}
 
-    /* Accent - Darker for light mode */
-    --accent: #d97706;
-    --accent-light: #f59e0b;
-    --accent-dark: #b45309;
-    --accent-muted: rgba(217, 119, 6, 0.12);
-    --accent-subtle: rgba(217, 119, 6, 0.06);
+.glow-blue {
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+}
 
-    /* Secondary Accent */
-    --accent-secondary: #2563eb;
-    --accent-secondary-light: #3b82f6;
-    --accent-secondary-dark: #1d4ed8;
-    --accent-secondary-muted: rgba(37, 99, 235, 0.12);
+/* Subtle, refined patterns - only for texture */
+.electricity-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
 
-    /* Borders */
-    --border-subtle: rgba(0, 0, 0, 0.05);
-    --border-default: rgba(0, 0, 0, 0.08);
-    --border-strong: rgba(0, 0, 0, 0.12);
-    --border-accent: rgba(217, 119, 6, 0.35);
-
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
-    --shadow-accent: 0 4px 24px rgba(217, 119, 6, 0.15);
-    --shadow-glow: 0 0 32px rgba(217, 119, 6, 0.2);
-
-    /* Glass */
-    --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(0, 0, 0, 0.06);
-
-    /* Gradients */
-    --gradient-accent: linear-gradient(
-        135deg,
-        #f59e0b 0%,
-        #d97706 50%,
-        #b45309 100%
-    );
-
-    /* Category Colors */
-    --cat-emergency: #dc2626;
-    --cat-installation: #d97706;
-    --cat-appliances: #2563eb;
-    --cat-repair: #16a34a;
-    --cat-panels: #7c3aed;
-    --cat-wiring: #0891b2;
+.decorative-circuit {
+  position: absolute;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(90deg, var(--accent) 0.5px, transparent 0.5px),
+    linear-gradient(0deg, var(--accent) 0.5px, transparent 0.5px);
+  background-size: 80px 80px;
 }
