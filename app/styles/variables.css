@@ -100,3 +100,28 @@
     linear-gradient(0deg, var(--accent) 0.5px, transparent 0.5px);
   background-size: 80px 80px;
 }
+
+/* --- Accessibility Utilities --- */
+
+/* Visible Focus State - Crucial for Keyboard Navigation */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Reduced Motion - Optimizing for old devices and user preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Performance Optimization for Older Devices */
+.optimize-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

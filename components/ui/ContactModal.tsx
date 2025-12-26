@@ -48,18 +48,60 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }
   }, [isOpen]);
 
-  // Handle ESC key
-  const handleEscape = useCallback(
+  // Handle ESC key and Focus Trapping
+  const handleEvents = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
+      
+      if (e.key === "Tab" && isOpen) {
+        const focusableElements = document.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const modalElements = Array.from(focusableElements).filter(el => 
+          document.querySelector('.modal-panel-clean')?.contains(el)
+        );
+        
+        if (modalElements.length === 0) return;
+        
+        const firstElement = modalElements[0] as HTMLElement;
+        const lastElement = modalElements[modalElements.length - 1] as HTMLElement;
+        
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
     },
     [isOpen, onClose]
   );
 
+  const [previousFocus, setPreviousFocus] = useState<HTMLElement | null>(null);
+
   useEffect(() => {
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [handleEscape]);
+    if (isOpen) {
+      setPreviousFocus(document.activeElement as HTMLElement);
+      // Give it a small delay to ensure it's rendered
+      setTimeout(() => {
+        const firstInput = document.querySelector('.modal-panel-clean input') as HTMLElement;
+        const closeBtn = document.querySelector('.modal-close-btn') as HTMLElement;
+        (firstInput || closeBtn)?.focus();
+      }, 100);
+    } else if (previousFocus) {
+      previousFocus.focus();
+    }
+  }, [isOpen, previousFocus]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleEvents);
+    return () => window.removeEventListener("keydown", handleEvents);
+  }, [handleEvents]);
 
   // Form validation
   const validateForm = (): boolean => {

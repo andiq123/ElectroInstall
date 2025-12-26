@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, ReactNode } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -18,10 +19,16 @@ export function ScrollReveal({
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
+
+    if (shouldReduceMotion) {
+      element.classList.add("revealed");
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -47,7 +54,7 @@ export function ScrollReveal({
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [delay, once]);
+  }, [delay, once, shouldReduceMotion]);
 
   return (
     <div
@@ -62,10 +69,16 @@ export function ScrollReveal({
 // Hook for using reveal on existing elements
 export function useScrollReveal(options?: { threshold?: number; once?: boolean }) {
   const ref = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
+
+    if (shouldReduceMotion) {
+      element.classList.add("revealed");
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -86,7 +99,7 @@ export function useScrollReveal(options?: { threshold?: number; once?: boolean }
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [options?.threshold, options?.once]);
+  }, [options?.threshold, options?.once, shouldReduceMotion]);
 
   return ref;
 }

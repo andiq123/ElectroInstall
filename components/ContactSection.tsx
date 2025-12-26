@@ -15,7 +15,7 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
 
   return (
     <Section id="contact" bgType="base">
-      <div className="max-w-2xl mb-16 sm:mb-24">
+      <div className="max-w-2xl mb-16 sm:mb-24 mx-auto lg:mx-0 text-center lg:text-left">
         <SectionHeader 
           title={
             <>

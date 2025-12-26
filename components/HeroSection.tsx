@@ -28,10 +28,16 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
-      className="relative min-h-fit lg:min-h-[85vh] flex flex-col pt-32 sm:pt-40 lg:pt-24 pb-16 overflow-hidden bg-[var(--bg-base)]"
       aria-labelledby="hero-heading"
+      className="relative min-h-[100svh] flex items-center pt-24 sm:pt-32 overflow-hidden bg-[var(--bg-base)]"
     >
+      {/* AI Summary Landmark */}
+      <div className="sr-only">
+        <h1>ElectroInstall - Servicii Electrice Profesionale în Chișinău</h1>
+        <p>Oferim servicii de electrician autorizat, montaj instalații, intervenții de urgență și mentenanță electrică în toată Moldova și suburbiile Chișinăului.</p>
+      </div>
       {/* Premium Atmospheric Layers */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-[20%] -right-[10%] w-[70vw] h-[70vw] bg-[radial-gradient(circle_at_center,rgba(250,204,21,0.08)_0%,transparent_70%)] blur-[120px] animate-pulse-slow" />
@@ -52,16 +58,16 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
         <ProfessionalHeroVisual />
       </div>
 
-      <div className="container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center flex-grow">
+      <div className="container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center flex-grow text-center lg:text-left">
         <div className="w-full lg:w-[60%] py-12 lg:py-0">
           {/* Status Label */}
-          <div className="mb-6 lg:mb-8 flex items-center gap-4 animate-fade-in">
+          <div className="mb-6 lg:mb-8 flex items-center justify-center lg:justify-start gap-4 animate-fade-in">
              <div className="h-px w-10 bg-[var(--accent)]" />
              <span className="text-[10px] font-black tracking-[0.5em] text-[var(--accent)] uppercase">
                {t.hero.status_label}
              </span>
           </div>
-
+ 
           <h1
             id="hero-heading"
             className="text-5xl sm:text-7xl lg:text-7xl xl:text-8xl font-black text-[var(--text-primary)] leading-[0.85] tracking-tighter mb-8 italic uppercase"
@@ -73,22 +79,22 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
             <span className="text-[var(--accent)] not-italic inline-block py-1">{t.hero.headline_parts[1]}</span> <br />
             {t.hero.headline_parts[2]}
           </h1>
-
-          <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-xl leading-relaxed font-medium border-l-2 border-[var(--border-glass)] pl-8">
+ 
+          <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium border-l-0 lg:border-l-2 pl-0 lg:pl-8">
             {t.hero.description}
           </p>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 mb-16">
+ 
+          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-16">
             <button
                onClick={onOpenModal}
-               className="group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(250,204,21,0.25)] hover:scale-105 active:scale-95"
+               className="w-full sm:w-auto group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(250,204,21,0.25)] hover:scale-105 active:scale-95"
             >
               <div className="absolute inset-0 bg-[var(--surface-white)] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative z-10">{t.common.cta_primary}</span>
             </button>
             <a
               href="#servicii"
-              className="px-10 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] font-black text-xs uppercase tracking-widest rounded-full hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/30 transition-all duration-300 text-center flex items-center justify-center gap-3 group"
+              className="w-full sm:w-auto px-10 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] font-black text-xs uppercase tracking-widest rounded-full hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/30 transition-all duration-300 text-center flex items-center justify-center gap-3 group"
             >
               {t.nav.services}
               <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform group-hover:translate-y-1" stroke="currentColor" strokeWidth="3">
@@ -96,9 +102,9 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
               </svg>
             </a>
           </div>
-
+ 
           {/* Clean Performance Indicators */}
-          <div className="flex flex-wrap items-center gap-12 sm:gap-20">
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-12 sm:gap-20">
             {[
               { label: t.why_us.stats.experience, value: "8+" },
               { label: t.why_us.stats.cases, value: "300+" },

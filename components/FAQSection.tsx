@@ -17,12 +17,29 @@ export default function FAQSection() {
     answer: t.faq.items[index]?.answer || item.answer,
   }));
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": translatedItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
     <Section id="faq" bgType="wash-gold">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Decorative Accents specific to FAQ */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--accent)]/5 blur-[100px] rounded-full" />
@@ -37,7 +54,7 @@ export default function FAQSection() {
               <span className="text-gradient not-italic">{t.faq.title_part2}</span>
             </>
           }
-          className="mb-24"
+          className="mb-16 sm:mb-24"
         />
 
         {/* FAQ Accordion */}

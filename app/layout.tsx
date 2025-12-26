@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | ElectroInstall",
   },
   description:
-    "Electrician autorizat în Chișinău, Moldova. Servicii electrice profesionale: montaj prize, tablouri electrice, reparații și intervenții rapide în toate sectoarele și suburbiile. Disponibil pentru urgențe.",
+    "ElectroInstall: Servicii electrice profesionale în Chișinău. Electrician autorizat pentru intervenții rapide, montaj tablouri, prize și instalații electrice în toate sectoarele și suburbiile Moldovei. Disponibil 24/7 pentru urgențe.",
   keywords: [
     "electrician Chisinau",
     "electrician Moldova",
@@ -162,6 +162,32 @@ const jsonLd = {
     "@type": "ContactPoint",
     "telephone": "+373061110314",
     "contactType": "customer service"
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    "name": "Servicii Electrice",
+    "itemListElement": [
+      {
+        "@type": "Service",
+        "name": "Intervenții de Urgență",
+        "description": "Reparații rapide pentru defecțiuni electrice neașteptate, scurtcircuite și pene de curent."
+      },
+      {
+        "@type": "Service",
+        "name": "Montaj Instalații Electrice",
+        "description": "Proiectare și execuție instalații electrice complete pentru apartamente, case și spații comerciale."
+      },
+      {
+        "@type": "Service",
+        "name": "Instalare Tablouri Electrice",
+        "description": "Montaj și modernizare tablouri de distribuție, siguranțe automate și protecții diferențiale."
+      },
+      {
+        "@type": "Service",
+        "name": "Montaj Prize și Întrerupătoare",
+        "description": "Instalare accesorii electrice, prize, întrerupătoare și variatoare de lumină."
+      }
+    ]
   },
   sameAs: [],
 };

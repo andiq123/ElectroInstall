@@ -102,8 +102,10 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             className="md:hidden group relative w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] shadow-sm transition-all active:scale-90"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Închide meniul" : "Deschide meniul"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
-            <div className="space-y-1.5">
+            <div className="space-y-1.5" aria-hidden="true">
               <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "w-6 rotate-45 translate-y-2" : "w-6"}`} />
               <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "opacity-0" : "w-4"}`} />
               <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "w-6 -rotate-45 -translate-y-2" : "w-6"}`} />
@@ -123,9 +125,13 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           />
 
           <div
+            id="mobile-menu"
             className={`absolute top-0 right-0 h-full w-full sm:max-w-md bg-[var(--bg-base)] border-l border-[var(--border-glass)] p-10 flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Meniu mobil"
           >
             <div className="flex items-center justify-between mb-20">
               <NavLogo />
@@ -134,8 +140,9 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                 <button 
                   onClick={closeMenu}
                   className="w-12 h-12 rounded-full border border-[var(--border-glass)] flex items-center justify-center hover:bg-white/5 transition-all text-[var(--text-primary)]"
+                  aria-label="Închide meniul"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
             </div>

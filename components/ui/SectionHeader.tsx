@@ -19,12 +19,12 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   if (layout === "split") {
     return (
-      <div className={`flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24 ${className}`}>
+      <div className={`flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24 items-center lg:items-end text-center lg:text-left ${className}`}>
         <div className="max-w-3xl">
           {badge && (
-            <div className="flex items-center gap-3 mb-6 animate-fade-in">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-6 animate-fade-in">
               <div className="w-10 h-px bg-[var(--accent)]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)] uppercase">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)]">
                 {badge}
               </span>
             </div>
@@ -34,7 +34,7 @@ export default function SectionHeader({
           </h2>
         </div>
         {subtitle && (
-          <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium leading-relaxed max-w-xl lg:mb-4 border-l-2 border-[var(--border-glass)] pl-8">
+          <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium leading-relaxed max-w-xl lg:mb-4 border-l-0 lg:border-l-2 pl-0 lg:pl-8 mx-auto lg:mx-0">
             {subtitle}
           </p>
         )}
