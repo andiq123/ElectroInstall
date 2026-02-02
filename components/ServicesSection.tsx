@@ -13,20 +13,26 @@ interface ServiceCategory {
   id: string;
   title: string;
   subtitle: string;
+  useCases?: string[];
 }
 
 interface ServiceCardProps {
   category: ServiceCategory;
   index: number;
+  onOpenModal?: () => void;
 }
 
-function ServiceCard({ category, index }: ServiceCardProps) {
+function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
   const { t } = useLanguage();
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, amount: 0.1 });
   
   const isEmergency = category.id === "emergency";
   const Icon = SERVICE_ICONS[category.id];
+  const useCases = category.useCases ?? [];
+  const phoneHref = `tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`;
+
+  const hoverTransition = { type: "tween" as const, duration: 0.3, ease: [0.25, 0.1, 0.25, 1] };
 
   return (
     <motion.article
@@ -34,15 +40,21 @@ function ServiceCard({ category, index }: ServiceCardProps) {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden transition-all duration-500 hover:border-[var(--accent)]/40 hover:shadow-[0_0_30px_rgba(250,204,21,0.05)] hover:-translate-y-2 flex flex-col ${
+      whileHover={{ y: -8, transition: hoverTransition }}
+      style={{ transition: "border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)" }}
+      className={`relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/40 hover:shadow-[0_0_30px_rgba(250,204,21,0.05)] ${
         isEmergency ? "lg:col-span-8" : "lg:col-span-4"
       }`}
     >
       {/* Visual Header */}
       <div className="flex items-start justify-between mb-8 relative z-10">
-        <div className="w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500 shadow-xl group-hover:shadow-[var(--shadow-accent-sm)]">
+        <motion.div
+          className="w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)]"
+          whileHover={{ scale: 1.08 }}
+          transition={hoverTransition}
+        >
           {Icon}
-        </div>
+        </motion.div>
         {isEmergency && (
           <div className="px-4 py-1.5 bg-[var(--danger)] text-[var(--surface-white)] rounded-full text-[10px] font-black uppercase tracking-widest animate-pulse shadow-lg flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--surface-white)] animate-ping" />
@@ -56,9 +68,62 @@ function ServiceCard({ category, index }: ServiceCardProps) {
         <h3 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight mb-4 uppercase italic">
           {category.title}
         </h3>
-        <p className="text-[var(--text-secondary)] font-medium leading-relaxed mb-10 max-w-sm">
+        <p className="text-[var(--text-secondary)] font-medium leading-relaxed mb-6 max-w-sm">
           {category.subtitle}
         </p>
+
+        {/* Best-for use cases */}
+        {useCases.length > 0 && (
+          <div className="mb-8">
+            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--accent)] mb-3 opacity-90">
+              {t.services.best_for_label}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {useCases.map((uc) => (
+                <span
+                  key={uc}
+                  className="px-3 py-1.5 rounded-lg bg-[var(--bg-base)] border border-[var(--border-glass)] text-[11px] font-bold text-[var(--text-secondary)]"
+                >
+                  {uc}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Per-card CTAs */}
+        <div className="flex flex-wrap gap-3 mt-auto">
+          {isEmergency ? (
+            <a
+              href={phoneHref}
+              className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--danger)] text-[var(--surface-white)] rounded-xl text-xs font-black uppercase tracking-wider hover:opacity-90 transition-opacity"
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2.5">
+                <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {t.common.call_now}
+            </a>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={onOpenModal}
+                className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--accent)]/15 border border-[var(--accent)]/30 text-[var(--accent)] rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[var(--accent)] hover:text-black transition-colors"
+              >
+                {t.common.cta_rapid}
+              </button>
+              <a
+                href={phoneHref}
+                className="inline-flex items-center gap-2 px-5 py-3 border border-[var(--border-strong)] text-[var(--text-secondary)] rounded-xl text-xs font-bold uppercase tracking-wider hover:border-[var(--accent)]/40 hover:text-[var(--accent)] transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {t.common.phone}
+              </a>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-[var(--accent)]/[0.05] blur-3xl rounded-full group-hover:bg-[var(--accent)]/[0.1] transition-colors duration-500" />
@@ -73,11 +138,15 @@ interface ServicesSectionProps {
 export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
   const { t } = useLanguage();
   
-  const translatedCategories = SERVICE_CATEGORIES.map(category => ({
-    ...category,
-    title: t.services.categories[category.id as keyof typeof t.services.categories].title,
-    subtitle: t.services.categories[category.id as keyof typeof t.services.categories].subtitle,
-  }));
+  const translatedCategories = SERVICE_CATEGORIES.map(category => {
+    const cat = t.services.categories[category.id as keyof typeof t.services.categories];
+    return {
+      ...category,
+      title: cat.title,
+      subtitle: cat.subtitle,
+      useCases: "useCases" in cat ? (cat as { useCases: string[] }).useCases : undefined,
+    };
+  });
 
   return (
     <Section id="servicii" bgType="base">
@@ -101,6 +170,7 @@ export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
             key={category.id} 
             category={category} 
             index={index}
+            onOpenModal={onOpenModal}
           />
         ))}
       </div>

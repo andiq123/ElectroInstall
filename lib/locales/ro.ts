@@ -35,26 +35,32 @@ export const ro = {
     hook_title_part2: "LUCRURILE CORECT",
     hook_subtitle: "Fie că ai o mică problemă sau vrei o instalație noua, sunt gata să te ajut. Lucrez în tot Chișinăul și suburbii.",
     emergency_badge: "Intervenții Rapide",
+    best_for_label: "Ideal pentru",
     categories: {
       installation: {
         title: "Instalații Electrice",
         subtitle: "De la proiect la montaj",
+        useCases: ["Apartament nou", "Casă în construcție", "Renovare completă"],
       },
       repair: {
         title: "Reparații & Diagnoză",
         subtitle: "Revenim la siguranță",
+        useCases: ["Priză arsă", "Scurtcircuit", "Automat care sare"],
       },
       appliances: {
         title: "Conectare Electrocasnice",
         subtitle: "Instalare sigură",
+        useCases: ["Plită cu inducție", "Boiler", "Mașină de spălat"],
       },
       emergency: {
         title: "Asistență Electrică",
         subtitle: "Intervenții de zi",
+        useCases: ["Până de curent", "Urgență aceeași zi", "Electrician rapid"],
       },
       panels: {
         title: "Automatizări Simple",
         subtitle: "Confort și control",
+        useCases: ["Protecție supratensiune", "Stabilizator", "Iluminat curte"],
       },
     }
   },

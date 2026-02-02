@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import ProfessionalHeroVisual from "@/components/sections/ProfessionalHeroVisual";
 import { useLanguage } from "@/context/LanguageContext";
+import { BUSINESS_INFO } from "@/lib/constants";
 
 interface HeroSectionProps {
   onOpenModal?: () => void;
@@ -84,7 +85,7 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
             {t.hero.description}
           </p>
  
-          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-16">
+          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-6">
             <button
                onClick={onOpenModal}
                className="w-full sm:w-auto group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(250,204,21,0.25)] hover:scale-105 active:scale-95"
@@ -102,6 +103,23 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
               </svg>
             </a>
           </div>
+
+          {/* Hero phone number — one-tap call on mobile */}
+          <a
+            href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
+            className="inline-flex items-center gap-3 mb-12 group/phone"
+            aria-label={t.common.call_now}
+          >
+            <span className="flex w-12 h-12 items-center justify-center rounded-2xl bg-[var(--accent)]/15 border border-[var(--accent)]/30 text-[var(--accent)] group-hover/phone:bg-[var(--accent)] group-hover/phone:text-black transition-colors">
+              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5">
+                <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <div className="text-left">
+              <span className="block text-[9px] font-black uppercase tracking-[0.35em] text-[var(--accent)] opacity-90">{t.common.phone_personal}</span>
+              <span className="text-xl sm:text-2xl font-black text-[var(--text-primary)] tracking-tight group-hover/phone:text-[var(--accent)] transition-colors">{BUSINESS_INFO.phone}</span>
+            </div>
+          </a>
  
           {/* Clean Performance Indicators */}
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-12 sm:gap-20">
@@ -124,9 +142,14 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
       </div>
 
       {/* Ambient Scroll Guide */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
-         <div className="w-px h-16 bg-gradient-to-b from-[var(--accent)] to-transparent" />
-      </div>
+      <a
+        href="#servicii"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40 hover:opacity-70 transition-opacity"
+        aria-label={t.nav.services}
+      >
+        <span className="text-[9px] font-black uppercase tracking-[0.35em] text-[var(--accent)]">{t.nav.services}</span>
+        <div className="w-px h-12 bg-gradient-to-b from-[var(--accent)] to-transparent" />
+      </a>
     </section>
   );
 }
