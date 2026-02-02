@@ -54,38 +54,42 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
         />
       </div>
 
-      {/* Hero Visual (Electrician Illustration) */}
-      <div className="hidden xl:block absolute top-1/2 -right-40 xl:-right-60 -translate-y-1/2 w-[1300px] aspect-square pointer-events-none select-none z-0 opacity-80">
+      {/* Hero visual — entrance with delay */}
+      <div className="hero-visual-entrance hidden xl:block absolute top-[95%] -right-40 xl:-right-60 -translate-y-1/2 w-[1300px] aspect-square pointer-events-none select-none z-0 opacity-80">
         <ProfessionalHeroVisual />
       </div>
 
-      <div className="container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center flex-grow text-center lg:text-left">
+      <div className="hero-entrance container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center flex-grow text-center lg:text-left">
         <div className="w-full lg:w-[60%] py-12 lg:py-0">
-          {/* Status Label */}
-          <div className="mb-6 lg:mb-8 flex items-center justify-center lg:justify-start gap-4 animate-fade-in">
+          {/* 1. Status label */}
+          <div className="hero-entrance-item mb-6 lg:mb-8 flex items-center justify-center lg:justify-start gap-4" style={{ "--hero-delay": "120ms" } as React.CSSProperties}>
              <div className="h-px w-10 bg-[var(--accent)]" />
              <span className="text-[10px] font-black tracking-[0.5em] text-[var(--accent)] uppercase">
                {t.hero.status_label}
              </span>
           </div>
  
+          {/* 2. Headline — opacity only so parallax stays smooth */}
           <h1
             id="hero-heading"
-            className="text-5xl sm:text-7xl lg:text-7xl xl:text-8xl font-black text-[var(--text-primary)] leading-[0.85] tracking-tighter mb-8 italic uppercase"
+            className="hero-entrance-item hero-headline-entrance text-5xl sm:text-7xl lg:text-7xl xl:text-8xl font-black text-[var(--text-primary)] leading-[0.85] tracking-tighter mb-8 italic uppercase"
             style={{ 
+              "--hero-delay": "220ms",
               transform: `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px)`
-            }}
+            } as React.CSSProperties}
           >
             {t.hero.headline_parts[0]} <br />
             <span className="text-[var(--accent)] not-italic inline-block py-1">{t.hero.headline_parts[1]}</span> <br />
             {t.hero.headline_parts[2]}
           </h1>
  
-          <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium border-l-0 lg:border-l-2 pl-0 lg:pl-8">
+          {/* 3. Description */}
+          <p className="hero-entrance-item text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium border-l-0 lg:border-l-2 pl-0 lg:pl-8" style={{ "--hero-delay": "380ms" } as React.CSSProperties}>
             {t.hero.description}
           </p>
  
-          <div className="flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-6">
+          {/* 4. CTAs */}
+          <div className="hero-entrance-item flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-6" style={{ "--hero-delay": "480ms" } as React.CSSProperties}>
             <button
                onClick={onOpenModal}
                className="w-full sm:w-auto group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(250,204,21,0.25)] hover:scale-105 active:scale-95"
@@ -104,11 +108,12 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
             </a>
           </div>
 
-          {/* Hero phone number — one-tap call on mobile */}
+          {/* 5. Phone */}
           <a
             href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-            className="inline-flex items-center gap-3 mb-12 group/phone"
+            className="hero-entrance-item inline-flex items-center gap-3 mb-12 group/phone"
             aria-label={t.common.call_now}
+            style={{ "--hero-delay": "580ms" } as React.CSSProperties}
           >
             <span className="flex w-12 h-12 items-center justify-center rounded-2xl bg-[var(--accent)]/15 border border-[var(--accent)]/30 text-[var(--accent)] group-hover/phone:bg-[var(--accent)] group-hover/phone:text-black transition-colors">
               <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5">
@@ -121,8 +126,8 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
             </div>
           </a>
  
-          {/* Clean Performance Indicators */}
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-12 sm:gap-20">
+          {/* 6. Stats */}
+          <div className="hero-entrance-item flex flex-wrap items-center justify-center lg:justify-start gap-12 sm:gap-20" style={{ "--hero-delay": "680ms" } as React.CSSProperties}>
             {[
               { label: t.why_us.stats.experience, value: "8+" },
               { label: t.why_us.stats.cases, value: "300+" },
@@ -141,11 +146,12 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* Ambient Scroll Guide */}
+      {/* 7. Scroll guide */}
       <a
         href="#servicii"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40 hover:opacity-70 transition-opacity"
+        className="hero-entrance-item absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40 hover:opacity-70 transition-opacity"
         aria-label={t.nav.services}
+        style={{ "--hero-delay": "820ms" } as React.CSSProperties}
       >
         <span className="text-[9px] font-black uppercase tracking-[0.35em] text-[var(--accent)]">{t.nav.services}</span>
         <div className="w-px h-12 bg-gradient-to-b from-[var(--accent)] to-transparent" />

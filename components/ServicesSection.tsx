@@ -1,8 +1,6 @@
 "use client";
 
 import { SERVICE_CATEGORIES, BUSINESS_INFO } from "@/lib/constants";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { VoltageSymbol } from "@/components/ui/ElectricityDecorations";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -24,37 +22,23 @@ interface ServiceCardProps {
 
 function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
   const { t } = useLanguage();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, amount: 0.1 });
-  
   const isEmergency = category.id === "emergency";
   const Icon = SERVICE_ICONS[category.id];
   const useCases = category.useCases ?? [];
   const phoneHref = `tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`;
 
-  const hoverTransition = { type: "tween" as const, duration: 0.3, ease: [0.25, 0.1, 0.25, 1] };
-
   return (
-    <motion.article
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -8, transition: hoverTransition }}
-      style={{ transition: "border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)" }}
-      className={`relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/40 hover:shadow-[0_0_30px_rgba(250,204,21,0.05)] ${
+    <article
+      className={`service-card relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/40 hover:shadow-[0_0_30px_rgba(250,204,21,0.05)] hover:-translate-y-1 transition-[transform,border-color,box-shadow] duration-200 ease-out ${
         isEmergency ? "lg:col-span-8" : "lg:col-span-4"
       }`}
+      style={{ "--card-delay": `${index * 100}ms` } as React.CSSProperties}
     >
       {/* Visual Header */}
       <div className="flex items-start justify-between mb-8 relative z-10">
-        <motion.div
-          className="w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)]"
-          whileHover={{ scale: 1.08 }}
-          transition={hoverTransition}
-        >
+        <div className="w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)] group-hover:scale-105 transition-transform duration-200 ease-out">
           {Icon}
-        </motion.div>
+        </div>
         {isEmergency && (
           <div className="px-4 py-1.5 bg-[var(--danger)] text-[var(--surface-white)] rounded-full text-[10px] font-black uppercase tracking-widest animate-pulse shadow-lg flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--surface-white)] animate-ping" />
@@ -127,7 +111,7 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
       </div>
 
       <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-[var(--accent)]/[0.05] blur-3xl rounded-full group-hover:bg-[var(--accent)]/[0.1] transition-colors duration-500" />
-    </motion.article>
+    </article>
   );
 }
 

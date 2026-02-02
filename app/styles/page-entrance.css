@@ -114,6 +114,44 @@
 }
 
 /* ============================================
+   SERVICE CARDS - Staggered reveal when section in view
+   ============================================ */
+
+.service-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease-out,
+                box-shadow 0.3s ease-out;
+    transition-delay: var(--card-delay, 0ms);
+}
+
+.scroll-reveal.revealed .service-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0ms;
+}
+
+/* ============================================
+   PROCESS STEPS - Staggered reveal when section in view
+   ============================================ */
+
+.process-step {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--step-delay, 0ms);
+}
+
+.scroll-reveal.revealed .process-step {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0ms;
+}
+
+/* ============================================
    ACCESSIBILITY - Reduced Motion
    ============================================ */
 
@@ -122,7 +160,9 @@
     .section-scroll-reveal,
     .stagger-reveal > *,
     .card-scroll-reveal,
-    .text-scroll-reveal {
+    .text-scroll-reveal,
+    .service-card,
+    .process-step {
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;

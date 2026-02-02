@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, ReactNode } from "react";
+import { useEffect, useRef, useState, ReactNode } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ScrollRevealProps {
@@ -19,6 +19,7 @@ export function ScrollReveal({
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export function ScrollReveal({
     if (!element) return;
 
     if (shouldReduceMotion) {
+      setRevealed(true);
       element.classList.add("revealed");
       return;
     }
@@ -33,23 +35,17 @@ export function ScrollReveal({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Add delay if specified
           setTimeout(() => {
+            setRevealed(true);
             element.classList.add("revealed");
           }, delay);
-
-          // Unobserve if only animate once
-          if (once) {
-            observer.unobserve(element);
-          }
+          if (once) observer.unobserve(element);
         } else if (!once) {
+          setRevealed(false);
           element.classList.remove("revealed");
         }
       },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      }
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
     );
 
     observer.observe(element);
@@ -60,6 +56,7 @@ export function ScrollReveal({
     <div
       ref={ref}
       className={`scroll-reveal scroll-reveal-${direction} ${className}`}
+      style={revealed ? undefined : { opacity: 0 }}
     >
       {children}
     </div>
