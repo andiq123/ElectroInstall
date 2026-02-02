@@ -44,7 +44,7 @@ export default function WhyChooseUs() {
             {translatedStats.map((stat) => (
               <div 
                 key={stat.label} 
-                className="p-8 rounded-[var(--radius-3xl)] bg-[var(--bg-elevated)] shadow-xl border border-[var(--border-glass)] transition-all duration-500 hover:shadow-[var(--shadow-premium)] hover:-translate-y-1"
+                className="p-8 rounded-[var(--radius-3xl)] bg-[var(--bg-elevated)] shadow-xl border border-[var(--border-glass)] hover:shadow-[var(--shadow-premium)]/80 hover:-translate-y-0.5"
               >
                 <div className="text-4xl sm:text-5xl font-black text-[var(--text-primary)] mb-3 tracking-tighter flex items-baseline gap-1">
                   {stat.value}
@@ -67,12 +67,12 @@ export default function WhyChooseUs() {
                 index % 2 !== 0 ? "lg:translate-x-8" : ""
               }`}
             >
-              <div className="relative p-10 sm:p-12 rounded-[var(--radius-4xl)] bg-[var(--bg-base)] border border-[var(--border-glass)] transition-all duration-700 hover:border-[var(--accent)]/40 hover:shadow-2xl overflow-hidden shadow-sm hover:bg-[var(--bg-elevated)]">
+              <div className="relative p-10 sm:p-12 rounded-[var(--radius-4xl)] bg-[var(--bg-base)] border border-[var(--border-glass)] hover:border-[var(--accent)]/25 hover:shadow-xl overflow-hidden shadow-sm hover:bg-[var(--bg-elevated)]">
                 {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100" />
                 
                 <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-[var(--bg-accent)] text-[var(--accent)] flex items-center justify-center mb-8 border border-[var(--border-glass)] group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-[var(--bg-accent)] text-[var(--accent)] flex items-center justify-center mb-8 border border-[var(--border-glass)] group-hover:scale-[1.03] shadow-lg">
                     {reason.icon}
                   </div>
                   
@@ -85,7 +85,7 @@ export default function WhyChooseUs() {
                 </div>
 
                 {/* Number indicator */}
-                <div className="absolute top-8 right-10 text-6xl font-black text-[var(--text-primary)] opacity-[0.03] select-none group-hover:opacity-[0.07] transition-opacity">
+                <div className="absolute top-8 right-10 text-6xl font-black text-[var(--text-primary)] opacity-[0.03] select-none group-hover:opacity-[0.06]">
                   0{index + 1}
                 </div>
               </div>

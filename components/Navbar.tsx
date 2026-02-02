@@ -160,7 +160,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                     opacity: isMenuOpen ? 1 : 0
                   }}
                 >
-                  <span className="inline-block group-hover:translate-x-4 transition-transform duration-300">
+                  <span className="inline-block group-hover:translate-x-2">
                     {link.label}
                   </span>
                 </a>

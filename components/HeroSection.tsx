@@ -92,17 +92,17 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
           <div className="hero-entrance-item flex flex-col sm:flex-row items-center lg:items-start gap-6 mb-6" style={{ "--hero-delay": "480ms" } as React.CSSProperties}>
             <button
                onClick={onOpenModal}
-               className="w-full sm:w-auto group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(250,204,21,0.25)] hover:scale-105 active:scale-95"
+               className="w-full sm:w-auto group relative px-12 py-6 bg-[var(--accent)] text-black font-black text-xs uppercase tracking-[.25em] rounded-full overflow-hidden shadow-2xl hover:shadow-[0_0_28px_rgba(250,204,21,0.2)] hover:scale-[1.02] active:scale-[0.99]"
             >
-              <div className="absolute inset-0 bg-[var(--surface-white)] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-[var(--surface-white)] translate-y-full group-hover:translate-y-0" />
               <span className="relative z-10">{t.common.cta_primary}</span>
             </button>
             <a
               href="#servicii"
-              className="w-full sm:w-auto px-10 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] font-black text-xs uppercase tracking-widest rounded-full hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/30 transition-all duration-300 text-center flex items-center justify-center gap-3 group"
+              className="w-full sm:w-auto px-10 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] font-black text-xs uppercase tracking-widest rounded-full hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/25 text-center flex items-center justify-center gap-3 group"
             >
               {t.nav.services}
-              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform group-hover:translate-y-1" stroke="currentColor" strokeWidth="3">
+              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 group-hover:translate-y-0.5" stroke="currentColor" strokeWidth="3">
                 <path d="M19 14l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
@@ -149,7 +149,7 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
       {/* 7. Scroll guide */}
       <a
         href="#servicii"
-        className="hero-entrance-item absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40 hover:opacity-70 transition-opacity"
+        className="hero-entrance-item absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40 hover:opacity-60"
         aria-label={t.nav.services}
         style={{ "--hero-delay": "820ms" } as React.CSSProperties}
       >

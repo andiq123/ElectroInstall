@@ -29,14 +29,14 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
 
   return (
     <article
-      className={`service-card relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/40 hover:shadow-[0_0_30px_rgba(250,204,21,0.05)] hover:-translate-y-1 transition-[transform,border-color,box-shadow] duration-200 ease-out ${
+      className={`service-card relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/25 hover:shadow-[0_0_20px_rgba(250,204,21,0.04)] hover:-translate-y-0.5 ${
         isEmergency ? "lg:col-span-8" : "lg:col-span-4"
       }`}
       style={{ "--card-delay": `${index * 100}ms` } as React.CSSProperties}
     >
       {/* Visual Header */}
       <div className="flex items-start justify-between mb-8 relative z-10">
-        <div className="w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)] group-hover:scale-105 transition-transform duration-200 ease-out">
+        <div className="service-card-icon w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)] group-hover:scale-[1.03]">
           {Icon}
         </div>
         {isEmergency && (
@@ -161,7 +161,7 @@ export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
 
       {/* High-Impact Contact Hook */}
       <div className="mt-32 relative group">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--accent)]/30 to-[var(--info)]/20 rounded-[var(--radius-3xl)] blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--accent)]/30 to-[var(--info)]/20 rounded-[var(--radius-3xl)] blur opacity-25 group-hover:opacity-35"></div>
         
         <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-3xl)] p-12 sm:p-20 overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--accent)]/[0.05] rounded-full blur-[100px] -mr-48 -mt-48" />
@@ -183,7 +183,7 @@ export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
             <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
               <a 
                 href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-                className="px-12 py-6 bg-[var(--accent)] text-black rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:scale-105 transition-all flex items-center justify-center gap-3 active:scale-95"
+                className="px-12 py-6 bg-[var(--accent)] text-black rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white)] hover:shadow-[0_0_24px_rgba(255,255,255,0.15)] hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-[0.99]"
               >
                 <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5">
                   <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
@@ -192,7 +192,7 @@ export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
               </a>
               <button
                 onClick={onOpenModal}
-                className="px-12 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/30 transition-all active:scale-95"
+                className="px-12 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/25 active:scale-[0.99]"
               >
                 {t.common.cta_rapid}
               </button>

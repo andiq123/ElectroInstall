@@ -64,7 +64,7 @@ export default function FAQSection() {
             return (
               <div
                 key={index}
-                className={`group relative rounded-[var(--radius-3xl)] border transition-all duration-700 ${
+                className={`group relative rounded-[var(--radius-3xl)] border  ${
                   isOpen 
                   ? "border-[var(--accent)]/30 bg-[var(--bg-elevated)] shadow-xl" 
                   : "border-[var(--border-glass)] bg-[var(--bg-base)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-strong)] shadow-sm"
@@ -78,13 +78,13 @@ export default function FAQSection() {
                   <span className={`text-xl sm:text-3xl font-black tracking-tighter leading-tight transition-colors duration-500 ${isOpen ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
                     {item.question}
                   </span>
-                  <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border border-[var(--border-glass)] flex items-center justify-center transition-all duration-700 ${isOpen ? "rotate-[225deg] bg-[var(--accent)] text-black" : "bg-[var(--bg-accent)] text-[var(--accent)] group-hover:scale-110 group-hover:bg-[var(--accent)] group-hover:text-black"}`}>
+                  <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border border-[var(--border-glass)] flex items-center justify-center  ${isOpen ? "rotate-[225deg] bg-[var(--accent)] text-black" : "bg-[var(--bg-accent)] text-[var(--accent)] group-hover:scale-[1.03] group-hover:bg-[var(--accent)] group-hover:text-black"}`}>
                     <PlusIcon />
                   </div>
                 </button>
                 
                 <div 
-                  className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                  className={`overflow-hidden  ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
                 >
                   <div className="p-8 pt-0">
                     <div className="h-px w-full bg-[var(--border-glass)] mb-8" />

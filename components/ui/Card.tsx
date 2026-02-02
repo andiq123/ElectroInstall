@@ -65,7 +65,7 @@ export default function Card({
       bg-[var(--bg-elevated)]
       border border-[var(--border-glass)]
       shadow-lg shadow-black/20
-      ${hoverEffect ? 'hover:shadow-xl hover:shadow-[var(--shadow-accent)] hover:-translate-y-1' : ''}
+      ${hoverEffect ? 'hover:shadow-xl hover:shadow-[var(--shadow-accent)]/50 hover:-translate-y-0.5' : ''}
     `,
     gradient: `
       ${gradient || 'bg-[var(--gradient-power)]'}
@@ -77,7 +77,7 @@ export default function Card({
       bg-[var(--bg-elevated)]
       border border-[var(--border-glass)]
       cursor-pointer
-      ${hoverEffect ? 'hover:border-[var(--accent)]/50 hover:bg-[var(--accent)]/5 hover:-translate-y-1' : ''}
+      ${hoverEffect ? 'hover:border-[var(--accent)]/30 hover:bg-[var(--accent)]/5 hover:-translate-y-0.5' : ''}
     `,
 
   };

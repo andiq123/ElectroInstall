@@ -50,7 +50,7 @@ export default function ServiciiChisinau() {
               </p>
               <a 
                 href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-                className="inline-flex items-center px-10 py-4 bg-[var(--accent)] text-black rounded-full font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform"
+                className="inline-flex items-center px-10 py-4 bg-[var(--accent)] text-black rounded-full font-black uppercase tracking-widest text-xs hover:scale-[1.02]"
               >
                 {t.common.call_now} {BUSINESS_INFO.phone}
               </a>

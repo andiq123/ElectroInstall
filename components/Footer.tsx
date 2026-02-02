@@ -69,7 +69,7 @@ export default function Footer() {
             
             <div className="space-y-8">
               <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`} className="group flex items-center gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-all">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] group-hover:scale-[1.03]">
                   <PhoneIcon />
                 </div>
                 <div>
@@ -89,7 +89,7 @@ export default function Footer() {
               </div>
 
               <a href={`mailto:${BUSINESS_INFO.email}`} className="group flex items-center gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-all">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] group-hover:scale-[1.03]">
                   <MailIcon />
                 </div>
                 <div>

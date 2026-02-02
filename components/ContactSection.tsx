@@ -32,9 +32,9 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
         {/* Phone Hub */}
         <a
           href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/50 text-center overflow-hidden"
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:shadow-[var(--accent)]/10 hover:border-[var(--accent)]/30 text-center overflow-hidden"
         >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--accent)] text-black shadow-md group-hover:scale-110 transition-transform">
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--accent)] text-black shadow-md group-hover:scale-[1.03]">
              <PhoneIcon size="lg" />
           </div>
           
@@ -51,9 +51,9 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
 
         {/* Location Hub */}
         <div 
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/30 text-center overflow-hidden"
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:border-[var(--accent)]/25 text-center overflow-hidden"
         >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-accent)] group-hover:scale-110 transition-all">
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-accent)] group-hover:scale-[1.03]">
              <LocationIcon size="lg" />
           </div>
           
@@ -71,9 +71,9 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
         {/* Email Hub - Now triggers modal */}
         <button
           onClick={onOpenModal}
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] transition-all duration-500 hover:shadow-2xl hover:border-[var(--accent)]/50 text-center overflow-hidden w-full"
+          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:shadow-[var(--accent)]/10 hover:border-[var(--accent)]/30 text-center overflow-hidden w-full"
         >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-white shadow-md group-hover:scale-110 transition-transform">
+          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-white shadow-md group-hover:scale-[1.03]">
              <MailIcon size="lg" />
           </div>
           
