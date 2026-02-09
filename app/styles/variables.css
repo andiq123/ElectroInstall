@@ -68,8 +68,21 @@
   --border-subtle: var(--border-glass);
   --glass-border: var(--border-glass);
   --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --electric-glow-primary: 0 0 24px -4px rgba(250, 204, 21, 0.15);
   --shadow-accent-sm: 0 0 20px -4px rgba(250, 204, 21, 0.12);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+  --border-accent: rgba(250, 204, 21, 0.35);
+  --radius-md: 0.5rem;
+  --glass-cobalt-bg: rgba(59, 130, 246, 0.06);
+  --glass-cobalt-border: rgba(59, 130, 246, 0.2);
+  --cat-emergency: var(--danger);
+  --cat-installation: var(--accent);
+  --cat-appliances: var(--info);
+  --cat-repair: var(--success);
+  --cat-panels: #a78bfa;
+  --cat-wiring: var(--info);
 }
 
 /* --- Accessibility Utilities --- */
