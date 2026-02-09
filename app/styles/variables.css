@@ -8,11 +8,12 @@
   --bg-accent: #0f1115;      /* Subtle hover/active layer */
   
   /* Text Palette - Extreme Contrast for Accessibility */
-  --text-main: #ffffff;      /* Primary headings and content */
-  --text-primary: #ffffff;   /* Alias for main */
-  --text-secondary: #a1a1aa; /* Secondary info (Zinc 400) */
-  --text-muted: #71717a;     /* Supporting info (Zinc 500) */
-  --text-inverted: #000000;  /* For buttons on light backgrounds */
+  --text-main: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-tertiary: #52525b;
+  --text-inverted: #000000;
   
   /* Accent: Solar Gold - The energy source */
   --accent: #facc15;        /* High-visibility yellow (Yellow 400) */
@@ -25,7 +26,9 @@
   /* Surface & Border System */
   --border-glass: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.15);
+  --border-default: rgba(255, 255, 255, 0.12);
   --glass-bg: rgba(255, 255, 255, 0.03);
+  --bg-inset: #050505;
   --glass-highlight: rgba(255, 255, 255, 0.05);
   
   /* Shadows & Depth */
@@ -75,8 +78,6 @@
   --shadow-lg: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
   --border-accent: rgba(250, 204, 21, 0.35);
   --radius-md: 0.5rem;
-  --glass-cobalt-bg: rgba(59, 130, 246, 0.06);
-  --glass-cobalt-border: rgba(59, 130, 246, 0.2);
   --cat-emergency: var(--danger);
   --cat-installation: var(--accent);
   --cat-appliances: var(--info);
