@@ -22,73 +22,50 @@ export default function WhyChooseUs() {
 
   return (
     <Section id="despre" bgType="wash-slate">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 sm:gap-32 items-start relative box-border">
-        {/* Decorative background element for Why section */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[var(--accent)]/[0.03] blur-[120px] rounded-full pointer-events-none" />
-        
-        {/* Content Column - Sticky on Desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
         <div className="lg:sticky lg:top-32">
           <SectionHeader 
             title={
               <>
                 {t.why_us.title_part1} <br />
-                <span className="text-gradient not-italic">{t.why_us.title_part2}</span>
+                <span className="text-[var(--accent)]">{t.why_us.title_part2}</span>
               </>
             }
             subtitle={t.why_us.subtitle}
-            className="mb-12"
+            className="mb-10"
           />
-
-          {/* Stats Vertical Grid */}
-          <div className="grid grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 gap-4">
             {translatedStats.map((stat) => (
               <div 
                 key={stat.label} 
-                className="p-8 rounded-[var(--radius-3xl)] bg-[var(--bg-elevated)] shadow-xl border border-[var(--border-glass)] hover:shadow-[var(--shadow-premium)]/80 hover:-translate-y-0.5"
+                className="p-6 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)]"
               >
-                <div className="text-4xl sm:text-5xl font-black text-[var(--text-primary)] mb-3 tracking-tighter flex items-baseline gap-1">
+                <div className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] mb-1 flex items-baseline gap-1">
                   {stat.value}
-                  <span className="text-xl sm:text-2xl text-[var(--accent)] font-bold">{stat.suffix}</span>
+                  <span className="text-lg text-[var(--accent)] font-semibold">{stat.suffix}</span>
                 </div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
+                <p className="text-xs font-medium text-[var(--text-muted)]">
                   {stat.label}
                 </p>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Reasons Column - Creative Floating Cards */}
-        <div className="space-y-6 relative">
+        <div className="space-y-4">
           {translatedReasons.map((reason, index) => (
             <div 
               key={reason.title} 
-              className={`group why-card ${
-                index % 2 !== 0 ? "lg:translate-x-8" : ""
-              }`}
+              className={`p-6 sm:p-8 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] hover:border-[var(--accent)]/20 transition-colors ${index % 2 !== 0 ? "lg:ml-6" : ""}`}
             >
-              <div className="relative p-10 sm:p-12 rounded-[var(--radius-4xl)] bg-[var(--bg-base)] border border-[var(--border-glass)] hover:border-[var(--accent)]/25 hover:shadow-xl overflow-hidden shadow-sm hover:bg-[var(--bg-elevated)]">
-                {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100" />
-                
-                <div className="relative z-10">
-                  <div className="w-14 h-14 rounded-2xl bg-[var(--bg-accent)] text-[var(--accent)] flex items-center justify-center mb-8 border border-[var(--border-glass)] group-hover:scale-[1.03] shadow-lg">
-                    {reason.icon}
-                  </div>
-                  
-                  <h3 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] mb-4 tracking-tight group-hover:text-[var(--accent)] transition-colors italic uppercase">
-                    {reason.title}
-                  </h3>
-                  <p className="text-lg text-[var(--text-secondary)] leading-relaxed font-normal">
-                    {reason.description}
-                  </p>
-                </div>
-
-                {/* Number indicator */}
-                <div className="absolute top-8 right-10 text-6xl font-black text-[var(--text-primary)] opacity-[0.03] select-none group-hover:opacity-[0.06]">
-                  0{index + 1}
-                </div>
+              <div className="w-12 h-12 rounded-xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] mb-5">
+                {reason.icon}
               </div>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3">
+                {reason.title}
+              </h3>
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+                {reason.description}
+              </p>
             </div>
           ))}
         </div>

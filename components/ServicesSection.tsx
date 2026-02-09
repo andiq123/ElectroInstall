@@ -29,44 +29,38 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
 
   return (
     <article
-      className={`service-card relative group bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-2xl)] p-8 overflow-hidden flex flex-col hover:border-[var(--accent)]/25 hover:shadow-[0_0_20px_rgba(250,204,21,0.04)] hover:-translate-y-0.5 ${
+      className={`service-card relative bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-2xl p-6 flex flex-col hover:border-[var(--accent)]/20 ${
         isEmergency ? "lg:col-span-8" : "lg:col-span-4"
       }`}
-      style={{ "--card-delay": `${index * 100}ms` } as React.CSSProperties}
+      style={{ "--card-delay": `${index * 80}ms` } as React.CSSProperties}
     >
-      {/* Visual Header */}
-      <div className="flex items-start justify-between mb-8 relative z-10">
-        <div className="service-card-icon w-16 h-16 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] shadow-xl group-hover:shadow-[var(--shadow-accent-sm)] group-hover:scale-[1.03]">
+      <div className="flex items-start justify-between mb-6">
+        <div className="service-card-icon w-14 h-14 rounded-xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)]">
           {Icon}
         </div>
         {isEmergency && (
-          <div className="px-4 py-1.5 bg-[var(--danger)] text-[var(--surface-white)] rounded-full text-[10px] font-black uppercase tracking-widest animate-pulse shadow-lg flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--surface-white)] animate-ping" />
+          <span className="px-3 py-1 bg-[var(--danger)] text-[var(--surface-white)] rounded-full text-xs font-semibold">
             {t.services.emergency_badge}
-          </div>
+          </span>
         )}
       </div>
-
-      {/* Content */}
-      <div className="relative z-10 flex-grow">
-        <h3 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight mb-4 uppercase italic">
+      <div className="flex-grow">
+        <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3">
           {category.title}
         </h3>
-        <p className="text-[var(--text-secondary)] font-medium leading-relaxed mb-6 max-w-sm">
+        <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-5">
           {category.subtitle}
         </p>
-
-        {/* Best-for use cases */}
         {useCases.length > 0 && (
-          <div className="mb-8">
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[var(--accent)] mb-3 opacity-90">
+          <div className="mb-5">
+            <p className="text-xs font-medium text-[var(--accent)] mb-2">
               {t.services.best_for_label}
             </p>
             <div className="flex flex-wrap gap-2">
               {useCases.map((uc) => (
                 <span
                   key={uc}
-                  className="px-3 py-1.5 rounded-lg bg-[var(--bg-base)] border border-[var(--border-glass)] text-[11px] font-bold text-[var(--text-secondary)]"
+                  className="px-2.5 py-1 rounded-lg bg-[var(--bg-base)] border border-[var(--border-glass)] text-xs text-[var(--text-secondary)]"
                 >
                   {uc}
                 </span>
@@ -74,13 +68,11 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
             </div>
           </div>
         )}
-
-        {/* Per-card CTAs */}
-        <div className="flex flex-wrap gap-3 mt-auto">
+        <div className="flex flex-wrap gap-2 mt-auto">
           {isEmergency ? (
             <a
               href={phoneHref}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--danger)] text-[var(--surface-white)] rounded-xl text-xs font-black uppercase tracking-wider hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-[var(--danger)] text-[var(--surface-white)] rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2.5">
                 <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
@@ -92,13 +84,13 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
               <button
                 type="button"
                 onClick={onOpenModal}
-                className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--accent)]/15 border border-[var(--accent)]/30 text-[var(--accent)] rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[var(--accent)] hover:text-black transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[var(--accent)]/10 border border-[var(--accent)]/25 text-[var(--accent)] rounded-lg text-sm font-medium hover:bg-[var(--accent)] hover:text-black transition-colors"
               >
                 {t.common.cta_rapid}
               </button>
               <a
                 href={phoneHref}
-                className="inline-flex items-center gap-2 px-5 py-3 border border-[var(--border-strong)] text-[var(--text-secondary)] rounded-xl text-xs font-bold uppercase tracking-wider hover:border-[var(--accent)]/40 hover:text-[var(--accent)] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 border border-[var(--border-glass)] text-[var(--text-secondary)] rounded-lg text-sm font-medium hover:border-[var(--accent)]/30 hover:text-[var(--accent)] transition-colors"
               >
                 <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2.5">
                   <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
@@ -109,8 +101,6 @@ function ServiceCard({ category, index, onOpenModal }: ServiceCardProps) {
           )}
         </div>
       </div>
-
-      <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-[var(--accent)]/[0.05] blur-3xl rounded-full group-hover:bg-[var(--accent)]/[0.1] transition-colors duration-500" />
     </article>
   );
 }
@@ -159,45 +149,33 @@ export default function ServicesSection({ onOpenModal }: ServicesSectionProps) {
         ))}
       </div>
 
-      {/* High-Impact Contact Hook */}
-      <div className="mt-32 relative group">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--accent)]/30 to-[var(--info)]/20 rounded-[var(--radius-3xl)] blur opacity-25 group-hover:opacity-35"></div>
-        
-        <div className="relative bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-[var(--radius-3xl)] p-12 sm:p-20 overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--accent)]/[0.05] rounded-full blur-[100px] -mr-48 -mt-48" />
-          
-          <div className="relative z-10 flex flex-col items-center text-center">
-            <div className="w-20 h-20 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] mb-10 shadow-xl">
-              <VoltageSymbol className="w-10 h-10" />
-            </div>
-            
-            <h3 className="text-3xl sm:text-6xl font-black text-[var(--text-primary)] mb-8 uppercase italic tracking-tighter leading-tight">
-              {t.services.hook_title_part1} <br />
-              <span className="text-[var(--accent)] not-italic">{t.services.hook_title_part2}</span>
-            </h3>
-            
-            <p className="text-lg sm:text-xl text-[var(--text-secondary)] mb-14 max-w-2xl font-medium leading-relaxed">
-              {t.services.hook_subtitle}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
-              <a 
-                href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-                className="px-12 py-6 bg-[var(--accent)] text-black rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white)] hover:shadow-[0_0_24px_rgba(255,255,255,0.15)] hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-[0.99]"
-              >
-                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {t.common.phone}
-              </a>
-              <button
-                onClick={onOpenModal}
-                className="px-12 py-6 bg-[var(--surface-white-soft)] border border-[var(--border-strong)] text-[var(--surface-white)] rounded-full font-black uppercase tracking-[0.2em] text-xs hover:bg-[var(--surface-white-strong)] hover:border-[var(--accent)]/25 active:scale-[0.99]"
-              >
-                {t.common.cta_rapid}
-              </button>
-            </div>
-          </div>
+      <div className="mt-20 bg-[var(--bg-elevated)] border border-[var(--border-glass)] rounded-2xl p-10 sm:p-14 text-center">
+        <div className="w-14 h-14 rounded-xl bg-[var(--bg-base)] border border-[var(--border-glass)] flex items-center justify-center text-[var(--accent)] mx-auto mb-6">
+          <VoltageSymbol className="w-7 h-7" />
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-4">
+          {t.services.hook_title_part1}{" "}
+          <span className="text-[var(--accent)]">{t.services.hook_title_part2}</span>
+        </h3>
+        <p className="text-[var(--text-secondary)] mb-10 max-w-xl mx-auto">
+          {t.services.hook_subtitle}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[var(--accent)] text-black rounded-full font-semibold text-sm hover:opacity-95 transition-opacity"
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth="2.5">
+              <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {t.common.phone}
+          </a>
+          <button
+            onClick={onOpenModal}
+            className="px-8 py-4 bg-[var(--bg-base)] border border-[var(--border-glass)] text-[var(--text-primary)] rounded-full font-medium text-sm hover:border-[var(--accent)]/30 transition-colors"
+          >
+            {t.common.cta_rapid}
+          </button>
         </div>
       </div>
     </Section>

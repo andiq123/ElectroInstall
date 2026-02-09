@@ -1,6 +1,6 @@
 "use client";
 
-import { BUSINESS_INFO } from "@/lib/constants";
+import { BUSINESS_INFO, SHOW_EMAIL } from "@/lib/constants";
 import { PhoneIcon, LocationIcon, MailIcon } from "./ui/Icons";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -20,7 +20,7 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
           title={
             <>
               {t.contact.title_part1} <br />
-              <span className="text-gradient not-italic">{t.contact.title_part2}</span>
+              <span className="text-[var(--accent)]">{t.contact.title_part2}</span>
             </>
           }
           subtitle={t.contact.subtitle}
@@ -32,61 +32,38 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
         {/* Phone Hub */}
         <a
           href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:shadow-[var(--accent)]/10 hover:border-[var(--accent)]/30 text-center overflow-hidden"
+          className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:border-[var(--accent)]/25 text-center transition-colors"
         >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--accent)] text-black shadow-md group-hover:scale-[1.03]">
-             <PhoneIcon size="lg" />
+          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center bg-[var(--accent)] text-black">
+            <PhoneIcon size="lg" />
           </div>
-          
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
-            {t.common.phone_personal}
-          </h3>
-          <p className="text-xl sm:text-2xl font-black text-[var(--text-primary)] mb-4 tracking-tighter">
-            {BUSINESS_INFO.phone}
-          </p>
-          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--accent)] border-b border-[var(--accent)]/30 pb-1 hover:border-[var(--accent)] transition-all">
-            {t.common.call_now}
-          </span>
+          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.phone_personal}</p>
+          <p className="text-lg font-semibold text-[var(--text-primary)] mb-3">{BUSINESS_INFO.phone}</p>
+          <span className="text-sm font-medium text-[var(--accent)]">{t.common.call_now}</span>
         </a>
 
-        {/* Location Hub */}
-        <div 
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:border-[var(--accent)]/25 text-center overflow-hidden"
-        >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-accent)] group-hover:scale-[1.03]">
-             <LocationIcon size="lg" />
+        <div className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] text-center">
+          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-base)]">
+            <LocationIcon size="lg" />
           </div>
-          
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
-            {t.common.location_central}
-          </h3>
-          <p className="text-xl sm:text-2xl font-black text-[var(--text-primary)] mb-4 tracking-tighter">
-            {BUSINESS_INFO.location}
-          </p>
-          <span className="text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-[0.2em] opacity-40">
-            {t.common.chisinau_suburbs}
-          </span>
+          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.location_central}</p>
+          <p className="text-lg font-semibold text-[var(--text-primary)]">{BUSINESS_INFO.location}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-2">{t.common.chisinau_suburbs}</p>
         </div>
 
-        {/* Email Hub - Now triggers modal */}
+        {SHOW_EMAIL && (
         <button
           onClick={onOpenModal}
-          className="group relative p-8 sm:p-10 rounded-[var(--radius-3xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:shadow-xl hover:shadow-[var(--accent)]/10 hover:border-[var(--accent)]/30 text-center overflow-hidden w-full"
+          className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:border-[var(--accent)]/25 text-center w-full transition-colors"
         >
-          <div className="w-14 h-14 mx-auto mb-8 rounded-2xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-white shadow-md group-hover:scale-[1.03]">
-             <MailIcon size="lg" />
+          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-[var(--text-primary)]">
+            <MailIcon size="lg" />
           </div>
-          
-          <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-tertiary)] mb-2">
-            {t.common.email_personal}
-          </h3>
-          <p className="text-lg font-black text-[var(--text-primary)] mb-6 tracking-tight break-all">
-            {BUSINESS_INFO.email}
-          </p>
-          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--accent)] border-b border-[var(--accent)]/30 pb-1 hover:border-[var(--accent)] transition-all">
-            {t.common.send_message}
-          </span>
+          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.email_personal}</p>
+          <p className="text-lg font-semibold text-[var(--text-primary)] mb-3 break-all">{BUSINESS_INFO.email}</p>
+          <span className="text-sm font-medium text-[var(--accent)]">{t.common.send_message}</span>
         </button>
+      )}
       </div>
 
     </Section>

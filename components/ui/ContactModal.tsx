@@ -1,10 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import { Input, PhoneInput, Textarea } from "./Input";
 import Button from "./Button";
 import { useLanguage } from "@/context/LanguageContext";
 import { BUSINESS_INFO } from "@/lib/constants";
+
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -121,36 +126,25 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-    
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setFormState("error");
+      return;
+    }
     setFormState("submitting");
-    
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, phone, message }),
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        name: name.trim(),
+        phone: phone.trim(),
+        message: message.trim() || "—",
       });
-
-      if (!response.ok) {
-        throw new Error("API call failed");
-      }
-
-      const data = await response.json();
-      console.log("Form submitted success:", data);
       setFormState("success");
-      
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      setTimeout(() => onClose(), 2000);
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error("EmailJS error:", error);
       setFormState("error");
     }
   };

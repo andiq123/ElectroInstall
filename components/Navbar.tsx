@@ -73,33 +73,32 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         <div className="container px-6 sm:px-8 max-w-7xl mx-auto flex items-center justify-between">
           <NavLogo />
 
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="group relative px-2 py-1 text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-primary)] transition-all duration-300"
+                className="group relative px-2 py-1 text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
               >
                 <span className="relative z-10">{link.label}</span>
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[var(--accent)] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[var(--accent)] transition-all duration-200 group-hover:w-full" />
               </a>
             ))}
             
             <LanguageSwitcher />
 
-            <div className="ml-6">
+            <div className="ml-4">
               <button 
                 onClick={onOpenModal}
-                className="relative group px-10 py-4 rounded-full bg-[var(--accent)] text-black font-black uppercase tracking-widest text-[10px] overflow-hidden transition-all duration-300 shadow-lg hover:shadow-[var(--shadow-accent)]"
+                className="px-6 py-3 rounded-full bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-95 transition-opacity"
               >
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative z-10 transition-colors">{t.common.cta_rapid}</span>
+                {t.common.cta_rapid}
               </button>
             </div>
           </div>
 
           <button
-            className="md:hidden group relative w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] shadow-sm transition-all active:scale-90"
+            className="md:hidden w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-glass)]"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Închide meniul" : "Deschide meniul"}
             aria-expanded={isMenuOpen}
@@ -147,36 +146,32 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
               </div>
             </div>
 
-            <nav className="flex flex-col gap-10">
+            <nav className="flex flex-col gap-6">
               {navLinks.map((link, index) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={closeMenu}
-                  className="group block text-5xl font-black italic uppercase tracking-tighter text-[var(--text-primary)] hover:text-[var(--accent)] transition-all"
+                  className="block text-2xl font-semibold text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
                   style={{ 
-                    transitionDelay: `${index * 50}ms`,
-                    transform: isMenuOpen ? 'translateX(0)' : 'translateX(50px)',
+                    transitionDelay: `${index * 40}ms`,
+                    transform: isMenuOpen ? 'translateX(0)' : 'translateX(24px)',
                     opacity: isMenuOpen ? 1 : 0
                   }}
                 >
-                  <span className="inline-block group-hover:translate-x-2">
-                    {link.label}
-                  </span>
+                  {link.label}
                 </a>
               ))}
             </nav>
 
-            <div className="mt-auto pt-10 border-t border-[var(--border-glass)]">
+            <div className="mt-auto pt-8 border-t border-[var(--border-glass)]">
               <button
                 onClick={() => { closeMenu(); onOpenModal?.(); }}
-                className="w-full py-6 rounded-3xl bg-[var(--accent)] text-black font-black uppercase tracking-widest text-sm hover:bg-white transition-all shadow-xl"
+                className="w-full py-4 rounded-xl bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-95 transition-opacity"
               >
                 {t.common.cta_primary}
               </button>
-              
-              <div className="mt-8 flex items-center gap-4 text-xs font-black uppercase tracking-widest text-[var(--text-secondary)]">
-                <div className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
+              <div className="mt-6 text-sm text-[var(--text-muted)]">
                 {t.nav.appointments}: {BUSINESS_INFO.phone}
               </div>
             </div>

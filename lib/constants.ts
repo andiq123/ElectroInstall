@@ -27,10 +27,11 @@ export const HERO_CONTENT = {
   },
 } as const;
 
-// Business Information
+export const SHOW_EMAIL = false;
+
 export const BUSINESS_INFO = {
   name: 'ElectroInstall (Radu)',
-  phone: '+373 061110314',
+  phone: '+373 067596246',
   location: 'Chișinău, Moldova',
   email: 'radu@electroinstall.md',
 } as const;
@@ -136,19 +137,25 @@ export const FOOTER_LINKS = [
   { href: '#contact', label: 'Contact' },
 ] as const;
 
-// SEO Keywords (Romanian & Russian)
 export const SEO_KEYWORDS = {
   ro: [
-    'electrician Chișinău',
-    'reparații electrice Radu',
-    'montaj prize Chișinău',
-    'instalare tablou electric Moldova',
     'electrician bun Chișinău',
-    'conectare plită inducție',
+    'electrician Chișinău recomandări',
+    'electricieni autorizați ANRE Chișinău',
+    'electrician Chișinău urgent 24/7',
+    'electrician Chișinău 2025',
+    'electrician Chișinău 2026',
+    'electrician Chișinău',
+    'reparații electrice',
+    'montaj prize Chișinău',
+    'instalare tablou electric',
+    'intervenție rapidă electrician',
     'instalații electrice casnice',
   ],
   ru: [
     'электрик Кишинёв',
+    'электрик Кишинев отзывы',
+    'услуги электрика Кишинев',
     'электромонтаж Кишинев',
     'ремонт электрики',
     'установка розеток',

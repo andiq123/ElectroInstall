@@ -27,9 +27,9 @@ export interface ReasonItem {
 export const REASONS: ReasonItem[] = [
   {
     icon: <CertificateIcon className="w-8 h-8" />,
-    title: "Electrician Autorizat",
+    title: "Electrician Autorizat ANRE",
     description:
-      "Lucrăm responsabil, cu respectarea normelor tehnice. Oferim garanție pentru fiecare intervenție.",
+      "Lucrăm conform normelor tehnice și cu autorizație ANRE. Oferim garanție pentru fiecare intervenție.",
     color: "var(--color-success)",
   },
   {
@@ -138,5 +138,20 @@ export const FAQ_ITEMS: FAQItem[] = [
     question: "Ce materiale folosiți?",
     answer:
       "Prefer să lucrez cu mărci de încredere (Schneider, Legrand, Viko). Putem folosi materialele tale sau le pot cumpăra eu, oferindu-ți bonul fiscal.",
+  },
+  {
+    question: "Sunteți electrician autorizat ANRE?",
+    answer:
+      "Da. Lucrez conform normelor tehnice și am autorizație ANRE. Pentru lucrări care necesită acte oficiale sau garanție pe termen lung, asta contează.",
+  },
+  {
+    question: "Veniți și la urgențe, inclusiv noaptea?",
+    answer:
+      "Da. Pentru probleme care nu pot aștepta (până de curent, scurtcircuit, tablou care dă probleme) sunt disponibil 24/7. Sună-mă direct.",
+  },
+  {
+    question: "De ce să aleg un electrician cu recomandări?",
+    answer:
+      "Recomandările arată că lucrarea a fost făcută corect și că oamenii au avut încredere. Ofer transparență la preț, garanție și răspund rapid la apeluri.",
   },
 ];

@@ -3,155 +3,125 @@
 import { useEffect, useState, useRef } from "react";
 
 export default function ProfessionalHeroVisual() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - left - width / 2) / 25;
-      const y = (e.clientY - top - height / 2) / 25;
-      setMousePos({ x, y });
+    const onMove = (e: MouseEvent) => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const x = (e.clientX - cx) / 80;
+      const y = (e.clientY - cy) / 80;
+      setPos({ x, y });
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full h-full flex items-center justify-center p-8 lg:p-12 overflow-visible"
+    <div
+      ref={ref}
+      className="relative w-full h-full flex items-center justify-center p-6 overflow-visible"
     >
-      {/* Glow Backdrop */}
-      <div className="absolute inset-0 bg-[var(--accent)]/5 blur-[120px] rounded-full scale-110" />
-      
-      {/* Main SVG Composition */}
-      <svg 
-        viewBox="0 0 800 800" 
-        className="w-full h-full max-w-[800px] drop-shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
-        fill="none" 
+      <div className="absolute inset-0 bg-[var(--accent)]/[0.04] blur-[80px] rounded-full scale-110 hero-visual-glow" />
+      <svg
+        viewBox="0 0 400 400"
+        className="w-full h-full max-w-[400px] hero-visual-svg"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        style={{
+          transform: `translate(${pos.x}px, ${pos.y}px)`,
+          transition: "transform 0.4s ease-out",
+        }}
       >
-        {/* Intricate Circuit Grid (Background) */}
-        <g className="opacity-[0.03] transition-opacity duration-1000">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <path key={`h-${i}`} d={`M 0 ${i * 80} H 800`} stroke="var(--text-primary)" strokeWidth="1" />
-          ))}
-          {Array.from({ length: 10 }).map((_, i) => (
-            <path key={`v-${i}`} d={`M ${i * 80} 0 V 800`} stroke="var(--text-primary)" strokeWidth="1" />
-          ))}
+        <g className="opacity-[0.08]">
+          <path d="M60 200 H400" stroke="var(--text-primary)" strokeWidth="0.5" />
+          <path d="M60 220 H400" stroke="var(--text-primary)" strokeWidth="0.5" />
+          <path d="M0 100 V400" stroke="var(--text-primary)" strokeWidth="0.5" />
+          <path d="M80 100 V400" stroke="var(--text-primary)" strokeWidth="0.5" />
         </g>
 
-        {/* Dynamic Professional Circuit Traces - Dual Tonal Energy */}
-        <g 
-          className="transition-transform duration-700 ease-out"
-          style={{ transform: `translate(${mousePos.x * -1}px, ${mousePos.y * -1}px)` }}
-        >
-          {/* Main Power Lines - Gold & Cobalt Mix */}
-          <path 
-            d="M50 400 H200 L250 350 H550 L600 400 H750" 
-            stroke="var(--accent)" 
-            strokeWidth="3" 
-            className="opacity-40"
+        <g style={{ transform: "translate(0,0)" }}>
+          <path
+            d="M80 200 H180 L220 160 H320 L360 200"
+            stroke="var(--accent)"
+            strokeWidth="2"
+            className="opacity-35"
           />
-          <path 
-            d="M50 420 H200 L250 470 H550 L600 420 H750" 
-            stroke="var(--accent-cobalt)" 
-            strokeWidth="2" 
-            className="opacity-30"
+          <path
+            d="M80 220 H180 L220 260 H320 L360 220"
+            stroke="var(--accent-cobalt)"
+            strokeWidth="1.5"
+            className="opacity-25"
           />
-
-          {/* Glowing Energy Flow - Dual speed particles */}
-          <circle r="4" fill="var(--accent)" className="shadow-[0_0_15px_var(--accent)]">
-            <animateMotion 
-              path="M50 400 H200 L250 350 H550 L600 400 H750" 
-              dur="2.5s" 
-              repeatCount="indefinite" 
+          <circle cx="180" cy="200" r="6" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="1.5" />
+          <circle cx="320" cy="160" r="6" fill="var(--bg-primary)" stroke="var(--accent-cobalt)" strokeWidth="1.5" />
+          <circle r="3" fill="var(--accent)" className="hero-energy-dot">
+            <animateMotion
+              path="M80 200 H180 L220 160 H320 L360 200"
+              dur="4s"
+              repeatCount="indefinite"
             />
           </circle>
-          <circle r="3" fill="var(--accent-cobalt)" className="shadow-[0_0_10px_var(--accent-cobalt)]">
-            <animateMotion 
-              path="M50 420 H200 L250 470 H550 L600 420 H750" 
-              dur="4s" 
-              begin="1s"
-              repeatCount="indefinite" 
+          <circle r="2" fill="var(--accent-cobalt)" className="opacity-70">
+            <animateMotion
+              path="M80 220 H180 L220 260 H320 L360 220"
+              dur="5.5s"
+              begin="1.2s"
+              repeatCount="indefinite"
             />
           </circle>
-
-          {/* Tech Terminal Nodes with Multi-tonal Glows */}
-          <circle cx="200" cy="400" r="10" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="2" />
-          <circle cx="550" cy="350" r="10" fill="var(--bg-primary)" stroke="var(--accent-cobalt)" strokeWidth="2" />
-          <circle cx="200" cy="400" r="4" fill="var(--accent)" className="animate-pulse" />
-          <circle cx="550" cy="350" r="4" fill="var(--accent-cobalt)" className="animate-pulse" style={{ animationDelay: '1s' }} />
         </g>
 
-        {/* Improved Professional Character Silhouette with Accent Highlights */}
-        <g 
-          className="transition-transform duration-500 ease-out"
-          style={{ transform: `translate(${mousePos.x * 1.5}px, ${mousePos.y * 1.5}px)` }}
-        >
-          {/* Character Glow */}
-          <ellipse cx="400" cy="400" rx="100" ry="150" fill="var(--accent-cobalt)" className="opacity-[0.05] blur-3xl animate-pulse" />
-
-          {/* Detailed Body Stance */}
-          <path 
-            d="M400 270 C440 270 470 290 475 340 L480 440 H320 L325 340 C330 290 360 270 400 270Z" 
-            fill="var(--text-primary)" 
+        <g style={{ transform: `translate(${pos.x * 2}px, ${pos.y * 2}px)`, transition: "transform 0.35s ease-out" }}>
+          <path
+            d="M200 140 C220 140 240 160 245 200 L250 280 H150 L155 200 C160 160 180 140 200 140Z"
+            fill="var(--text-primary)"
+            className="opacity-95"
           />
-          
-          {/* Detailed Tool Belt - Highlighted */}
-          <path d="M320 440 H480 V470 H320 Z" fill="var(--bg-elevated)" />
-          <rect x="330" y="445" width="140" height="2" fill="var(--accent)" className="opacity-50" />
-
-          {/* Professional Work Helmet - Solar Gold Highlight */}
-          <path d="M360 270 C360 235 440 235 440 270" fill="var(--accent)" stroke="var(--accent)" strokeWidth="4" />
-          <path d="M355 270 H445" stroke="var(--accent)" strokeWidth="8" strokeLinecap="round" />
-          
-          {/* Professional Working Arms */}
-          <path 
-            d="M330 350 L240 420 L240 500" 
-            stroke="var(--text-primary)" 
-            strokeWidth="32" 
-            strokeLinecap="round" 
+          <path d="M150 280 H250 V300 H150 Z" fill="var(--bg-elevated)" />
+          <path d="M185 140 C185 120 215 120 215 140" fill="var(--accent)" className="opacity-90" />
+          <path d="M182 140 H218" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" />
+          <path
+            d="M165 180 L120 240 L120 280"
+            stroke="var(--text-primary)"
+            strokeWidth="16"
+            strokeLinecap="round"
             strokeLinejoin="round"
+            className="opacity-95"
           />
-          <path 
-            d="M470 350 L560 420 L560 500" 
-            stroke="var(--text-primary)" 
-            strokeWidth="32" 
-            strokeLinecap="round" 
+          <path
+            d="M235 180 L280 240 L280 280"
+            stroke="var(--text-primary)"
+            strokeWidth="16"
+            strokeLinecap="round"
             strokeLinejoin="round"
+            className="opacity-95"
           />
-
-          {/* Specialized Tools Detail - Energy Charged */}
-          <g transform="translate(240, 500)">
-             <circle r="15" fill="var(--text-primary)" />
-             <path d="M0 0 V60" stroke="var(--accent-cobalt)" strokeWidth="8" strokeLinecap="round" />
-             <path d="M0 60 V70" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" className="animate-pulse" />
+          <circle cx="120" cy="280" r="8" fill="var(--text-primary)" className="opacity-95" />
+          <circle cx="280" cy="280" r="8" fill="var(--text-primary)" className="opacity-95" />
+          <g transform="translate(120, 280)">
+            <circle r="10" fill="var(--text-primary)" className="opacity-95" />
+            <path d="M0 -8 V20" stroke="var(--accent-cobalt)" strokeWidth="4" strokeLinecap="round" className="opacity-60" />
+            <path d="M0 20 V28" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" className="hero-tool-tip" />
           </g>
-          <g transform="translate(560, 500)">
-             <circle r="15" fill="var(--text-primary)" />
-             <path d="M-5 0 L-10 50 M5 0 L10 50" stroke="var(--text-secondary)" strokeWidth="8" strokeLinecap="round" />
+          <g transform="translate(280, 280)">
+            <circle r="10" fill="var(--text-primary)" className="opacity-95" />
+            <path d="M-6 -4 L-8 24 M6 -4 L8 24" stroke="var(--text-secondary)" strokeWidth="5" strokeLinecap="round" className="opacity-70" />
           </g>
-
-          {/* Sturdy Work Boots & Legs */}
-          <path d="M355 465 L330 700" stroke="var(--text-primary)" strokeWidth="40" strokeLinecap="round" />
-          <path d="M445 465 L470 700" stroke="var(--text-primary)" strokeWidth="40" strokeLinecap="round" />
-          {/* Heavy Boots */}
-          <rect x="290" y="700" width="60" height="25" rx="6" fill="var(--bg-base)" />
-          <rect x="450" y="700" width="60" height="25" rx="6" fill="var(--bg-base)" />
         </g>
 
-        {/* Tech Environment Symbols */}
-        <g className="opacity-20 transition-all duration-1000">
-           <path d="M650 150 Q700 150 700 200" stroke="var(--accent)" strokeWidth="1" fill="none" className="animate-pulse" />
-           <rect x="100" y="100" width="30" height="30" rx="4" stroke="var(--text-tertiary)" strokeWidth="1" className="animate-float" />
-        </g>
-
-        {/* Energy Aura */}
-        <ellipse cx="400" cy="400" rx="250" ry="350" stroke="var(--accent)" strokeWidth="0.5" className="opacity-30 animate-pulse" />
+        <ellipse
+          cx="200"
+          cy="200"
+          rx="140"
+          ry="160"
+          stroke="var(--accent)"
+          strokeWidth="0.5"
+          className="opacity-20 hero-aura"
+        />
       </svg>
     </div>
   );

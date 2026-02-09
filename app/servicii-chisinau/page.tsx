@@ -22,6 +22,11 @@ export default function ServiciiChisinau() {
           </header>
 
           <div className="prose prose-invert prose-lg max-w-none text-[var(--text-secondary)] space-y-12">
+            {t.legal.servicii_chisinau.intro && (
+              <p className="text-lg font-medium leading-relaxed text-[var(--text-primary)]">
+                {t.legal.servicii_chisinau.intro}
+              </p>
+            )}
             <section>
               <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight italic">{t.legal.servicii_chisinau.coverage_title}</h2>
               <p className="mt-4 font-medium leading-relaxed">
@@ -33,6 +38,17 @@ export default function ServiciiChisinau() {
                 <span className="text-[var(--text-primary)] font-bold italic"> {t.legal.servicii_chisinau.suburbs}</span>
               </p>
             </section>
+
+            {t.legal.servicii_chisinau.services_list_title && Array.isArray(t.legal.servicii_chisinau.services_list) && (
+              <section>
+                <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight italic mb-6">{t.legal.servicii_chisinau.services_list_title}</h2>
+                <ul className="list-disc pl-6 space-y-2 font-medium leading-relaxed">
+                  {(t.legal.servicii_chisinau.services_list as string[]).map((item: string, i: number) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             <section>
               <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight italic">{t.legal.servicii_chisinau.why_local_title}</h2>

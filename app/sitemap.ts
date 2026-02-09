@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://electroinstall.md";
+  const baseUrl = "https://electro-install.vercel.app";
 
   // Blog posts
   const blogUrls = BLOG_POSTS.map((post) => ({
@@ -13,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 1,
+    },
     {
       url: `${baseUrl}/servicii-chisinau`,
       lastModified: new Date(),

@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+const baseUrl = "https://electro-install.vercel.app";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -7,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "https://electroinstall.md/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

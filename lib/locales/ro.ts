@@ -1,6 +1,6 @@
 export const ro = {
   common: {
-    phone: "+373 061110314",
+    phone: "+373 067596246",
     location: "Chișinău, Moldova",
     email: "radu@electroinstall.md",
     cta_primary: "Solicită Consultanță",
@@ -21,10 +21,10 @@ export const ro = {
     appointments: "Programări Radu",
   },
   hero: {
-    badge: "⚡ Electrician Autorizat: Radu",
+    badge: "⚡ Electrician Autorizat ANRE: Radu",
     status_label: "Transparență • Siguranță • Calitate",
     headline_parts: ["SOLUȚII", "ELECTRICE", "CORECTE"],
-    description: "Reparații și instalații electrice executate cu atenție și responsabilitate. Fără soluții de moment, doar lucrări sigure și durabile pentru locuința ta.",
+    description: "Electrician Chișinău recomandări: reparații și instalații electrice, intervenții rapide, disponibil 24/7. Lucrări sigure și durabile pentru locuința ta.",
   },
   services: {
     badge: "Servicii Electrice",
@@ -53,9 +53,9 @@ export const ro = {
         useCases: ["Plită cu inducție", "Boiler", "Mașină de spălat"],
       },
       emergency: {
-        title: "Asistență Electrică",
-        subtitle: "Intervenții de zi",
-        useCases: ["Până de curent", "Urgență aceeași zi", "Electrician rapid"],
+        title: "Electrician Urgent 24/7",
+        subtitle: "Intervenții rapide, disponibil non-stop",
+        useCases: ["Până de curent", "Urgență aceeași zi", "Electrician rapid 24/7"],
       },
       panels: {
         title: "Automatizări Simple",
@@ -67,7 +67,7 @@ export const ro = {
   why_us: {
     title_part1: "DE CE SĂ LUCRĂM",
     title_part2: "ÎMPREUNĂ?",
-    subtitle: "Sunt Radu, electricianul care pune siguranța pe primul loc. Îmi place să lucrez curat, să explic ce fac și să ofer soluții care durează.",
+    subtitle: "Electrician Chișinău cu recomandări: pun siguranța pe primul loc, lucrez curat, explic ce fac și ofer soluții durabile. Autorizat ANRE, disponibil 24/7 la urgențe.",
     stats: {
       experience: "Experiență",
       cases: "Case Sigure",
@@ -75,8 +75,8 @@ export const ro = {
     },
     reasons: [
       {
-        title: "Electrician Autorizat",
-        description: "Lucrăm responsabil, cu respectarea normelor tehnice. Oferim garanție pentru fiecare intervenție.",
+        title: "Electrician Autorizat ANRE",
+        description: "Lucrăm conform normelor tehnice și cu autorizație ANRE. Oferim garanție pentru fiecare intervenție.",
       },
       {
         title: "Program Flexibil",
@@ -139,12 +139,24 @@ export const ro = {
         question: "Ce materiale folosiți?",
         answer: "Prefer să lucrez cu mărci de încredere (Schneider, Legrand, Viko). Putem folosi materialele tale sau le pot cumpăra eu, oferinduți bonul fiscal.",
       },
+      {
+        question: "Sunteți electrician autorizat ANRE?",
+        answer: "Da. Lucrez conform normelor tehnice și am autorizație ANRE. Pentru lucrări care necesită acte oficiale sau garanție pe termen lung, asta contează.",
+      },
+      {
+        question: "Veniți și la urgențe, inclusiv noaptea?",
+        answer: "Da. Pentru probleme care nu pot aștepta (până de curent, scurtcircuit, tablou care dă probleme) sunt disponibil 24/7. Sună-mă direct.",
+      },
+      {
+        question: "De ce să aleg un electrician cu recomandări?",
+        answer: "Recomandările arată că lucrarea a fost făcută corect și că oamenii au avut încredere. Ofer transparență la preț, garanție și răspund rapid la apeluri.",
+      },
     ]
   },
   contact: {
     title_part1: "HAI SĂ",
     title_part2: "DISCUTĂM",
-    subtitle: "Dacă ai o întrebare sau ai nevoie de o estimare pentru o lucrare, scrie-mi sau sună-mă direct. Sunt Radu și te ajut cu plăcere.",
+    subtitle: "Pentru recomandări sau estimare: scrie-mi sau sună-mă direct. Disponibil pentru intervenții rapide. Sunt Radu, electrician Chișinău.",
   },
   contact_form: {
     title: "SĂ ÎNCEPEM",
@@ -170,6 +182,7 @@ export const ro = {
   footer: {
     about_title: "Cine este Radu?",
     about_text: "Electrician pasionat din Chișinău, dedicat oferirii de servicii sigure și de calitate pentru casa ta.",
+    program: "Luni–Duminică, 24/7 pentru urgențe",
     rights: "Toate drepturile rezervate.",
     privacy: "Politica de Confidențialitate",
     terms: "Termeni și Condiții",
@@ -178,11 +191,26 @@ export const ro = {
     last_update: "Ultima actualizare",
     servicii_chisinau: {
       title_part1: "SERVICII ELECTRICE ÎN",
+      intro: "Electrician Chișinău: lucrări de orice complexitate, calitativ și în termene rezonabile. Lucrez în toate sectoarele, 7 zile din 7, fără zile libere la urgențe.",
       coverage_title: "ACOPERIRE COMPLETĂ",
       coverage_text1: "Prestez servicii electrice în toate sectoarele orașului:",
-      sectors: "Centru, Botanica, Buiucani, Rîșcani și Ciocana.",
+      sectors: "Botanica, Buiucani, Centru, Ciocana și Rîșcani.",
       coverage_text2: "De asemenea, mă deplasez și în",
       suburbs: "suburbiile Chișinăului (Ialoveni, Durlești, Codru, Trușeni etc.)",
+      services_list_title: "ELECTRICIAN CHIȘINĂU – SERVICII",
+      services_list: [
+        "Montaj și înlocuire instalație electrică",
+        "Montaj prize și întrerupătoare",
+        "Montaj lustre, corpuri de iluminat și brațe",
+        "Căutare și remediere defecțiuni",
+        "Ștropare pereți pentru cablaj",
+        "Tablouri electrice și automate",
+        "Protecție și împământare",
+        "Contoare electrice – montaj și conectare",
+        "Pardoseală încălzită electric",
+        "Bandă LED și iluminat decorativ",
+        "Electrician la domiciliu – intervenții rapide",
+      ],
       why_local_title: "DE CE SĂ ALEGI UN ELECTRICIAN LOCAL?",
       why_local_reasons: [
         "Timp de intervenție redus în orice sector.",

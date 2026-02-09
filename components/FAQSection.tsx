@@ -40,18 +40,13 @@ export default function FAQSection() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      {/* Decorative Accents specific to FAQ */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--accent)]/5 blur-[100px] rounded-full" />
-      </div>
-
       <div className="max-w-4xl mx-auto">
         <SectionHeader 
           centered
           title={
             <>
               {t.faq.title_part1} <br />
-              <span className="text-gradient not-italic">{t.faq.title_part2}</span>
+              <span className="text-[var(--accent)]">{t.faq.title_part2}</span>
             </>
           }
           className="mb-16 sm:mb-24"
