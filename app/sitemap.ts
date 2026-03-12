@@ -2,42 +2,51 @@ import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/constants";
 
+const baseUrl = typeof SITE_URL === "string" ? SITE_URL : "https://www.electro-install.xyz";
+
+export const revalidate = 3600;
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const blogPostUrls = BLOG_POSTS.map((post) => ({
-    url: `${SITE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  const now = new Date();
+
+  const blogPostUrls: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => {
+    const date = post.date ? new Date(post.date) : now;
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: isNaN(date.getTime()) ? now : date,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    };
+  });
 
   return [
     {
-      url: SITE_URL,
-      lastModified: new Date(),
+      url: baseUrl,
+      lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 1,
     },
     {
-      url: `${SITE_URL}/blog`,
-      lastModified: new Date(),
+      url: `${baseUrl}/blog`,
+      lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/servicii-chisinau`,
-      lastModified: new Date(),
+      url: `${baseUrl}/servicii-chisinau`,
+      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/politica-confidentialitate`,
-      lastModified: new Date(),
+      url: `${baseUrl}/politica-confidentialitate`,
+      lastModified: now,
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
-      url: `${SITE_URL}/termeni-conditii`,
-      lastModified: new Date(),
+      url: `${baseUrl}/termeni-conditii`,
+      lastModified: now,
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
