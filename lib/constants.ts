@@ -10,6 +10,7 @@ export const CTA_ACCENT_CLASS =
 export const BUSINESS_INFO = {
   name: 'ElectroInstall (Radu)',
   phone: '+373 067596246',
+  phoneDisplay: '067 596 246',
   location: 'Chișinău, Moldova',
   email: 'radu@electroinstall.md',
 } as const;

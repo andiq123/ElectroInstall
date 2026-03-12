@@ -4,6 +4,8 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BUSINESS_INFO, CTA_ACCENT_CLASS, PHONE_HREF } from "@/lib/constants";
+
+const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function ServiciiChisinau() {
@@ -26,6 +28,11 @@ export default function ServiciiChisinau() {
             <h1 className="font-[var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight leading-tight">
               {BUSINESS_INFO.location}
             </h1>
+            <p className="mt-4 text-xl sm:text-2xl font-semibold text-[var(--text-primary)]">
+              <a href={PHONE_HREF} className="hover:text-[var(--accent-dark)] transition-colors" aria-label={t.common.call_now}>
+                Sună <span className="font-bold tracking-tight">{PHONE_DISPLAY}</span>
+              </a>
+            </p>
             {data.intro && (
               <p className="mt-6 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
                 {data.intro}
@@ -114,7 +121,7 @@ export default function ServiciiChisinau() {
               <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2.5}>
                 <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              {t.common.call_now} · {BUSINESS_INFO.phone}
+              {t.common.call_now} · {PHONE_DISPLAY}
             </a>
           </section>
         </div>

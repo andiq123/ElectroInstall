@@ -39,7 +39,7 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
             aria-label={t.common.call_now}
           >
             <PhoneIcon size="sm" />
-            {BUSINESS_INFO.phone}
+            {BUSINESS_INFO.phoneDisplay}
           </a>
         </div>
       </div>

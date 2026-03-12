@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Outfit } from "next/font/google";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, BUSINESS_INFO } from "@/lib/constants";
+
+const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -20,11 +22,11 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Electrician Chișinău | Recomandări | ElectroInstall",
+    default: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall`,
     template: "%s | ElectroInstall",
   },
   description:
-    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7. Montaj tablouri, prize, instalații. Toate sectoarele.",
+    `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. ElectroInstall oferă servicii electrice rapide, preț corect, intervenții 24/7. Montaj tablouri, prize, instalații.`,
   keywords: [
     "electrician bun Chisinau",
     "electrician Chisinau recomandări",
@@ -80,9 +82,9 @@ export const metadata: Metadata = {
     locale: "ro_MD",
     url: SITE_URL,
     siteName: "ElectroInstall",
-    title: "Electrician Chișinău | Recomandări | ElectroInstall | 24/7",
+    title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
     description:
-      "Electrician Chișinău cu recomandări: preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații în toate sectoarele.",
+      `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. Preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații.`,
     images: [
       {
         url: "/og-image.jpg",
@@ -94,9 +96,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Electrician Chișinău | Recomandări | ElectroInstall | 24/7",
+    title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
     description:
-      "Electrician Chișinău cu recomandări: preț corect, intervenții rapide, disponibil 24/7.",
+      `Sună la ${PHONE_DISPLAY}. Electrician Chișinău cu recomandări: preț corect, intervenții rapide, 24/7.`,
     images: ["/og-image.jpg"],
   },
   alternates: {

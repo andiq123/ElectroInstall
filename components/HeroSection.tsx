@@ -5,6 +5,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { ArrowRightIcon } from "@/components/ui/Icons";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
 
+const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
+
 interface HeroSectionProps {
   onOpenModal?: () => void;
 }
@@ -41,8 +43,8 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
       className="relative bg-white border-b border-black/[0.06]"
     >
       <div className="sr-only">
-        <h1>ElectroInstall – Electrician Chișinău. Reparații și instalații electrice.</h1>
-        <p>Preț corect înainte de lucrare. Lucrări conform normelor. Disponibil pentru urgențe 24/7.</p>
+        <h1>Electrician Chișinău – {PHONE_DISPLAY}. ElectroInstall – reparații și instalații electrice.</h1>
+        <p>Sună la {PHONE_DISPLAY}. Preț corect înainte de lucrare. Lucrări conform normelor. Disponibil 24/7.</p>
       </div>
 
       <div className="container-inner py-12 sm:py-16 lg:py-20">
@@ -64,20 +66,27 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
             <p className="text-[1.125rem] text-[var(--text-secondary)] leading-[1.65] max-w-xl mb-8">
               {hero.subhead}
             </p>
-            <button
-              type="button"
-              onClick={onOpenModal}
-              className="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-3.5 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity w-fit"
-            >
-              {hero.cta}
-              <ArrowRightIcon size="sm" />
-            </button>
-            <p className="mt-6 text-[0.8125rem] sm:text-[var(--text-caption)] text-[var(--text-muted)] tracking-[0.02em]">
-              <span className="sr-only">{t.common.call_now}. </span>
+            <div className="flex flex-wrap items-center gap-4 gap-y-2">
+              <button
+                type="button"
+                onClick={onOpenModal}
+                className="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-3.5 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity w-fit"
+              >
+                {hero.cta}
+                <ArrowRightIcon size="sm" />
+              </button>
               <a
                 href={PHONE_HREF}
-                className="text-[var(--text-tertiary)] hover:text-[var(--accent-dark)] transition-colors"
+                className="inline-flex items-center gap-2 min-h-[52px] px-6 py-3.5 rounded-lg text-[1.0625rem] font-semibold text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--border-glass)] hover:border-[var(--accent)] hover:text-[var(--accent-dark)] transition-colors"
+                aria-label={t.common.call_now}
               >
+                <span aria-hidden="true">Sună</span>
+                <span className="font-bold tracking-tight">{PHONE_DISPLAY}</span>
+              </a>
+            </div>
+            <p className="mt-4 text-[0.8125rem] sm:text-[var(--text-caption)] text-[var(--text-muted)] tracking-[0.02em]">
+              <span className="sr-only">{t.common.call_now}. </span>
+              <a href={PHONE_HREF} className="text-[var(--text-tertiary)] hover:text-[var(--accent-dark)] transition-colors">
                 {BUSINESS_INFO.phone}
               </a>
             </p>
