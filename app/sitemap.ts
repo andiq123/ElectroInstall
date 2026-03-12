@@ -4,6 +4,7 @@ import { DEFAULT_SITE_URL, SITE_URL } from "@/lib/constants";
 
 const baseUrl = typeof SITE_URL === "string" ? SITE_URL : DEFAULT_SITE_URL;
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
 const STATIC_ROUTES: Array<{
