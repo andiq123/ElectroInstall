@@ -217,7 +217,7 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#f8f9fb" />
         <meta name="color-scheme" content="light" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
