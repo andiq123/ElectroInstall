@@ -1,55 +1,62 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
-import { SITE_URL } from "@/lib/constants";
+import { DEFAULT_SITE_URL, SITE_URL } from "@/lib/constants";
 
-const baseUrl = typeof SITE_URL === "string" ? SITE_URL : "https://www.electro-install.xyz";
+const baseUrl = typeof SITE_URL === "string" ? SITE_URL : DEFAULT_SITE_URL;
 
 export const revalidate = 3600;
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+const STATIC_ROUTES: Array<{
+  path: string;
+  changeFrequency: "weekly" | "monthly" | "yearly";
+  priority: number;
+}> = [
+  { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "/blog", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/servicii-chisinau", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/politica-confidentialitate", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/termeni-conditii", changeFrequency: "yearly", priority: 0.3 },
+];
 
-  const blogPostUrls: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => {
+function toSitemapEntry(
+  url: string,
+  lastModified: Date,
+  changeFrequency: "weekly" | "monthly" | "yearly",
+  priority: number
+): MetadataRoute.Sitemap[number] {
+  return { url, lastModified, changeFrequency, priority };
+}
+
+function buildStaticEntries(now: Date): MetadataRoute.Sitemap {
+  return STATIC_ROUTES.map(({ path, changeFrequency, priority }) =>
+    toSitemapEntry(`${baseUrl}${path}`, now, changeFrequency, priority)
+  );
+}
+
+function buildBlogEntries(now: Date): MetadataRoute.Sitemap {
+  return BLOG_POSTS.map((post) => {
     const date = post.date ? new Date(post.date) : now;
-    return {
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: isNaN(date.getTime()) ? now : date,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    };
+    const lastModified = isNaN(date.getTime()) ? now : date;
+    return toSitemapEntry(
+      `${baseUrl}/blog/${post.slug}`,
+      lastModified,
+      "monthly",
+      0.8
+    );
   });
+}
 
+function fallbackSitemap(): MetadataRoute.Sitemap {
   return [
-    {
-      url: baseUrl,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/servicii-chisinau`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/politica-confidentialitate`,
-      lastModified: now,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/termeni-conditii`,
-      lastModified: now,
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    ...blogPostUrls,
+    toSitemapEntry(baseUrl, new Date(), "weekly", 1),
   ];
+}
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  try {
+    const now = new Date();
+    return [...buildStaticEntries(now), ...buildBlogEntries(now)];
+  } catch {
+    return fallbackSitemap();
+  }
 }

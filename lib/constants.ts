@@ -1,6 +1,8 @@
+export const DEFAULT_SITE_URL = "https://www.electro-install.xyz";
+
 export const SITE_URL =
   (typeof process !== "undefined" && process.env.NEXT_PUBLIC_SITE_URL) ||
-  "https://www.electro-install.xyz";
+  DEFAULT_SITE_URL;
 
 export const CTA_ACCENT_CLASS =
   "bg-[var(--accent)] text-[var(--text-inverted)] hover:opacity-92 transition-opacity";
