@@ -1,7 +1,3 @@
-/**
- * Logo Component - Reusable brand logo with creative electric icon
- */
-
 interface LogoProps {
   size?: "sm" | "md" | "lg";
   showText?: boolean;
@@ -40,7 +36,6 @@ export function LogoIcon({
 
   return (
     <div className={`relative ${s.container} ${className}`}>
-      {/* Outer glow ring */}
       {animated && (
         <div
           className="absolute inset-0 rounded-xl opacity-60 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-500"
@@ -51,7 +46,6 @@ export function LogoIcon({
         />
       )}
 
-      {/* Main container */}
       <div
         className="relative w-full h-full rounded-xl flex items-center justify-center overflow-hidden"
         style={{
@@ -60,8 +54,7 @@ export function LogoIcon({
           boxShadow: "var(--shadow-accent)",
         }}
       >
-        {/* Animated energy lines */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-30" aria-hidden>
           <div
             className="absolute top-0 left-1/4 w-px h-full"
             style={{
@@ -78,7 +71,6 @@ export function LogoIcon({
           />
         </div>
 
-        {/* Custom Lightning Bolt SVG */}
         <svg
           viewBox="0 0 32 32"
           fill="none"
@@ -98,7 +90,6 @@ export function LogoIcon({
           <circle cx="22" cy="22" r="1" fill="white" opacity="0.6" />
         </svg>
 
-        {/* Hover energy burst effect */}
         {animated && (
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -110,7 +101,6 @@ export function LogoIcon({
         )}
       </div>
 
-      {/* Pulse animation ring on hover */}
       {animated && (
         <div
           className="absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-100 group-hover:animate-ping pointer-events-none"
@@ -138,12 +128,11 @@ export function LogoText({
   return (
     <div className={`flex flex-col leading-none ${className}`}>
       <span
-        className={`${s.titleSize} font-black tracking-tight`}
-        style={{ color: light ? "white" : "var(--text-primary)" }}
+        className={`${s.titleSize} font-bold tracking-tight ${light ? "text-white" : "text-[var(--text-primary)]"}`}
       >
         ELECTRO
       </span>
-      <span className={`${s.subtitleSize} font-bold tracking-widest text-gradient`}>
+      <span className={`${s.subtitleSize} font-semibold tracking-widest ${light ? "text-white/90" : "text-[var(--accent)]"}`}>
         INSTALL
       </span>
     </div>

@@ -1,10 +1,17 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import NavLogo from "@/components/NavLogo";
+import Link from "next/link";
+import { CloseIcon, MenuIcon } from "@/components/ui/Icons";
+import Logo from "@/components/ui/Logo";
 import { BUSINESS_INFO } from "@/lib/constants";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+const NAV_LINKS = [
+  { href: "#faq", labelKey: "faq" as const },
+  { href: "#contact", labelKey: "contact" as const },
+] as const;
 
 interface NavbarProps {
   onOpenModal?: () => void;
@@ -12,170 +19,137 @@ interface NavbarProps {
 
 export default function Navbar({ onOpenModal }: NavbarProps) {
   const { t } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const navLinks = [
-    { href: '#servicii', label: t.nav.services },
-    { href: '#despre', label: t.nav.about },
-    { href: '#contact', label: t.nav.contact },
-  ];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
-  const toggleMenu = () => {
-    const nextState = !isMenuOpen;
-    setIsMenuOpen(nextState);
-    if (nextState) setShouldRenderMenu(true);
-  };
-  
-  const closeMenu = useCallback(() => {
-    setIsMenuOpen(false);
-  }, []);
-
+  useEffect(() => setMounted(true), []);
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+    if (menuOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-      const timer = setTimeout(() => setShouldRenderMenu(false), 350);
-      return () => clearTimeout(timer);
-    }
-  }, [isMenuOpen]);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeMenu(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [closeMenu]);
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isMenuOpen) closeMenu();
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [isMenuOpen, closeMenu]);
+  const navLinks = NAV_LINKS.map(({ href, labelKey }) => ({ href, label: t.nav[labelKey] }));
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "bg-[var(--bg-elevated)]/80 backdrop-blur-xl border-b border-[var(--border-glass)] py-4 shadow-2xl"
-            : "bg-transparent py-6"
-        }`}
-        role="navigation"
-        aria-label="Navigare principală"
-      >
-        <div className="container px-6 sm:px-8 max-w-7xl mx-auto flex items-center justify-between">
-          <NavLogo />
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <div className="w-full flex items-center h-14 sm:h-16 gap-3 sm:gap-4 px-[var(--container-px)] sm:px-[var(--container-px-sm)]">
+          {/* 1. Logo */}
+          <Link
+            href="/"
+            className="flex items-center flex-shrink-0"
+            aria-label="ElectroInstall – Pagina principală"
+          >
+            <Logo size="sm" showText={true} animated={false} light={false} />
+          </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="group relative px-2 py-1 text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+          {/* Spacer (equal with right spacer so nav is centered) */}
+          <div className="min-w-0 flex-1 hidden md:block" aria-hidden />
+
+          {/* 2. Nav links – centered (desktop only) */}
+          <nav className="hidden md:flex items-center justify-center gap-6 flex-shrink-0" aria-label="Navigare principală">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
               >
-                <span className="relative z-10">{link.label}</span>
-                <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[var(--accent)] transition-all duration-200 group-hover:w-full" />
-              </a>
+                {label}
+              </Link>
             ))}
-            
-            <LanguageSwitcher />
+          </nav>
 
-            <div className="ml-4">
-              <button 
-                onClick={onOpenModal}
-                className="px-6 py-3 rounded-full bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-95 transition-opacity"
-              >
-                {t.common.cta_rapid}
-              </button>
-            </div>
+          {/* Spacer */}
+          <div className="min-w-0 flex-1" aria-hidden />
+
+          {/* 3. Language */}
+          <div className="flex items-center flex-shrink-0">
+            <LanguageSwitcher />
           </div>
 
+          {/* 4. CTA (desktop) / Burger (mobile) – last */}
           <button
-            className="md:hidden w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-glass)]"
-            onClick={toggleMenu}
-            aria-label={isMenuOpen ? "Închide meniul" : "Deschide meniul"}
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
+            type="button"
+            className="md:hidden w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg text-[var(--text-primary)] hover:bg-black/[0.04] transition-colors"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-expanded={menuOpen}
+            aria-controls="nav-drawer"
+            aria-label={menuOpen ? "Închide meniul" : "Deschide meniul"}
           >
-            <div className="space-y-1.5" aria-hidden="true">
-              <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "w-6 rotate-45 translate-y-2" : "w-6"}`} />
-              <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "opacity-0" : "w-4"}`} />
-              <span className={`block h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? "w-6 -rotate-45 -translate-y-2" : "w-6"}`} />
-            </div>
+            {menuOpen ? <CloseIcon size="lg" /> : <MenuIcon size="lg" />}
+          </button>
+          <button
+            type="button"
+            onClick={() => onOpenModal?.()}
+            className="hidden md:inline-flex min-h-[40px] px-4 sm:px-5 py-2.5 rounded-lg text-[14px] sm:text-[15px] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity whitespace-nowrap items-center justify-center flex-shrink-0"
+          >
+            {t.common.cta_rapid}
           </button>
         </div>
-      </nav>
+      </header>
 
-      {/* Mobile Menu Overlay */}
-      {shouldRenderMenu && (
-        <div className="fixed inset-0 z-[60] md:hidden">
+      {/* Mobile drawer - above header when open */}
+      {mounted && (
+        <div
+          id="nav-drawer"
+          className="fixed inset-0 z-[100] md:hidden"
+          aria-hidden={!menuOpen}
+          style={{ pointerEvents: menuOpen ? "auto" : "none" }}
+        >
           <div
-            className={`absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-500 ${
-              isMenuOpen ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 bg-black/30 transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"}`}
             onClick={closeMenu}
+            aria-hidden
           />
-
-          <div
-            id="mobile-menu"
-            className={`absolute top-0 right-0 h-full w-full sm:max-w-md bg-[var(--bg-base)] border-l border-[var(--border-glass)] p-10 flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Meniu mobil"
+          <aside
+            className={`absolute top-0 right-0 w-full max-w-[min(320px,85vw)] h-full bg-white border-l border-black/[0.08] shadow-xl flex flex-col transition-transform duration-300 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
           >
-            <div className="flex items-center justify-between mb-20">
-              <NavLogo />
-              <div className="flex items-center gap-4">
-                <LanguageSwitcher />
-                <button 
-                  onClick={closeMenu}
-                  className="w-12 h-12 rounded-full border border-[var(--border-glass)] flex items-center justify-center hover:bg-white/5 transition-all text-[var(--text-primary)]"
-                  aria-label="Închide meniul"
-                >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-black/[0.06]">
+              <Link href="/" onClick={closeMenu} className="flex items-center" aria-label="ElectroInstall">
+                <Logo size="sm" showText={true} animated={false} light={false} />
+              </Link>
+              <button
+                type="button"
+                className="w-10 h-10 flex items-center justify-center rounded-xl text-[var(--text-secondary)] hover:bg-black/[0.04] hover:text-[var(--text-primary)] transition-colors"
+                onClick={closeMenu}
+                aria-label="Închide"
+              >
+                <CloseIcon size="md" />
+              </button>
             </div>
-
-            <nav className="flex flex-col gap-6">
-              {navLinks.map((link, index) => (
-                <a
-                  key={link.href}
-                  href={link.href}
+            <nav className="flex flex-col p-4 sm:p-6 gap-1 overflow-auto flex-1" aria-label="Meniu mobil">
+              {navLinks.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
                   onClick={closeMenu}
-                  className="block text-2xl font-semibold text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
-                  style={{ 
-                    transitionDelay: `${index * 40}ms`,
-                    transform: isMenuOpen ? 'translateX(0)' : 'translateX(24px)',
-                    opacity: isMenuOpen ? 1 : 0
-                  }}
+                  className="py-3 px-4 text-base font-medium text-[var(--text-primary)] hover:bg-black/[0.04] rounded-xl transition-colors"
                 >
-                  {link.label}
-                </a>
+                  {label}
+                </Link>
               ))}
             </nav>
-
-            <div className="mt-auto pt-8 border-t border-[var(--border-glass)]">
+            <div className="p-4 sm:p-6 border-t border-black/[0.06] space-y-3">
               <button
+                type="button"
                 onClick={() => { closeMenu(); onOpenModal?.(); }}
-                className="w-full py-4 rounded-xl bg-[var(--accent)] text-black font-semibold text-sm hover:opacity-95 transition-opacity"
+                className="w-full min-h-[48px] py-3.5 rounded-xl text-[15px] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity"
               >
                 {t.common.cta_primary}
               </button>
-              <div className="mt-6 text-sm text-[var(--text-muted)]">
+              <p className="text-[var(--text-small)] text-[var(--text-muted)]">
                 {t.nav.appointments}: {BUSINESS_INFO.phone}
-              </div>
+              </p>
             </div>
-          </div>
+          </aside>
         </div>
       )}
     </>

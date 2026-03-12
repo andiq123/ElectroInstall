@@ -20,7 +20,7 @@ export default function TermeniConditii() {
             <div className="h-1.5 w-20 bg-[var(--accent)] mt-8 rounded-full" />
           </header>
 
-          <div className="prose prose-invert prose-lg max-w-none text-[var(--text-secondary)] space-y-12">
+          <div className="prose prose-lg max-w-none text-[var(--text-secondary)] space-y-12">
             {t.legal.terms.sections.map((section: { title: string; content: string }, i: number) => (
               <section key={i}>
                 <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight italic">{section.title}</h2>

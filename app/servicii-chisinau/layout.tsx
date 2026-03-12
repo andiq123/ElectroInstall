@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Servicii Electrice Chișinău | Toate Sectoarele și Suburbiile | Electrician Recomandări",
-  description: "Electrician Chișinău recomandări: servicii electrice în Botanica, Buiucani, Centru, Ciocana, Rîșcani. Suburbii Durlești, Ialoveni, Codru. Autorizat ANRE, intervenții rapide 24/7.",
+  description: "Electrician Chișinău cu recomandări: servicii electrice în Botanica, Buiucani, Centru, Ciocana, Rîșcani. Suburbii Durlești, Ialoveni, Codru. Intervenții rapide 24/7.",
   keywords: [
     "electrician Chisinau",
     "electrician Chisinau recomandări",

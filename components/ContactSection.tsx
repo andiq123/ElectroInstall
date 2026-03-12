@@ -1,10 +1,8 @@
 "use client";
 
-import { BUSINESS_INFO, SHOW_EMAIL } from "@/lib/constants";
-import { PhoneIcon, LocationIcon, MailIcon } from "./ui/Icons";
-import Section from "@/components/ui/Section";
-import SectionHeader from "@/components/ui/SectionHeader";
+import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
 import { useLanguage } from "@/context/LanguageContext";
+import { PhoneIcon } from "@/components/ui/Icons";
 
 interface ContactSectionProps {
   onOpenModal?: () => void;
@@ -14,58 +12,37 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
   const { t } = useLanguage();
 
   return (
-    <Section id="contact" bgType="base">
-      <div className="max-w-2xl mb-16 sm:mb-24 mx-auto lg:mx-0 text-center lg:text-left">
-        <SectionHeader 
-          title={
-            <>
-              {t.contact.title_part1} <br />
-              <span className="text-[var(--accent)]">{t.contact.title_part2}</span>
-            </>
-          }
-          subtitle={t.contact.subtitle}
-        />
-      </div>
-
-      {/* Contact Hubs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-24">
-        {/* Phone Hub */}
-        <a
-          href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`}
-          className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:border-[var(--accent)]/25 text-center transition-colors"
-        >
-          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center bg-[var(--accent)] text-black">
-            <PhoneIcon size="lg" />
-          </div>
-          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.phone_personal}</p>
-          <p className="text-lg font-semibold text-[var(--text-primary)] mb-3">{BUSINESS_INFO.phone}</p>
-          <span className="text-sm font-medium text-[var(--accent)]">{t.common.call_now}</span>
-        </a>
-
-        <div className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] text-center">
-          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center border border-[var(--border-glass)] text-[var(--accent)] bg-[var(--bg-base)]">
-            <LocationIcon size="lg" />
-          </div>
-          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.location_central}</p>
-          <p className="text-lg font-semibold text-[var(--text-primary)]">{BUSINESS_INFO.location}</p>
-          <p className="text-xs text-[var(--text-muted)] mt-2">{t.common.chisinau_suburbs}</p>
+    <section id="contact" className="scroll-mt-[4.5rem] bg-[var(--bg-base)] border-t border-black/[0.06] py-16 sm:py-20">
+      <div className="container-inner text-center">
+        <h2 className="font-[var(--font-display)] text-[2rem] sm:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight mb-4">
+          {t.contact.title_part1} <span className="text-[var(--accent)]">{t.contact.title_part2}</span>
+        </h2>
+        <p className="text-[1.125rem] text-[var(--text-secondary)] leading-[1.65] max-w-2xl mx-auto mb-8">
+          {t.contact.subtitle}
+        </p>
+        {t.contact.trust_line && (
+          <p className="text-[var(--text-small)] font-medium text-[var(--text-secondary)] mb-8">
+            {t.contact.trust_line}
+          </p>
+        )}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={onOpenModal}
+            className="min-h-[52px] px-8 py-3.5 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity"
+          >
+            {t.common.cta_primary}
+          </button>
+          <a
+            href={PHONE_HREF}
+            className="flex items-center justify-center gap-2 min-h-[52px] px-8 py-3.5 rounded-lg text-[1rem] font-semibold text-[var(--text-primary)] border-2 border-[var(--border-strong)] hover:bg-black/[0.04] transition-colors"
+            aria-label={t.common.call_now}
+          >
+            <PhoneIcon size="sm" />
+            {BUSINESS_INFO.phone}
+          </a>
         </div>
-
-        {SHOW_EMAIL && (
-        <button
-          onClick={onOpenModal}
-          className="p-6 sm:p-8 rounded-2xl border border-[var(--border-glass)] bg-[var(--bg-elevated)] hover:border-[var(--accent)]/25 text-center w-full transition-colors"
-        >
-          <div className="w-12 h-12 mx-auto mb-5 rounded-xl flex items-center justify-center bg-[var(--bg-base)] border border-[var(--border-glass)] text-[var(--text-primary)]">
-            <MailIcon size="lg" />
-          </div>
-          <p className="text-xs font-medium text-[var(--text-muted)] mb-1">{t.common.email_personal}</p>
-          <p className="text-lg font-semibold text-[var(--text-primary)] mb-3 break-all">{BUSINESS_INFO.email}</p>
-          <span className="text-sm font-medium text-[var(--accent)]">{t.common.send_message}</span>
-        </button>
-      )}
       </div>
-
-    </Section>
+    </section>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BLOG_POSTS, getBlogPost, getRelatedPosts } from "@/lib/blog-posts";
 import { ArrowLeftIcon } from "@/components/ui/Icons";
+import { SITE_URL } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -11,10 +12,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPost(slug);
-  
+
   if (!post) {
     return { title: "Articol negăsit" };
   }
+
+  const canonicalUrl = `${SITE_URL}/blog/${slug}`;
 
   return {
     title: post.title,
@@ -23,8 +26,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: post.title,
       description: post.excerpt,
       type: "article",
+      url: canonicalUrl,
       publishedTime: post.date,
+      siteName: "ElectroInstall",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -43,84 +57,108 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const relatedPosts = getRelatedPosts(slug);
+  const canonicalUrl = `${SITE_URL}/blog/${slug}`;
 
-  // Article Schema
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
-    author: { "@type": "Organization", name: "ElectroInstall" },
-    publisher: { "@type": "Organization", name: "ElectroInstall", url: "https://electroinstall.md" },
+    dateModified: post.date,
+    author: { "@type": "Organization", name: "ElectroInstall", url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: "ElectroInstall",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/og-image.jpg` },
+    },
+    image: `${SITE_URL}/og-image.jpg`,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Acasă", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl },
+    ],
   };
 
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)]">
+    <main className="min-h-screen bg-[var(--bg-base)]" role="main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
-      {/* Article Header */}
-      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden bg-[var(--bg-secondary)]">
-        <div className="absolute inset-0 electricity-pattern opacity-10 pointer-events-none" />
-        <div className="container relative z-10 px-6 sm:px-8 max-w-4xl mx-auto">
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors mb-12"
-          >
-            <ArrowLeftIcon size="sm" />
-            Echipa ElectroInstall :: Blog
-          </Link>
+      <section className="border-b border-[var(--border-default)] bg-white py-16 sm:py-20 lg:py-24">
+        <div className="container-inner">
+          <div className="max-w-3xl">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-[var(--text-small)] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-8"
+            >
+              <ArrowLeftIcon size="sm" />
+              Blog
+            </Link>
 
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <span className="px-3 py-1 rounded-md bg-[var(--accent)] text-black text-[10px] font-black uppercase tracking-widest">
-              {post.category}
-            </span>
-            <span className="text-[10px] font-bold text-[var(--text-tertiary)] uppercase tracking-widest">
-              {post.date} • {post.readTime}
-            </span>
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="px-3 py-1.5 rounded-full bg-[var(--accent-muted)] text-[var(--accent-dark)] text-[var(--text-caption)] font-semibold uppercase tracking-wider">
+                {post.category}
+              </span>
+              <span className="text-[var(--text-caption)] text-[var(--text-secondary)] font-medium">
+                {post.date} · {post.readTime}
+              </span>
+            </div>
+
+            <h1 className="font-[var(--font-display)] text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight">
+              {post.title}
+            </h1>
           </div>
-
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter italic uppercase text-[var(--text-primary)] leading-[0.9]">
-            {post.title}
-          </h1>
         </div>
       </section>
 
-      {/* Article Content */}
-      <section className="pb-16">
-        <div className="container px-6 sm:px-8 md:px-12 lg:px-20 max-w-4xl mx-auto">
-          <article className="blog-content prose">
+      <section className="py-16 sm:py-20 lg:py-24 bg-[var(--bg-base)]" aria-label="Conținut articol">
+        <div className="container-inner max-w-3xl">
+          <article className="blog-content" itemScope itemType="https://schema.org/Article">
             <div dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
           </article>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-12 bg-[var(--bg-secondary)]">
-        <div className="container px-6 sm:px-8 md:px-12 lg:px-20 max-w-4xl mx-auto text-center">
-          <h2 className="text-xl sm:text-2xl font-bold mb-3 text-[var(--text-primary)]">
-            Ai nevoie de un electrician?
-          </h2>
-          <p className="mb-4 text-[var(--text-secondary)]">
-            ElectroInstall oferă servicii electrice profesionale în Chișinău.
-          </p>
-          <Link href="/#contact" className="btn btn-primary">
-            Contactează-ne
-          </Link>
+      <section className="border-t border-[var(--border-default)] py-16 sm:py-20 lg:py-24 bg-[var(--bg-elevated)]">
+        <div className="container-inner text-center">
+          <div className="max-w-xl mx-auto">
+            <h2 className="font-[var(--font-display)] text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
+              Ai nevoie de un electrician?
+            </h2>
+            <p className="text-[var(--text-body)] text-[var(--text-secondary)] mb-6">
+              ElectroInstall – servicii electrice în Chișinău. Preț clar, disponibil 24/7.
+            </p>
+            <Link
+              href="/#contact"
+              className="inline-flex items-center justify-center min-h-[48px] px-6 py-3 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity"
+            >
+              Contactează-ne
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="py-16">
-          <div className="container px-6 sm:px-8 md:px-12 lg:px-20 max-w-7xl mx-auto">
-            <h2 className="text-xl sm:text-2xl font-bold mb-8 text-center text-[var(--text-primary)]">
-              Articole Similare
+        <section className="py-16 sm:py-20 lg:py-24 bg-[var(--bg-base)]">
+          <div className="container-inner">
+            <h2 className="font-[var(--font-display)] text-[1.5rem] sm:text-[1.75rem] font-bold text-[var(--text-primary)] mb-8 text-center">
+              Articole similare
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {relatedPosts.map((related) => (
                 <article key={related.slug} className="blog-card">
                   <div className="blog-card-header">

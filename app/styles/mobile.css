@@ -68,7 +68,7 @@
 /* Better focus states for touch devices */
 @media (hover: none) {
     .btn-primary:hover { transform: none; }
-    .why-card:hover, .process-step:hover, .service-card:hover { transform: none; }
+    .why-card:hover, .process-step:hover { transform: none; }
 }
 
 /* Active state for touch devices */

@@ -1,42 +1,75 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/lib/blog-posts";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Blog | Sfaturi și Noutăți Electrice",
+  title: "Blog – Sfaturi și Noutăți Electrice",
   description:
-    "Citește articole despre siguranță electrică, sfaturi utile și cele mai bune practici de la electricieni profesioniști în Chișinău.",
+    "Articole despre siguranță electrică, sfaturi utile și ghiduri practice de la ElectroInstall Chișinău. Electrician autorizat, recomandări, reparații și instalații.",
+  keywords: [
+    "sfaturi electrice",
+    "siguranță electrică",
+    "electrician Chișinău blog",
+    "reparații electrice",
+    "instalații electrice",
+  ],
   openGraph: {
-    title: "Blog | ElectroInstall",
+    title: "Blog | Sfaturi Electrice – ElectroInstall Chișinău",
     description:
-      "Sfaturi de la electricieni profesioniști pentru casa și afacerea ta.",
+      "Sfaturi de la electricieni profesioniști pentru casa și afacerea ta. Siguranță electrică, ghiduri practice, Chișinău.",
+    url: `${SITE_URL}/blog`,
+    type: "website",
+    siteName: "ElectroInstall",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | ElectroInstall – Sfaturi Electrice Chișinău",
+    description: "Articole despre siguranță electrică și practici de la electricieni profesioniști.",
+  },
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function BlogPage() {
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Blog ElectroInstall – Sfaturi și Noutăți Electrice",
+    description: "Articole despre siguranță electrică, reparații și instalații electrice în Chișinău.",
+    url: `${SITE_URL}/blog`,
+    numberOfItems: BLOG_POSTS.length,
+    itemListElement: BLOG_POSTS.map((post, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/blog/${post.slug}`,
+      name: post.title,
+    })),
+  };
+
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Hero */}
-      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden bg-[var(--bg-secondary)]">
-        <div className="absolute inset-0 electricity-pattern opacity-10 pointer-events-none" />
-        <div className="container relative z-10 px-6 sm:px-8 max-w-7xl mx-auto">
+    <main className="min-h-screen bg-white" role="main">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <section className="border-b border-[var(--border-default)] bg-white py-16 sm:py-20 lg:py-24" aria-labelledby="blog-heading">
+        <div className="container-inner">
           <div className="max-w-3xl">
-            <h1
-              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-8 italic uppercase text-[var(--text-primary)]"
-            >
-              SFATURI <br />
-              <span className="text-gradient not-italic">ELECTRICE</span>
+            <h1 id="blog-heading" className="font-[var(--font-display)] text-[1.75rem] sm:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight mb-4">
+              Sfaturi electrice
             </h1>
-            <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium opacity-80 leading-relaxed">
-              Resurse esențiale despre siguranța casei tale, noutăți tehnologice și ghiduri practice de la experții noștri.
+            <p className="text-[1.0625rem] text-[var(--text-secondary)] leading-[1.65]">
+              Resurse despre siguranța casei tale, noutăți și ghiduri practice de la ElectroInstall.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Blog Grid */}
-      <section className="pb-20 sm:pb-28">
-        <div className="container px-6 sm:px-8 md:px-12 lg:px-20 max-w-7xl mx-auto">
+      <section className="py-16 sm:py-20 lg:py-24 bg-[var(--bg-base)]">
+        <div className="container-inner">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {BLOG_POSTS.map((post) => (
               <article key={post.slug} className="blog-card">
@@ -44,13 +77,10 @@ export default function BlogPage() {
                   <span className="blog-category">{post.category}</span>
                   <span className="blog-date">{post.date}</span>
                 </div>
-
                 <h2 className="blog-title">
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h2>
-
                 <p className="blog-excerpt">{post.excerpt}</p>
-
                 <div className="blog-footer">
                   <span className="blog-read-time">⏱ {post.readTime}</span>
                   <Link href={`/blog/${post.slug}`} className="blog-read-more">
@@ -61,15 +91,14 @@ export default function BlogPage() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="text-center mt-16 p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)]">
-            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+          <div className="text-center mt-16 p-8 sm:p-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-[var(--shadow-md)]">
+            <h3 className="font-[var(--font-display)] text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
               Ai nevoie de un electrician?
             </h3>
-            <p className="text-[var(--text-secondary)] mb-4">
-              ElectroInstall oferă servicii electrice profesionale în Chișinău.
+            <p className="text-[var(--text-body)] text-[var(--text-secondary)] mb-6">
+              ElectroInstall – servicii electrice în Chișinău. Preț clar, disponibil 24/7.
             </p>
-            <Link href="/#contact" className="btn btn-primary">
+            <Link href="/#contact" className="inline-flex items-center justify-center min-h-[48px] px-6 py-3 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity">
               Contactează-ne
             </Link>
           </div>

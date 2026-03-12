@@ -1,100 +1,121 @@
 :root {
-  /* === CORE THEME: PREMIUM DARK SYSTEM === */
-  /* This is the single source of truth for the entire application theme. */
+  --frame-bg: #1a237e;
+  --page-bg: #e8e9ec;
+  --bg-base: #f7f8fa;
+  --bg-elevated: #ffffff;
+  --bg-section-alt: #eef0f3;
+  --accent: #b8860b;
+  --accent-light: #d4a84b;
+  --accent-muted: rgba(184, 134, 11, 0.12);
+  --accent-dark: #8b6914;
 
-  /* Background Palette - Grounding the layout in pure depth */
-  --bg-base: #050505;        /* Deepest layer */
-  --bg-elevated: #0a0a0b;    /* Card and section layer */
-  --bg-accent: #0f1115;      /* Subtle hover/active layer */
-  
-  /* Text Palette - Extreme Contrast for Accessibility */
-  --text-main: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --text-tertiary: #52525b;
-  --text-inverted: #000000;
-  
-  /* Accent: Solar Gold - The energy source */
-  --accent: #facc15;        /* High-visibility yellow (Yellow 400) */
-  --accent-glow: rgba(250, 204, 21, 0.4);
-  --accent-muted: rgba(250, 204, 21, 0.1);
-  --accent-light: #fde047;  /* Yellow 300 */
-  --accent-dark: #eab308;   /* Yellow 500 */
-  --accent-cobalt: #3b82f6; /* Accent for electrical "cool" components */
+  --text-primary: #111111;
+  --text-secondary: #444444;
+  --text-muted: #5c5c5c;
+  --text-tertiary: #6b6b6b;
+  --text-inverted: #ffffff;
 
-  /* Surface & Border System */
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.15);
-  --border-default: rgba(255, 255, 255, 0.12);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --bg-inset: #050505;
-  --glass-highlight: rgba(255, 255, 255, 0.05);
-  
-  /* Shadows & Depth */
-  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.1);
-  --shadow-accent: 0 0 30px -5px rgba(250, 204, 21, 0.25);
+  --primary: #1e2d42;
+  --primary-hover: #263a52;
+  --primary-soft: #2d3d52;
+  --accent-cobalt: #1d4ed8;
 
-  /* Radius System */
+  --bg-inset: #ebeae8;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: 20px;
+
+  --border-glass: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --border-default: rgba(0, 0, 0, 0.08);
+  --border-accent: rgba(184, 134, 11, 0.4);
+
+  --shadow-premium: 0 24px 48px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 16px -4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  --shadow-accent: 0 0 32px -8px rgba(184, 134, 11, 0.2);
+  --shadow-accent-sm: 0 0 20px -6px rgba(184, 134, 11, 0.12);
+  --shadow-glass: 0 8px 32px -8px rgba(0, 0, 0, 0.06);
+
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2.5rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
   --radius-full: 9999px;
 
-  /* Gradients */
-  --gradient-power: linear-gradient(135deg, #facc15 0%, #fbbf24 100%);
-  --gradient-dark: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --section-py: 5rem;
+  --section-py-sm: 6rem;
+  --container-max: 72rem;
+  --container-px: 1.5rem;
+  --container-px-sm: 2rem;
 
-  /* Semantic Feedback & State Tokens */
-  --info: #3b82f6;           /* Cobalt / Blue 500 */
-  --info-glow: rgba(59, 130, 246, 0.4);
-  --danger: #ef4444;         /* Red 500 */
-  --danger-glow: rgba(239, 68, 68, 0.4);
-  --success: #10b981;        /* Emerald 500 */
-  --warning: #f59e0b;        /* Amber 500 */
-  
-  /* Additional Surface Tokens */
-  --surface-white: #ffffff;
-  --surface-white-soft: rgba(255, 255, 255, 0.05);
-  --surface-white-strong: rgba(255, 255, 255, 0.1);
+  --text-h1: clamp(2rem, 5vw, 2.75rem);
+  --text-h2: clamp(1.75rem, 4vw, 2.25rem);
+  --text-h3: clamp(1.25rem, 2.5vw, 1.5rem);
+  --text-body: 1rem;
+  --text-body-lg: 1.125rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+  --leading-tight: 1.2;
+  --leading-snug: 1.375;
+  --leading-relaxed: 1.625;
 
-  /* Wash & Mood Tokens */
-  --bg-wash-slate: rgba(15, 23, 42, 0.3);
-  --bg-wash-gold: rgba(250, 204, 21, 0.02);
-  --bg-wash-cobalt: rgba(59, 130, 246, 0.05);
-  --text-accent-gradient: var(--gradient-power);
+  --danger: #b91c1c;
+  --danger-glow: rgba(185, 28, 28, 0.08);
+  --success: #059669;
+  --info: #2563eb;
+
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --bg-accent: var(--accent-muted);
 
   --bg-primary: var(--bg-base);
   --bg-secondary: var(--bg-elevated);
   --bg-card: var(--bg-elevated);
   --border-subtle: var(--border-glass);
-  --glass-border: var(--border-glass);
-  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --electric-glow-primary: 0 0 24px -4px rgba(250, 204, 21, 0.15);
-  --shadow-accent-sm: 0 0 20px -4px rgba(250, 204, 21, 0.12);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
-  --border-accent: rgba(250, 204, 21, 0.35);
+  --transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --radius-md: 0.5rem;
   --cat-emergency: var(--danger);
   --cat-installation: var(--accent);
   --cat-appliances: var(--info);
   --cat-repair: var(--success);
-  --cat-panels: #a78bfa;
-  --cat-wiring: var(--info);
+  --cat-panels: #6d28d9;
+  --gradient-power: linear-gradient(135deg, #b8860b 0%, #8b6914 100%);
+  --gradient-hero-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(184, 134, 11, 0.06) 0%, transparent 55%);
+  --gradient-hero-soft: linear-gradient(135deg, rgba(248, 249, 251, 1) 0%, rgba(240, 235, 248, 0.4) 100%);
+  --gradient-card-warm: linear-gradient(135deg, #fdf4e8 0%, #fef8eb 100%);
+  --gradient-section-dark: linear-gradient(165deg, #1e2d42 0%, #152238 100%);
+  --gradient-hero-accent: linear-gradient(120deg, transparent 0%, rgba(184, 134, 11, 0.05) 50%, transparent 100%);
+  --shadow-card: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-card-elevated: 0 20px 48px -16px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --radius-card: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --section-py: 6rem;
+  }
 }
 
 /* --- Accessibility Utilities --- */
 
-/* Visible Focus State - Crucial for Keyboard Navigation */
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--primary);
   outline-offset: 4px;
 }
 
-/* Reduced Motion - Optimizing for old devices and user preference */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -104,7 +125,6 @@
   }
 }
 
-/* Performance Optimization for Older Devices */
 .optimize-gpu {
   transform: translateZ(0);
   backface-visibility: hidden;

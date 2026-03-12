@@ -1,98 +1,60 @@
 "use client";
 
 import { useState } from "react";
-import { FAQ_ITEMS } from "@/lib/section-data";
-import { PlusIcon } from "./ui/Icons";
-import Section from "@/components/ui/Section";
-import SectionHeader from "@/components/ui/SectionHeader";
 import { useLanguage } from "@/context/LanguageContext";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { PlusIcon, MinusIcon } from "@/components/ui/Icons";
 
 export default function FAQSection() {
   const { t } = useLanguage();
+  const faq = t.faq as { title_part1: string; title_part2: string; items: Array<{ question: string; answer: string }> };
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const translatedItems = FAQ_ITEMS.map((item, index) => ({
-    ...item,
-    question: t.faq.items[index]?.question || item.question,
-    answer: t.faq.items[index]?.answer || item.answer,
-  }));
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": translatedItems.map(item => ({
-      "@type": "Question",
-      "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
-    }))
-  };
-
-  const toggleItem = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const title = `${faq.title_part1} ${faq.title_part2}`;
 
   return (
-    <Section id="faq" bgType="wash-gold">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <div className="max-w-4xl mx-auto">
-        <SectionHeader 
+    <section id="faq" className="scroll-mt-[4.5rem] bg-[var(--bg-base)] border-t border-black/[0.06] py-16 sm:py-20 lg:py-24">
+      <div className="container-inner">
+        <SectionHeader
+          title={title}
           centered
-          title={
-            <>
-              {t.faq.title_part1} <br />
-              <span className="text-[var(--accent)]">{t.faq.title_part2}</span>
-            </>
-          }
-          className="mb-16 sm:mb-24"
+          className="mb-10 sm:mb-12"
         />
-
-        {/* FAQ Accordion */}
-        <div className="faq-list space-y-6">
-          {translatedItems.map((item, index) => {
+        <ul className="faq-list max-w-3xl mx-auto" role="list">
+          {faq.items.map((item, index) => {
             const isOpen = openIndex === index;
             return (
-              <div
+              <li
                 key={index}
-                className={`group relative rounded-[var(--radius-3xl)] border  ${
-                  isOpen 
-                  ? "border-[var(--accent)]/30 bg-[var(--bg-elevated)] shadow-xl" 
-                  : "border-[var(--border-glass)] bg-[var(--bg-base)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-strong)] shadow-sm"
-                }`}
+                className={`faq-item ${isOpen ? "active" : ""}`}
               >
                 <button
-                  onClick={() => toggleItem(index)}
-                  className="w-full text-left p-8 flex items-center justify-between gap-8"
+                  type="button"
+                  className="faq-trigger"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  id={`faq-question-${index}`}
                 >
-                  <span className={`text-xl sm:text-3xl font-black tracking-tighter leading-tight transition-colors duration-500 ${isOpen ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>
-                    {item.question}
+                  <span className="faq-question">{item.question}</span>
+                  <span className="faq-icon" aria-hidden>
+                    {isOpen ? <MinusIcon size="sm" /> : <PlusIcon size="sm" />}
                   </span>
-                  <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border border-[var(--border-glass)] flex items-center justify-center  ${isOpen ? "rotate-[225deg] bg-[var(--accent)] text-black" : "bg-[var(--bg-accent)] text-[var(--accent)] group-hover:scale-[1.03] group-hover:bg-[var(--accent)] group-hover:text-black"}`}>
-                    <PlusIcon />
-                  </div>
                 </button>
-                
-                <div 
-                  className={`overflow-hidden  ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                <div
+                  id={`faq-answer-${index}`}
+                  className="faq-content"
+                  role="region"
+                  aria-labelledby={`faq-question-${index}`}
+                  aria-hidden={!isOpen}
                 >
-                  <div className="p-8 pt-0">
-                    <div className="h-px w-full bg-[var(--border-glass)] mb-8" />
-                    <p className="text-lg sm:text-xl text-[var(--text-secondary)] leading-relaxed font-medium max-w-2xl">
-                      {item.answer}
-                    </p>
-                  </div>
+                  <p className="faq-answer">{item.answer}</p>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
-    </Section>
+    </section>
   );
 }

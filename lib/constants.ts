@@ -1,4 +1,9 @@
-export const SHOW_EMAIL = false;
+export const SITE_URL =
+  (typeof process !== "undefined" && process.env.NEXT_PUBLIC_SITE_URL) ||
+  "https://www.electro-install.xyz";
+
+export const CTA_ACCENT_CLASS =
+  "bg-[var(--accent)] text-[var(--text-inverted)] hover:opacity-92 transition-opacity";
 
 export const BUSINESS_INFO = {
   name: 'ElectroInstall (Radu)',
@@ -7,7 +12,8 @@ export const BUSINESS_INFO = {
   email: 'radu@electroinstall.md',
 } as const;
 
-// Service Categories with comprehensive list
+export const PHONE_HREF = `tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}` as const;
+
 export const SERVICE_CATEGORIES = [
   {
     id: 'installation',
@@ -59,7 +65,7 @@ export const SERVICE_CATEGORIES = [
     id: 'emergency',
     title: 'Asistență Electrică',
     subtitle: 'Intervenții de zi',
-    icon: '�',
+    icon: "⚡",
     color: 'from-red-500 to-orange-500',
     featured: false,
     services: [

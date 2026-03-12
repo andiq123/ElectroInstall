@@ -1,14 +1,16 @@
 import { MetadataRoute } from "next";
-
-const baseUrl = "https://electro-install.vercel.app";
+import { SITE_URL } from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: "/private/",
-    },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    rules: [
+      { userAgent: "*", allow: "/", disallow: ["/api/", "/private/"] },
+      { userAgent: "GPTBot", allow: "/" },
+      { userAgent: "Claude-Web", allow: "/" },
+      { userAgent: "Google-Extended", allow: "/" },
+      { userAgent: "anthropic-ai", allow: "/" },
+    ],
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

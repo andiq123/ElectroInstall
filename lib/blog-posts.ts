@@ -1,6 +1,3 @@
-// Blog Posts Data
-// This can be moved to a CMS or database later
-
 export interface BlogPost {
   slug: string;
   title: string;

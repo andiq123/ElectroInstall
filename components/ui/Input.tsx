@@ -2,10 +2,6 @@
 
 import { forwardRef, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
-// ============================================
-// INPUT COMPONENT
-// ============================================
-
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -19,7 +15,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className="input-wrapper">
         {label && (
           <label className="input-label">
-            <span className="input-label-indicator" />
             {label}
             {props.required && <span className="input-required">*</span>}
           </label>
@@ -40,10 +35,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input";
 
-// ============================================
-// TEXTAREA COMPONENT
-// ============================================
-
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
@@ -56,7 +47,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <div className="input-wrapper">
         {label && (
           <label className="input-label">
-            <span className="input-label-indicator" />
             {label}
             {props.required && <span className="input-required">*</span>}
           </label>
@@ -74,10 +64,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
 Textarea.displayName = "Textarea";
 
-// ============================================
-// PHONE INPUT WITH FORMATTING
-// ============================================
-
 interface PhoneInputProps extends Omit<InputProps, "type" | "onChange"> {
   value: string;
   onChange: (value: string) => void;
@@ -86,7 +72,6 @@ interface PhoneInputProps extends Omit<InputProps, "type" | "onChange"> {
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
   ({ value, onChange, ...props }, ref) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // Allow only numbers, spaces, +, and -
       const cleaned = e.target.value.replace(/[^\d\s+-]/g, "");
       onChange(cleaned);
     };

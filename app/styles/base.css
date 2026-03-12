@@ -1,41 +1,54 @@
-/* ============================================
-   ELECTROINSTALL - BASE STYLES
-   Typography, Reset, and Utility Classes
-   ============================================ */
+/* ElectroInstall – base */
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    position: relative;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-
-/* ============================================
-   TYPOGRAPHY
-   ============================================ */
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.04em;
-    color: var(--text-primary);
-    font-family: var(--font-display), system-ui;
+  font-family: var(--font-display), system-ui;
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
 }
 
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
+
 p {
-    color: var(--text-secondary);
-    font-weight: 450;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
 }
 
 /* ============================================
    UTILITY CLASSES
    ============================================ */
+
+/* Content width limit – use once per section; defines max-width + horizontal padding */
+.container-inner {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-px);
+  padding-right: var(--container-px);
+}
+@media (min-width: 640px) {
+  .container-inner {
+    padding-left: var(--container-px-sm);
+    padding-right: var(--container-px-sm);
+  }
+}
 
 /* Backgrounds */
 .bg-surface { background-color: var(--bg-primary); }

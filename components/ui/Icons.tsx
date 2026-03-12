@@ -153,6 +153,39 @@ export const ChevronRightIcon: FC<IconProps> = ({ size = "md", className = "", .
   </svg>
 );
 
+// Arrow top-right (external/link)
+export const ArrowTopRightIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
+  <svg
+    className={`${iconBase(size)} ${className}`}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M7 17L17 7M17 7h-4m4 0v4" />
+  </svg>
+);
+
+// Menu (hamburger)
+export const MenuIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
+  <svg
+    className={`${iconBase(size)} ${className}`}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+    {...props}
+  >
+    <path d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+
 // Close/X icon
 export const CloseIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg

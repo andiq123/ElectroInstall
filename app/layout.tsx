@@ -1,36 +1,36 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Fraunces, Outfit } from "next/font/google";
+import { SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
-
-const spaceGrotesk = Space_Grotesk({
+const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-body",
   weight: ["400", "500", "600", "700"],
 });
 
-const baseUrl = "https://electro-install.vercel.app";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Electrician Bun Chișinău | Recomandări 2025–2026 | ElectroInstall",
+    default: "Electrician Chișinău | Recomandări | ElectroInstall",
     template: "%s | ElectroInstall",
   },
   description:
-    "Electrician Chișinău recomandări: servicii electrice profesionale, autorizat ANRE. Intervenții rapide și urgent 24/7, montaj tablouri, prize, instalații electrice. Toate sectoarele și suburbiile.",
+    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7. Montaj tablouri, prize, instalații. Toate sectoarele.",
   keywords: [
     "electrician bun Chisinau",
     "electrician Chisinau recomandări",
     "electrician Chisinau 2025",
     "electrician Chisinau 2026",
-    "electricieni autorizați ANRE Chisinau",
+    "electrician autorizat Chisinau",
     "electrician Chisinau urgent 24/7",
     "electrician Chisinau",
     "electrician Moldova",
@@ -73,38 +73,37 @@ export const metadata: Metadata = {
       follow: true,
       "max-video-preview": -1,
       "max-image-preview": "large",
-      "max-snippet": -1,
     },
   },
   openGraph: {
     type: "website",
     locale: "ro_MD",
-    url: baseUrl,
+    url: SITE_URL,
     siteName: "ElectroInstall",
-    title: "Electrician Bun Chișinău | Recomandări | Autorizat ANRE | 24/7",
+    title: "Electrician Chișinău | Recomandări | ElectroInstall | 24/7",
     description:
-      "Electrician Chișinău recomandări: autorizat ANRE, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații electrice în toate sectoarele.",
+      "Electrician Chișinău cu recomandări: preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații în toate sectoarele.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "ElectroInstall - Electrician Chișinău recomandări, autorizat ANRE",
+        alt: "ElectroInstall - Electrician Chișinău cu recomandări",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Electrician Bun Chișinău | Recomandări | Autorizat ANRE | 24/7",
+    title: "Electrician Chișinău | Recomandări | ElectroInstall | 24/7",
     description:
-      "Electrician Chișinău recomandări: autorizat ANRE, intervenții rapide, disponibil 24/7.",
+      "Electrician Chișinău cu recomandări: preț corect, intervenții rapide, disponibil 24/7.",
     images: ["/og-image.jpg"],
   },
   alternates: {
-    canonical: baseUrl,
+    canonical: SITE_URL,
     languages: {
-      "ro-MD": baseUrl,
-      "ru-MD": `${baseUrl}?lang=ru`,
+      "ro-MD": SITE_URL,
+      "ru-MD": `${SITE_URL}?lang=ru`,
     },
   },
   verification: {
@@ -112,16 +111,17 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
+const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Electrician",
+  "@type": "LocalBusiness",
+  "@id": `${SITE_URL}/#organization`,
   name: "ElectroInstall",
   alternateName: "Mester Electric",
   description:
-    "Electrician Chișinău recomandări: servicii electrice profesionale, autorizat ANRE. Intervenții rapide și disponibil 24/7. Montaj tablouri electrice, prize, instalații electrice în toate sectoarele și suburbiile Chișinăului.",
-  url: baseUrl,
+    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7. Montaj tablouri, prize, instalații în toate sectoarele și suburbiile.",
+  url: SITE_URL,
   telephone: "+373067596246",
-  email: "contact@electroinstall.md",
+  email: "radu@electroinstall.md",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Chișinău",
@@ -146,16 +146,21 @@ const jsonLd = {
     closes: "23:59",
   },
   priceRange: "MDL",
-  image: `${baseUrl}/og-image.jpg`,
+  image: `${SITE_URL}/og-image.jpg`,
   hasMap: "https://www.google.com/maps?q=Chisinau,Moldova",
-  knowsAbout: ["Instalații electrice", "Reparații electrice", "Tablouri electrice", "Autorizație ANRE"],
+  knowsAbout: ["Instalații electrice", "Reparații electrice", "Tablouri electrice", "Electrician autorizat"],
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+373067596246",
     contactType: "customer service",
     areaServed: "MD",
     availableLanguage: ["Romanian", "Russian"],
-    hoursAvailable: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "00:00", closes: "23:59" },
+    hoursAvailable: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: "00:00",
+      closes: "23:59",
+    },
   },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -183,7 +188,21 @@ const jsonLd = {
       },
     ],
   },
-  sameAs: [],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "ElectroInstall – Electrician Chișinău",
+  description: "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
+  publisher: { "@id": `${SITE_URL}/#organization` },
+  inLanguage: ["ro", "ru"],
+  potentialAction: {
+    "@type": "ReadAction",
+    target: [{ "@type": "EntryPoint", url: `${SITE_URL}/blog` }],
+  },
 };
 
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -194,17 +213,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro" className="dark" suppressHydrationWarning>
+    <html lang="ro" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#0a0a0b" />
-        <meta name="color-scheme" content="dark" />
+        <meta name="theme-color" content="#f8f9fb" />
+        <meta name="color-scheme" content="light" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans m-0 p-0 antialiased`} suppressHydrationWarning>
+      <body className={`${fraunces.variable} ${outfit.variable} font-sans m-0 p-0 antialiased`} suppressHydrationWarning>
         <LanguageProvider>
           <a href="#main-content" className="skip-link">
             Sari la conținut

@@ -7,7 +7,11 @@ interface SectionHeaderProps {
   centered?: boolean;
   className?: string;
   layout?: "split" | "standard";
+  inverted?: boolean;
 }
+
+const titleClass = "font-[var(--font-display)] text-[var(--text-h2)] font-semibold tracking-tight leading-[var(--leading-tight)]";
+const subtitleClass = "text-[var(--text-body)] leading-[var(--leading-relaxed)]";
 
 export default function SectionHeader({
   badge,
@@ -16,50 +20,51 @@ export default function SectionHeader({
   centered = false,
   className = "",
   layout = "standard",
+  inverted = false,
 }: SectionHeaderProps) {
+  const titleCls = inverted ? `${titleClass} !text-white` : `${titleClass} text-[var(--text-primary)]`;
+  const subtitleCls = inverted ? `${subtitleClass} text-white/95` : `${subtitleClass} text-[var(--text-secondary)]`;
+  const barCls = inverted ? "bg-[var(--accent-light)]" : "bg-[var(--accent)]";
+  const badgeCls = inverted ? "text-[var(--accent-light)]" : "text-[var(--accent)]";
+
   if (layout === "split") {
     return (
-      <div className={`flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-16 items-center lg:items-end text-center lg:text-left ${className}`}>
+      <header className={`flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-12 items-center lg:items-end text-center lg:text-left ${className}`}>
         <div className="max-w-3xl">
           {badge && (
-            <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-              <div className="w-8 h-px bg-[var(--accent)]" />
-              <span className="text-xs font-semibold tracking-widest text-[var(--accent)] uppercase">
-                {badge}
-              </span>
-            </div>
+            <p className={`text-[var(--text-small)] font-medium mb-3 ${badgeCls}`}>
+              {badge}
+            </p>
           )}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
+          <h2 className={titleCls}>
             {title}
           </h2>
         </div>
         {subtitle && (
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-xl lg:mb-2 border-l-0 lg:border-l-2 pl-0 lg:pl-6 mx-auto lg:mx-0">
+          <p className={`text-[var(--text-body)] sm:text-[var(--text-body-lg)] leading-[var(--leading-relaxed)] max-w-xl lg:mb-2 border-l-0 lg:border-l-2 pl-0 lg:pl-6 mx-auto lg:mx-0 ${inverted ? "text-white/95 border-[var(--accent-light)]/30" : "text-[var(--text-secondary)] border-[var(--accent)]/30"}`}>
             {subtitle}
           </p>
         )}
-      </div>
+      </header>
     );
   }
 
   return (
-    <div className={`mb-12 sm:mb-16 ${centered ? "text-center mx-auto" : ""} ${className}`}>
-      <div className={`relative inline-block ${centered ? "mx-auto text-center" : "text-left"}`}>
-        {badge && (
-          <span className="block text-xs font-semibold tracking-widest text-[var(--accent)] uppercase mb-3">
-            {badge}
-          </span>
-        )}
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-3 text-[var(--text-primary)] leading-tight">
-          {title}
-        </h2>
-        <div className={`h-1 w-12 bg-[var(--accent)] mt-6 rounded-full ${centered ? "mx-auto" : ""}`} />
-      </div>
+    <header className={`mb-12 ${centered ? "text-center" : "text-left"} ${className}`}>
+      {badge && (
+        <p className={`text-[var(--text-small)] font-medium mb-3 ${badgeCls}`}>
+          {badge}
+        </p>
+      )}
+      <h2 className={titleCls}>
+        {title}
+      </h2>
+      <div className={`h-1 w-12 ${barCls} rounded-full mt-5 ${centered ? "mx-auto" : ""}`} />
       {subtitle && (
-        <p className={`mt-6 text-base text-[var(--text-secondary)] leading-relaxed max-w-2xl ${centered ? "mx-auto" : ""}`}>
+        <p className={`mt-5 max-w-2xl ${centered ? "mx-auto" : ""} ${subtitleCls}`}>
           {subtitle}
         </p>
       )}
-    </div>
+    </header>
   );
 }

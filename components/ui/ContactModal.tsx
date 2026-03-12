@@ -3,9 +3,8 @@
 import { useState, useEffect, useCallback, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { Input, PhoneInput, Textarea } from "./Input";
-import Button from "./Button";
 import { useLanguage } from "@/context/LanguageContext";
-import { BUSINESS_INFO } from "@/lib/constants";
+import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
@@ -22,19 +21,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const { t } = useLanguage();
   const [shouldRender, setShouldRender] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
-  
-  // Form fields
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-  
-  // Validation errors
   const [errors, setErrors] = useState<{
     name?: string;
     phone?: string;
   }>({});
 
-  // Handle modal rendering with animation
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
@@ -53,7 +47,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }
   }, [isOpen]);
 
-  // Handle ESC key and Focus Trapping
   const handleEvents = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onClose();
@@ -92,7 +85,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   useEffect(() => {
     if (isOpen) {
       setPreviousFocus(document.activeElement as HTMLElement);
-      // Give it a small delay to ensure it's rendered
       setTimeout(() => {
         const firstInput = document.querySelector('.modal-panel-clean input') as HTMLElement;
         const closeBtn = document.querySelector('.modal-close-btn') as HTMLElement;
@@ -108,7 +100,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return () => window.removeEventListener("keydown", handleEvents);
   }, [handleEvents]);
 
-  // Form validation
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
     
@@ -153,33 +144,28 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <div className="modal-overlay" aria-modal="true" role="dialog">
-      {/* Backdrop */}
       <div
         className={`modal-backdrop ${isOpen ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Modal Panel - Cleaner Design */}
       <div className={`modal-panel-clean ${isOpen ? "modal-enter" : "modal-exit"}`}>
-        {/* Close Button */}
         <button onClick={onClose} className="modal-close-btn" aria-label="Închide">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Header - Premium */}
-        <div className="text-left mb-12">
-          <h2 className="text-4xl sm:text-5xl font-black text-[var(--text-primary)] mb-4 tracking-tighter italic uppercase">
+        <header className="text-left mb-10">
+          <h2 className="font-[var(--font-display)] text-[var(--text-h2)] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] mb-3">
             {t.contact_form.title}
           </h2>
-          <p className="text-lg text-[var(--text-secondary)] font-medium">
+          <p className="text-[var(--text-body)] text-[var(--text-secondary)] leading-[var(--leading-relaxed)]">
             {t.contact_form.subtitle}
           </p>
-        </div>
+        </header>
 
-        {/* Success State */}
         {formState === "success" ? (
           <div className="modal-success">
             <div className="modal-success-icon">
@@ -187,8 +173,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-4xl font-black text-[var(--text-primary)] mb-4 tracking-tighter uppercase italic">{t.contact_form.success_title}</h3>
-            <p className="text-lg text-[var(--text-secondary)] font-medium">{t.contact_form.success_subtitle}</p>
+            <h3 className="font-[var(--font-display)] text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">{t.contact_form.success_title}</h3>
+            <p className="text-[var(--text-body)] text-[var(--text-secondary)]">{t.contact_form.success_subtitle}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -227,10 +213,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </div>
             )}
 
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              className="w-full"
+              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 text-[var(--text-small)] font-semibold bg-[var(--accent)] text-[var(--text-inverted)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
               disabled={formState === "submitting"}
             >
               {formState === "submitting" ? (
@@ -241,14 +226,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               ) : (
                 t.contact_form.submit_btn
               )}
-            </Button>
+            </button>
           </form>
         )}
 
-        {/* Quick Call */}
         <div className="modal-quick-call">
           <span>{t.contact_form.quick_call}</span>
-          <a href={`tel:${BUSINESS_INFO.phone.replace(/\s/g, "")}`} className="modal-phone-link">
+          <a href={PHONE_HREF} className="modal-phone-link">
             {BUSINESS_INFO.phone}
           </a>
         </div>

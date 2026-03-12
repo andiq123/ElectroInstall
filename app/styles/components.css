@@ -8,29 +8,31 @@
    ============================================ */
 
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1.75rem;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    border-radius: var(--radius-xl);
-    cursor: pointer;
-    border: none;
-    transition: all var(--transition-base);
-    min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-small);
+  font-weight: 600;
+  border-radius: var(--radius-card);
+  border: none;
+  cursor: pointer;
+  transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base), transform var(--transition-base);
 }
 
 .btn-primary {
-    background: var(--gradient-power);
+    background: var(--accent);
     color: var(--text-inverted);
-    box-shadow: var(--shadow-accent);
+    border: 1px solid transparent;
+    box-shadow: var(--shadow-accent-sm);
 }
 
 .btn-primary:hover {
+    opacity: 0.92;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-premium);
+    box-shadow: var(--shadow-accent);
 }
 
 .btn-secondary {
@@ -42,6 +44,17 @@
 .btn-secondary:hover {
     border-color: var(--accent);
     background: var(--accent-muted);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-glass);
+}
+
+.btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .btn-contrast {
@@ -63,12 +76,12 @@
     background: var(--bg-elevated);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius-2xl);
-    transition: all var(--transition-base);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .card:hover {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-premium);
+    border-color: var(--border-accent);
+    box-shadow: var(--shadow-md);
 }
 
 .card-elevated {
@@ -90,44 +103,18 @@
 
 .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glass);
 }
 
-/* ============================================
-   SERVICE CARDS
-   ============================================ */
-
-.service-card {
-    --card-color: var(--accent);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-glass);
+.glass-panel {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-2xl);
-    position: relative;
-    overflow: hidden;
-    transition: all var(--transition-base);
+    box-shadow: var(--shadow-glass);
 }
 
-.service-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--card-color);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--transition-base);
-}
-
-.service-card:hover::before { transform: scaleX(1); }
-.service-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
-
-.service-card[data-category="emergency"] { --card-color: var(--cat-emergency); }
-.service-card[data-category="installation"] { --card-color: var(--cat-installation); }
-.service-card[data-category="appliances"] { --card-color: var(--cat-appliances); }
-.service-card[data-category="repair"] { --card-color: var(--cat-repair); }
-.service-card[data-category="panels"] { --card-color: var(--cat-panels); }
-.service-card[data-category="wiring"] { --card-color: var(--cat-wiring); }

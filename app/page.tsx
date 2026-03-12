@@ -3,57 +3,35 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import ServicesSection from "@/components/ServicesSection";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import ProcessSection from "@/components/ProcessSection";
+import FeaturesSection from "@/components/FeaturesSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { ContactModal, ScrollReveal } from "@/components/ui";
+import Reveal from "@/components/Reveal";
+import { ContactModal } from "@/components/ui";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <>
+    <div className="min-h-screen w-full bg-white font-[var(--font-body)]">
       <Navbar onOpenModal={openModal} />
-      <main id="main-content" className="min-h-screen bg-[var(--bg-primary)]">
-        {/* Hero is always visible immediately */}
+      <main id="main-content">
         <HeroSection onOpenModal={openModal} />
-        
-        {/* Other sections reveal on scroll */}
-        <ScrollReveal>
-          <ServicesSection onOpenModal={openModal} />
-        </ScrollReveal>
-        
-        <ScrollReveal delay={50}>
-          <WhyChooseUs />
-        </ScrollReveal>
-        
-        <ScrollReveal delay={50}>
-          <ProcessSection />
-        </ScrollReveal>
-        
-        <ScrollReveal delay={50}>
+        <Reveal className="section-scroll-reveal">
+          <FeaturesSection />
+        </Reveal>
+        <Reveal className="section-scroll-reveal">
           <FAQSection />
-        </ScrollReveal>
-        
-        <ScrollReveal delay={50}>
+        </Reveal>
+        <Reveal className="section-scroll-reveal">
           <ContactSection onOpenModal={openModal} />
-        </ScrollReveal>
+        </Reveal>
       </main>
-      
-      <ScrollReveal>
-        <div className="bg-[var(--bg-secondary)] border-t border-[var(--border-glass)]">
-          <Footer />
-        </div>
-      </ScrollReveal>
-
-      {/* Contact Modal */}
+      <Footer />
       <ContactModal isOpen={isModalOpen} onClose={closeModal} />
-    </>
+    </div>
   );
 }
