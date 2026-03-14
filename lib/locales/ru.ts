@@ -33,6 +33,8 @@ export const ru = {
     cta_tagline: "для безопасного дома",
     top_line_left: "Электроуслуги",
     top_line_right: "Запросить предложение",
+    badge_text: "Довольных Клиентов",
+    call_us: "Звоните на "
   },
   home: {
     features_title: "Почему ElectroInstall",

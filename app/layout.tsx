@@ -231,7 +231,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${fraunces.variable} ${outfit.variable} font-sans m-0 p-0 antialiased`} suppressHydrationWarning>
+      <body className={`${fraunces.variable} ${outfit.variable} font-sans m-0 p-0 antialiased bg-[var(--page-bg)] text-[var(--text-primary)] selection:bg-[var(--accent)] selection:text-white`} suppressHydrationWarning>
         <LanguageProvider>
           <a href="#main-content" className="skip-link">
             Sari la conținut

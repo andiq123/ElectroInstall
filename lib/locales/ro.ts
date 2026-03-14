@@ -33,6 +33,8 @@ export const ro = {
     trust_line: "Preț înainte de lucru · Conform normelor · Disponibil 24/7",
     top_line_left: "Servicii electrice",
     top_line_right: "Solicită ofertă",
+    badge_text: "Clienți Mulțumiți",
+    call_us: "Sună la "
   },
   home: {
     features_title: "De ce ElectroInstall",

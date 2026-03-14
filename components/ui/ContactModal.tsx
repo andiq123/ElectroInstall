@@ -31,6 +31,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShouldRender(true);
       document.body.style.overflow = "hidden";
     } else {
@@ -84,6 +85,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviousFocus(document.activeElement as HTMLElement);
       setTimeout(() => {
         const firstInput = document.querySelector('.modal-panel-clean input') as HTMLElement;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import { motion, Variants } from "framer-motion";
+import { StarIcon } from "@heroicons/react/20/solid";
 
 interface Testimonial {
   quote: string;
@@ -12,7 +14,7 @@ function QuoteMark() {
   return (
     <svg
       aria-hidden="true"
-      className="w-8 h-8 text-[var(--accent)] opacity-25"
+      className="w-10 h-10 text-[var(--accent)] opacity-20 absolute top-6 right-6"
       viewBox="0 0 24 24"
       fill="currentColor"
     >
@@ -21,18 +23,45 @@ function QuoteMark() {
   );
 }
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+};
+
 function TestimonialCard({ quote, name, service }: Testimonial) {
   return (
-    <blockquote className="flex flex-col gap-4 p-6 sm:p-8 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-glass)] h-full">
+    <motion.blockquote 
+      variants={itemVariants}
+      whileHover={{ y: -5 }}
+      className="relative flex flex-col gap-5 p-7 sm:p-8 rounded-3xl bg-white shadow-[var(--shadow-md)] border border-[var(--border-glass)] h-full overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-premium)] hover:border-[var(--accent-muted)]"
+    >
       <QuoteMark />
-      <p className="text-[1.0625rem] text-[var(--text-secondary)] leading-[1.65] flex-1">
-        {quote}
+      <div className="flex gap-1 text-[var(--accent)] mb-2">
+        {[...Array(5)].map((_, i) => (
+          <StarIcon key={i} className="w-5 h-5" />
+        ))}
+      </div>
+      <p className="text-[1.125rem] text-[var(--text-secondary)] leading-relaxed flex-1 relative z-10 font-medium italic">
+        &quot;{quote}&quot;
       </p>
-      <footer className="pt-4 border-t border-[var(--border-glass)]">
-        <p className="text-[0.9375rem] font-semibold text-[var(--text-primary)]">{name}</p>
-        <p className="text-[var(--text-small)] text-[var(--text-muted)]">{service}</p>
+      <footer className="pt-5 border-t border-[var(--border-glass)] flex items-center gap-4">
+        <div className="w-10 h-10 rounded-full bg-[var(--bg-inset)] flex items-center justify-center text-[var(--text-tertiary)] font-bold text-lg">
+          {name.charAt(0)}
+        </div>
+        <div>
+          <p className="text-[1rem] font-bold text-[var(--text-primary)]">{name}</p>
+          <p className="text-[0.875rem] text-[var(--text-muted)] font-medium">{service}</p>
+        </div>
       </footer>
-    </blockquote>
+    </motion.blockquote>
   );
 }
 
@@ -41,16 +70,49 @@ export default function TestimonialsSection() {
   const data = t.testimonials as { title: string; items: Testimonial[] };
 
   return (
-    <section className="bg-[var(--bg-base)] border-t border-black/[0.06] py-16 sm:py-20 lg:py-24">
-      <div className="container-inner">
-        <h2 className="font-[var(--font-display)] text-[var(--text-h2)] font-semibold text-[var(--text-primary)] tracking-tight leading-[var(--leading-tight)] text-center mb-10 sm:mb-12">
-          {data.title}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
+    <section className="bg-[var(--bg-base)] py-20 sm:py-24 lg:py-32 relative overflow-hidden">
+      {/* Decorative Background Grid */}
+      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(var(--primary) 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent opacity-90 pointer-events-none z-0" />
+      
+      {/* Animated Glowing Orbs */}
+      <motion.div 
+        className="absolute right-0 top-0 w-[500px] h-[500px] bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] opacity-[0.04] blur-[120px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3"
+        animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div 
+        className="absolute left-0 bottom-0 w-[400px] h-[400px] bg-[var(--primary)] opacity-[0.03] blur-[100px] rounded-full pointer-events-none -translate-x-1/2 translate-y-1/3"
+        animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      />
+      
+      <div className="container-inner relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <h2 className="font-[var(--font-display)] text-[2.5rem] sm:text-[3rem] font-extrabold text-[var(--text-primary)] tracking-tight leading-tight">
+            {data.title}
+          </h2>
+          <div className="w-20 h-1.5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-dark)] rounded-full mx-auto mt-6" />
+        </motion.div>
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto"
+        >
           {data.items.map((item) => (
             <TestimonialCard key={item.name} {...item} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

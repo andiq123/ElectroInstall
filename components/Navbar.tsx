@@ -24,7 +24,10 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
   useEffect(() => {
     if (menuOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
