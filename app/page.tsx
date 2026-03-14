@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -23,14 +22,7 @@ export default function Home() {
     <div className="min-h-screen w-full bg-white font-[var(--font-body)]">
       <Navbar onOpenModal={openModal} />
       
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={locale}
-          initial={{ opacity: 0, filter: "blur(8px)", y: 10 }}
-          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          exit={{ opacity: 0, filter: "blur(8px)", y: -10 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-        >
+      <div key={locale} className="animate-page-fade">
           <main id="main-content">
             <HeroSection onOpenModal={openModal} />
             <Reveal className="section-scroll-reveal">
@@ -47,8 +39,7 @@ export default function Home() {
             </Reveal>
           </main>
           <Footer />
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
       <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </div>

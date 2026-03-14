@@ -1,7 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface RevealProps {
@@ -19,19 +18,46 @@ export default function Reveal({
   yOffset = 40,
   duration = 0.6
 }: RevealProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        rootMargin: "-100px",
+        threshold: 0.1,
+      }
+    );
+
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ 
-        duration: duration, 
-        delay: delay, 
-        ease: [0.22, 1, 0.36, 1] 
+    <div
+      ref={ref}
+      style={{
+        transform: isVisible ? "translateY(0)" : `translateY(${yOffset}px)`,
+        opacity: isVisible ? 1 : 0,
+        transition: `all ${duration}s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
       }}
       className={cn("w-full h-full", className)}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

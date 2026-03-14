@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
-import { motion, Variants } from "framer-motion";
+import Reveal from "@/components/Reveal";
 import { StarIcon } from "@heroicons/react/20/solid";
 
 interface Testimonial {
@@ -23,25 +23,10 @@ function QuoteMark() {
   );
 }
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
-};
-
-function TestimonialCard({ quote, name, service }: Testimonial) {
+function TestimonialCard({ quote, name, service, delayClass }: Testimonial & { delayClass?: string }) {
   return (
-    <motion.blockquote 
-      variants={itemVariants}
-      whileHover={{ y: -5 }}
-      className="relative flex flex-col gap-5 p-7 sm:p-8 rounded-3xl bg-white shadow-[var(--shadow-md)] border border-[var(--border-glass)] h-full overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-premium)] hover:border-[var(--accent-muted)]"
+    <div 
+      className={`relative flex flex-col gap-5 p-7 sm:p-8 rounded-3xl bg-white shadow-[var(--shadow-md)] border border-[var(--border-glass)] h-full overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-premium)] hover:border-[var(--accent-muted)] hover:-translate-y-1 animate-fadeInUp ${delayClass}`}
     >
       <QuoteMark />
       <div className="flex gap-1 text-[var(--accent)] mb-2">
@@ -61,7 +46,7 @@ function TestimonialCard({ quote, name, service }: Testimonial) {
           <p className="text-[0.875rem] text-[var(--text-muted)] font-medium">{service}</p>
         </div>
       </footer>
-    </motion.blockquote>
+    </div>
   );
 }
 
@@ -77,42 +62,32 @@ export default function TestimonialsSection() {
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent opacity-90 pointer-events-none z-0" />
       
       {/* Animated Glowing Orbs */}
-      <motion.div 
-        className="absolute right-0 top-0 w-[500px] h-[500px] bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] opacity-[0.04] blur-[120px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3"
-        animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+      <div 
+        className="absolute right-0 top-0 w-[500px] h-[500px] bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] opacity-[0.04] blur-[120px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3 animate-orb"
       />
-      <motion.div 
-        className="absolute left-0 bottom-0 w-[400px] h-[400px] bg-[var(--primary)] opacity-[0.03] blur-[100px] rounded-full pointer-events-none -translate-x-1/2 translate-y-1/3"
-        animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      <div 
+        className="absolute left-0 bottom-0 w-[400px] h-[400px] bg-[var(--primary)] opacity-[0.03] blur-[100px] rounded-full pointer-events-none -translate-x-1/2 translate-y-1/3 animate-orb-reverse delay-500"
       />
       
       <div className="container-inner relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+        <Reveal 
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="font-[var(--font-display)] text-[2.5rem] sm:text-[3rem] font-extrabold text-[var(--text-primary)] tracking-tight leading-tight">
             {data.title}
           </h2>
           <div className="w-20 h-1.5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-dark)] rounded-full mx-auto mt-6" />
-        </motion.div>
+        </Reveal>
         
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+        <Reveal 
           className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto"
+          delay={0.2}
         >
-          {data.items.map((item) => (
-            <TestimonialCard key={item.name} {...item} />
-          ))}
-        </motion.div>
+          {data.items.map((item, i) => {
+            const delayClass = i === 1 ? 'delay-200' : i === 2 ? 'delay-400' : '';
+            return <TestimonialCard key={item.name} {...item} delayClass={delayClass} />
+          })}
+        </Reveal>
       </div>
     </section>
   );
