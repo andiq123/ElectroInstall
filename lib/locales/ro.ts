@@ -145,6 +145,26 @@ export const ro = {
       },
     ]
   },
+  testimonials: {
+    title: "Ce spun clienții",
+    items: [
+      {
+        quote: "Mi-a spus cât costă înainte să înceapă. A terminat mai repede decât mă așteptam și a lăsat curat după el.",
+        name: "Andrei M.",
+        service: "Montaj tablou electric",
+      },
+      {
+        quote: "Am sunat pentru o priză arsă, nu era ceva mare. A venit a doua zi, a rezolvat în 20 de minute. Corect și simplu.",
+        name: "Elena P.",
+        service: "Reparație priză",
+      },
+      {
+        quote: "Am rămas fără curent sâmbătă seara. A răspuns la telefon și a venit în mai puțin de o oră. Recomand.",
+        name: "Sergiu T.",
+        service: "Urgență electrică",
+      },
+    ],
+  },
   faq: {
     title_part1: "Întrebări",
     title_part2: "frecvente",

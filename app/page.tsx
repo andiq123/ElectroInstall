@@ -4,6 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -22,6 +23,9 @@ export default function Home() {
         <HeroSection onOpenModal={openModal} />
         <Reveal className="section-scroll-reveal">
           <FeaturesSection />
+        </Reveal>
+        <Reveal className="section-scroll-reveal">
+          <TestimonialsSection />
         </Reveal>
         <Reveal className="section-scroll-reveal">
           <FAQSection />
