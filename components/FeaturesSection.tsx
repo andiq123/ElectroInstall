@@ -28,7 +28,7 @@ export default function FeaturesSection() {
   };
 
   return (
-    <section className="bg-[var(--bg-section-alt)] py-20 sm:py-24 lg:py-32 relative overflow-hidden scroll-mt-20">
+    <section className="bg-[var(--bg-section-alt)] py-14 sm:py-24 lg:py-28 relative overflow-hidden scroll-mt-20">
       
       {/* Animated Floating Shapes */}
       <div 
@@ -39,33 +39,33 @@ export default function FeaturesSection() {
       />
 
       {/* Subtle Dot Grid */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none hidden sm:block" 
            style={{ backgroundImage: 'radial-gradient(var(--primary) 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-white to-transparent z-0 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white to-transparent z-0 pointer-events-none" />
 
       <div className="container-inner relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24 items-center">
           
           {/* Images Layout */}
           <div className="relative order-2 lg:order-1">
-            <div className="absolute -inset-4 sm:-inset-8 border pointer-events-none border-[var(--border-glass)] rounded-[3rem] opacity-50 block" />
+            <div className="absolute -inset-2 sm:-inset-8 border pointer-events-none border-[var(--border-glass)] rounded-[2rem] sm:rounded-[3rem] opacity-40 sm:opacity-50 block" />
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 relative z-10">
               <Reveal 
-                className="relative aspect-[4/5] sm:aspect-[3/4] rounded-3xl overflow-hidden shadow-[var(--shadow-premium)] border border-white/50"
+                className="relative aspect-[16/10] sm:aspect-[3/4] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[var(--shadow-premium)] border border-white/50 max-h-[220px] sm:max-h-none"
               >
                 <Image
                   src={WORK_IMAGES[0]}
                   alt="Instalații electrice"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover transition-transform duration-1000 hover:scale-110"
+                  sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 40vw"
+                  className="object-cover transition-transform duration-1000 sm:hover:scale-110"
                 />
               </Reveal>
               
               <Reveal 
-                className="relative aspect-[4/5] sm:aspect-[3/4] rounded-3xl overflow-hidden shadow-[var(--shadow-premium)] border border-white/50 sm:translate-y-12"
+                className="relative hidden sm:block aspect-[3/4] rounded-3xl overflow-hidden shadow-[var(--shadow-premium)] border border-white/50 sm:translate-y-12"
                 delay={0.2}
                 yOffset={60}
               >
@@ -81,18 +81,18 @@ export default function FeaturesSection() {
           </div>
 
           {/* Text Content */}
-          <div className="order-1 lg:order-2 space-y-8 lg:space-y-12">
+          <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 lg:space-y-10">
             <Reveal>
-              <h2 className="font-[var(--font-display)] text-[2rem] sm:text-[2.5rem] lg:text-[3rem] font-bold text-[var(--text-primary)] leading-[1.15] tracking-tight mb-6">
+              <h2 className="font-[var(--font-display)] text-[1.75rem] sm:text-[2.25rem] lg:text-[2.5rem] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] tracking-tight mb-4 sm:mb-5 text-balance">
                 {home.features_title}
               </h2>
-              <p className="text-lg sm:text-xl text-[var(--text-secondary)] leading-relaxed max-w-xl">
+              <p className="text-[0.9875rem] sm:text-[var(--text-body-lg)] text-[var(--text-secondary)] leading-[1.65] sm:leading-[var(--leading-relaxed)] max-w-xl">
                 {home.features_subtitle}
               </p>
             </Reveal>
             
             <Reveal 
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6"
               delay={0.2}
             >
               {home.features.map((item, i) => {
@@ -102,12 +102,12 @@ export default function FeaturesSection() {
                 return (
                   <div 
                     key={item.label} 
-                    className={`group bg-white rounded-2xl p-6 shadow-sm border border-[var(--border-glass)] hover:shadow-[var(--shadow-md)] hover:border-[var(--accent-muted)] transition-all flex flex-col items-start gap-4 animate-fadeInUp ${delayClass}`}
+                    className={`group bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[var(--border-default)] hover:shadow-[var(--shadow-md)] hover:border-[var(--accent-muted)] transition-all flex flex-col items-start gap-3 sm:gap-4 animate-fadeInUp ${delayClass}`}
                   >
-                    <div className="flex w-12 h-12 items-center justify-center rounded-xl bg-[var(--bg-section-alt)] text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
+                    <div className="flex w-10 h-10 sm:w-12 sm:h-12 items-center justify-center rounded-xl bg-[var(--bg-section-alt)] text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
                       <Icon size="md" />
                     </div>
-                    <span className="text-[1.0625rem] font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-dark)] transition-colors">
+                    <span className="text-[1rem] sm:text-[1.0625rem] font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-dark)] transition-colors">
                       {item.label}
                     </span>
                   </div>

@@ -14,9 +14,9 @@ export default function FAQSection() {
   const title = `${faq.title_part1} ${faq.title_part2}`;
 
   return (
-    <section id="faq" className="scroll-mt-20 bg-[var(--bg-section-alt)] py-20 sm:py-24 lg:py-32 relative overflow-hidden">
+    <section id="faq" className="scroll-mt-20 bg-[var(--bg-section-alt)] py-14 sm:py-24 lg:py-28 relative overflow-hidden">
       {/* Decorative Grid */}
-      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none" 
+      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none hidden sm:block" 
            style={{ backgroundImage: 'linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
       <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-[var(--bg-base)] via-transparent to-[var(--bg-base)] opacity-80" />
       
@@ -33,30 +33,30 @@ export default function FAQSection() {
           <SectionHeader
             title={title}
             centered
-            className="mb-12 sm:mb-16"
+            className="mb-8 sm:mb-16"
           />
         </Reveal>
         
         <Reveal 
-          className="flex flex-col gap-4" 
+          className="flex flex-col gap-3 sm:gap-4" 
         >
-          <ul role="list" className="flex flex-col gap-4">
+          <ul role="list" className="flex flex-col gap-3 sm:gap-4">
             {faq.items.map((item, index) => {
               const isOpen = openIndex === index;
               return (
                 <li
                   key={index}
-                  className={`bg-white rounded-2xl border border-[var(--border-glass)] shadow-sm overflow-hidden transition-colors hover:border-[var(--accent-muted)] animate-fadeInUp delay-${(index + 1) * 100}`}
+                  className="bg-white rounded-2xl border border-[var(--border-default)] shadow-sm overflow-hidden transition-colors hover:border-[var(--accent-muted)] animate-fadeInUp"
                 >
                   <button
                     type="button"
-                    className="w-full text-left px-6 py-5 sm:px-8 sm:py-6 flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                    className="w-full text-left px-5 py-4 sm:px-8 sm:py-6 flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${index}`}
                     id={`faq-question-${index}`}
                   >
-                    <span className={`text-[1.125rem] font-semibold transition-colors ${isOpen ? "text-[var(--accent)]" : "text-[var(--text-primary)]"}`}>
+                    <span className={`text-[1.0625rem] sm:text-[1.125rem] font-semibold transition-colors ${isOpen ? "text-[var(--accent)]" : "text-[var(--text-primary)]"}`}>
                       {item.question}
                     </span>
                     <span 
@@ -74,7 +74,7 @@ export default function FAQSection() {
                     className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                   >
                     <div className="overflow-hidden">
-                      <div className="px-6 pb-6 sm:px-8 sm:pb-8 text-[1.0625rem] text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-glass)] pt-4 mt-2">
+                      <div className="px-5 pb-5 sm:px-8 sm:pb-8 text-[1rem] sm:text-[1.0625rem] text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-glass)] pt-3 sm:pt-4 mt-1 sm:mt-2">
                         {item.answer}
                       </div>
                     </div>

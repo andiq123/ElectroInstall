@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { CloseIcon, MenuIcon } from "@/components/ui/Icons";
 import Logo from "@/components/ui/Logo";
+import { ButtonWithIcon } from "@/components/ui";
 import { BUSINESS_INFO } from "@/lib/constants";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -43,7 +44,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[var(--border-default)]">
         <div className="w-full flex items-center h-14 sm:h-16 gap-3 sm:gap-4 px-[var(--container-px)] sm:px-[var(--container-px-sm)]">
           {/* 1. Logo */}
           <Link
@@ -63,7 +64,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
               <Link
                 key={href}
                 href={href}
-                className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
+                className="text-[0.9375rem] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors whitespace-nowrap"
               >
                 {label}
               </Link>
@@ -89,13 +90,12 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           >
             {menuOpen ? <CloseIcon size="lg" /> : <MenuIcon size="lg" />}
           </button>
-          <button
-            type="button"
+          <ButtonWithIcon
             onClick={() => onOpenModal?.()}
-            className="hidden md:inline-flex min-h-[40px] px-4 sm:px-5 py-2.5 rounded-lg text-[14px] sm:text-[15px] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity whitespace-nowrap items-center justify-center flex-shrink-0"
-          >
-            {t.common.cta_rapid}
-          </button>
+            text={t.common.cta_rapid}
+            size="sm"
+            className="hidden md:inline-flex whitespace-nowrap flex-shrink-0"
+          />
         </div>
       </header>
 
@@ -113,9 +113,9 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             aria-hidden
           />
           <aside
-            className={`absolute top-0 right-0 w-full max-w-[min(320px,85vw)] h-full bg-white border-l border-black/[0.08] shadow-xl flex flex-col transition-transform duration-300 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+            className={`absolute top-0 right-0 w-full max-w-[min(320px,85vw)] h-full bg-white border-l border-[var(--border-default)] shadow-xl flex flex-col transition-transform duration-300 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
           >
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-black/[0.06]">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-[var(--border-default)]">
               <Link href="/" onClick={closeMenu} className="flex items-center" aria-label="ElectroInstall">
                 <Logo size="sm" showText={true} animated={false} light={false} />
               </Link>
@@ -140,14 +140,15 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                 </Link>
               ))}
             </nav>
-            <div className="p-4 sm:p-6 border-t border-black/[0.06] space-y-3">
-              <button
-                type="button"
-                onClick={() => { closeMenu(); onOpenModal?.(); }}
-                className="w-full min-h-[48px] py-3.5 rounded-xl text-[15px] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity"
-              >
-                {t.common.cta_primary}
-              </button>
+            <div className="p-4 sm:p-6 border-t border-[var(--border-default)] space-y-3">
+              <ButtonWithIcon
+                onClick={() => {
+                  closeMenu();
+                  onOpenModal?.();
+                }}
+                text={t.common.cta_primary}
+                className="w-full justify-center"
+              />
               <p className="text-[var(--text-small)] text-[var(--text-muted)]">
                 {t.nav.appointments}: {BUSINESS_INFO.phone}
               </p>

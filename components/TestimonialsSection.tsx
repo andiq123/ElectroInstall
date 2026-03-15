@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/context/LanguageContext";
 import Reveal from "@/components/Reveal";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { StarIcon } from "@heroicons/react/20/solid";
 
 interface Testimonial {
@@ -26,23 +27,25 @@ function QuoteMark() {
 function TestimonialCard({ quote, name, service, delayClass }: Testimonial & { delayClass?: string }) {
   return (
     <div 
-      className={`relative flex flex-col gap-5 p-7 sm:p-8 rounded-3xl bg-white shadow-[var(--shadow-md)] border border-[var(--border-glass)] h-full overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-premium)] hover:border-[var(--accent-muted)] hover:-translate-y-1 animate-fadeInUp ${delayClass}`}
+      className={`relative flex flex-col gap-4 sm:gap-5 p-5 sm:p-8 rounded-2xl bg-white shadow-[var(--shadow-md)] border border-[var(--border-default)] h-full overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-premium)] hover:border-[var(--accent-muted)] hover:-translate-y-1 animate-fadeInUp ${delayClass}`}
     >
-      <QuoteMark />
-      <div className="flex gap-1 text-[var(--accent)] mb-2">
+      <div className="hidden sm:block">
+        <QuoteMark />
+      </div>
+      <div className="flex gap-1 text-[var(--accent)] mb-1 sm:mb-2">
         {[...Array(5)].map((_, i) => (
-          <StarIcon key={i} className="w-5 h-5" />
+          <StarIcon key={i} className="w-4 h-4 sm:w-5 sm:h-5" />
         ))}
       </div>
-      <p className="text-[1.125rem] text-[var(--text-secondary)] leading-relaxed flex-1 relative z-10 font-medium italic">
+      <p className="text-[1rem] sm:text-[1.0625rem] text-[var(--text-secondary)] leading-relaxed flex-1 relative z-10 font-medium italic">
         &quot;{quote}&quot;
       </p>
-      <footer className="pt-5 border-t border-[var(--border-glass)] flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-[var(--bg-inset)] flex items-center justify-center text-[var(--text-tertiary)] font-bold text-lg">
+      <footer className="pt-4 sm:pt-5 border-t border-[var(--border-default)] flex items-center gap-3 sm:gap-4">
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[var(--bg-inset)] flex items-center justify-center text-[var(--text-tertiary)] font-bold text-base sm:text-lg">
           {name.charAt(0)}
         </div>
         <div>
-          <p className="text-[1rem] font-bold text-[var(--text-primary)]">{name}</p>
+          <p className="text-[1rem] font-semibold text-[var(--text-primary)]">{name}</p>
           <p className="text-[0.875rem] text-[var(--text-muted)] font-medium">{service}</p>
         </div>
       </footer>
@@ -55,9 +58,9 @@ export default function TestimonialsSection() {
   const data = t.testimonials as { title: string; items: Testimonial[] };
 
   return (
-    <section className="bg-[var(--bg-base)] py-20 sm:py-24 lg:py-32 relative overflow-hidden">
+    <section className="bg-[var(--bg-base)] py-14 sm:py-24 lg:py-28 relative overflow-hidden">
       {/* Decorative Background Grid */}
-      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none" 
+      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none hidden sm:block" 
            style={{ backgroundImage: 'radial-gradient(var(--primary) 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent opacity-90 pointer-events-none z-0" />
       
@@ -70,17 +73,16 @@ export default function TestimonialsSection() {
       />
       
       <div className="container-inner relative z-10">
-        <Reveal 
-          className="text-center mb-12 sm:mb-16"
-        >
-          <h2 className="font-[var(--font-display)] text-[2.5rem] sm:text-[3rem] font-extrabold text-[var(--text-primary)] tracking-tight leading-tight">
-            {data.title}
-          </h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-dark)] rounded-full mx-auto mt-6" />
+        <Reveal>
+          <SectionHeader
+            title={data.title}
+            centered
+            className="mb-8 sm:mb-16"
+          />
         </Reveal>
         
         <Reveal 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 max-w-6xl mx-auto"
           delay={0.2}
         >
           {data.items.map((item, i) => {
