@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { BoltIcon, ClipboardIcon, CurrencyIcon, ShieldIcon } from "@/components/ui/Icons";
 import Reveal from "@/components/Reveal";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const WORK_IMAGES = [
   "/electric-panel-photo.jpg",
@@ -17,20 +18,45 @@ const ICON_MAP = {
   clipboard: ClipboardIcon,
 } as const;
 
+type FeatureItem = {
+  label: string;
+  icon: keyof typeof ICON_MAP;
+};
 
+const ANIMATION_DELAY_CLASS = ["", "delay-100", "delay-200", "delay-300"] as const;
+
+function getDelayClass(index: number): string {
+  return ANIMATION_DELAY_CLASS[index] ?? "";
+}
+
+function FeatureCard({ item, delayClass }: { item: FeatureItem; delayClass: string }) {
+  const Icon = ICON_MAP[item.icon] ?? CurrencyIcon;
+
+  return (
+    <div
+      className={`group bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[var(--border-default)] hover:shadow-[var(--shadow-md)] hover:border-[var(--accent-muted)] transition-all flex flex-col items-start gap-3 sm:gap-4 animate-fadeInUp ${delayClass}`}
+    >
+      <div className="flex w-10 h-10 sm:w-12 sm:h-12 items-center justify-center rounded-xl bg-[var(--bg-section-alt)] text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
+        <Icon size="md" />
+      </div>
+      <span className="text-[1rem] sm:text-[1.0625rem] font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-dark)] transition-colors">
+        {item.label}
+      </span>
+    </div>
+  );
+}
 
 export default function FeaturesSection() {
   const { t } = useLanguage();
   const home = t.home as {
     features_title: string;
     features_subtitle: string;
-    features: Array<{ label: string; icon: keyof typeof ICON_MAP }>;
+    features: FeatureItem[];
   };
 
   return (
-    <section className="bg-[var(--bg-section-alt)] py-14 sm:py-24 lg:py-28 relative overflow-hidden scroll-mt-20">
+    <section id="services" className="bg-[var(--bg-section-alt)] py-14 sm:py-24 lg:py-28 relative overflow-hidden scroll-mt-20">
       
-      {/* Animated Floating Shapes */}
       <div 
         className="absolute top-20 right-10 w-24 h-24 border-[4px] border-[var(--accent)] rounded-2xl opacity-10 pointer-events-none z-0 hidden lg:block animate-spin-slow"
       />
@@ -38,7 +64,6 @@ export default function FeaturesSection() {
         className="absolute bottom-20 left-10 w-32 h-32 border-[2px] border-[var(--primary)] rounded-full opacity-10 pointer-events-none z-0 hidden lg:block animate-orb"
       />
 
-      {/* Subtle Dot Grid */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none hidden sm:block" 
            style={{ backgroundImage: 'radial-gradient(var(--primary) 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
       <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-white to-transparent z-0 pointer-events-none" />
@@ -47,7 +72,6 @@ export default function FeaturesSection() {
       <div className="container-inner relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24 items-center">
           
-          {/* Images Layout */}
           <div className="relative order-2 lg:order-1">
             <div className="absolute -inset-2 sm:-inset-8 border pointer-events-none border-[var(--border-glass)] rounded-[2rem] sm:rounded-[3rem] opacity-40 sm:opacity-50 block" />
             
@@ -74,45 +98,32 @@ export default function FeaturesSection() {
                   alt="Testare panou electric"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover transition-transform duration-1000 hover:scale-110"
+                  className="object-cover transition-transform duration-1000 sm:hover:scale-110"
                 />
               </Reveal>
             </div>
           </div>
 
-          {/* Text Content */}
           <div className="order-1 lg:order-2 space-y-6 sm:space-y-8 lg:space-y-10">
             <Reveal>
-              <h2 className="font-[var(--font-display)] text-[1.75rem] sm:text-[2.25rem] lg:text-[2.5rem] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] tracking-tight mb-4 sm:mb-5 text-balance">
-                {home.features_title}
-              </h2>
-              <p className="text-[0.9875rem] sm:text-[var(--text-body-lg)] text-[var(--text-secondary)] leading-[1.65] sm:leading-[var(--leading-relaxed)] max-w-xl">
-                {home.features_subtitle}
-              </p>
+              <SectionHeader
+                title={home.features_title}
+                subtitle={home.features_subtitle}
+                className="!mb-0"
+              />
             </Reveal>
             
             <Reveal 
               className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6"
               delay={0.2}
             >
-              {home.features.map((item, i) => {
-                const Icon = ICON_MAP[(item.icon as keyof typeof ICON_MAP)] ?? CurrencyIcon;
-                // Add staggered animation delay classes conditionally based on index
-                const delayClass = i === 1 ? 'delay-100' : i === 2 ? 'delay-200' : i === 3 ? 'delay-300' : '';
-                return (
-                  <div 
-                    key={item.label} 
-                    className={`group bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-[var(--border-default)] hover:shadow-[var(--shadow-md)] hover:border-[var(--accent-muted)] transition-all flex flex-col items-start gap-3 sm:gap-4 animate-fadeInUp ${delayClass}`}
-                  >
-                    <div className="flex w-10 h-10 sm:w-12 sm:h-12 items-center justify-center rounded-xl bg-[var(--bg-section-alt)] text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-white group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
-                      <Icon size="md" />
-                    </div>
-                    <span className="text-[1rem] sm:text-[1.0625rem] font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-dark)] transition-colors">
-                      {item.label}
-                    </span>
-                  </div>
-                );
-              })}
+              {home.features.map((item, index) => (
+                <FeatureCard
+                  key={item.label}
+                  item={item}
+                  delayClass={getDelayClass(index)}
+                />
+              ))}
             </Reveal>
           </div>
         </div>
