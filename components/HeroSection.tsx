@@ -59,14 +59,14 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
       </div>
 
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-base)] via-[var(--bg-base)]/85 to-transparent z-10" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[var(--bg-base)] from-[8%] via-[var(--bg-base)]/70 via-[45%] to-transparent to-[78%]" />
         <div className="absolute inset-0 hero-bg-in">
           <Image
             src="/male-elictirican-at-the-panel.jpg"
             alt=""
             fill
             priority
-            className="object-cover object-center grayscale opacity-40"
+            className="object-cover object-center opacity-[0.52] brightness-[1.02] contrast-[1.04] saturate-[0.78]"
             sizes="100vw"
             aria-hidden
           />
