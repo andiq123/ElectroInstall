@@ -5,11 +5,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
+import ServicesShowcaseSection from "@/components/ServicesShowcaseSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import Reveal from "@/components/Reveal";
 import { ContactModal } from "@/components/ui";
 
 export default function Home() {
@@ -19,24 +19,17 @@ export default function Home() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="min-h-screen w-full bg-white font-[var(--font-body)]">
+    <div className="min-h-screen w-full bg-[var(--page-bg)] font-body-ui">
       <Navbar onOpenModal={openModal} />
-      
+
       <div key={locale} className="animate-page-fade">
           <main id="main-content">
             <HeroSection onOpenModal={openModal} />
-            <Reveal className="section-scroll-reveal">
-              <FeaturesSection />
-            </Reveal>
-            <Reveal className="section-scroll-reveal">
-              <TestimonialsSection />
-            </Reveal>
-            <Reveal className="section-scroll-reveal">
-              <FAQSection />
-            </Reveal>
-            <Reveal className="section-scroll-reveal">
-              <ContactSection onOpenModal={openModal} />
-            </Reveal>
+            <FeaturesSection />
+            <ServicesShowcaseSection />
+            <TestimonialsSection />
+            <FAQSection />
+            <ContactSection onOpenModal={openModal} />
           </main>
           <Footer />
         </div>

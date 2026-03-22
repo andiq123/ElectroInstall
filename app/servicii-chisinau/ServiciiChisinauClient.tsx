@@ -25,7 +25,7 @@ export default function ServiciiChisinauClient() {
             <p className="text-sm font-semibold tracking-widest text-[var(--accent)] uppercase mb-4">
               {data.title_part1}
             </p>
-            <h1 className="font-[var(--font-display)] text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight leading-tight">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight leading-tight">
               {BUSINESS_INFO.location}
             </h1>
             <p className="mt-4 text-xl sm:text-2xl font-semibold text-[var(--text-primary)]">
@@ -49,7 +49,7 @@ export default function ServiciiChisinauClient() {
 
         <div className="container px-6 sm:px-8 max-w-4xl mx-auto py-16 sm:py-20 space-y-20">
           <section>
-            <h2 className="font-[var(--font-display)] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-6">
               {data.coverage_title}
             </h2>
             <div className="space-y-4 text-[var(--text-secondary)] leading-relaxed">
@@ -66,7 +66,7 @@ export default function ServiciiChisinauClient() {
 
           {data.services_list_title && servicesList.length > 0 && (
             <section>
-              <h2 className="font-[var(--font-display)] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
                 {data.services_list_title}
               </h2>
               <ul className="grid sm:grid-cols-2 gap-3">
@@ -85,7 +85,7 @@ export default function ServiciiChisinauClient() {
 
           {data.why_local_title && whyReasons.length > 0 && (
             <section>
-              <h2 className="font-[var(--font-display)] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
                 {data.why_local_title}
               </h2>
               <ul className="space-y-4">
@@ -94,7 +94,7 @@ export default function ServiciiChisinauClient() {
                     key={i}
                     className="flex items-start gap-4 p-5 rounded-[var(--radius-xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] leading-relaxed"
                   >
-                    <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-[var(--accent-muted)] text-[var(--accent)] font-[var(--font-display)] font-bold text-sm flex items-center justify-center">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-[var(--accent-muted)] text-[var(--accent)] font-display font-bold text-sm flex items-center justify-center">
                       {i + 1}
                     </span>
                     {reason}
@@ -105,7 +105,7 @@ export default function ServiciiChisinauClient() {
           )}
 
           <section className="glass-panel p-8 sm:p-10 text-center">
-            <h2 className="font-[var(--font-display)] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-4">
               {data.urgent_title}
             </h2>
             {data.urgent_text && (

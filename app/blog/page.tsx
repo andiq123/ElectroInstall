@@ -58,7 +58,7 @@ export default function BlogPage() {
       <section className="border-b border-[var(--border-default)] bg-white py-16 sm:py-20 lg:py-24" aria-labelledby="blog-heading">
         <div className="container-inner">
           <div className="max-w-3xl">
-            <h1 id="blog-heading" className="font-[var(--font-display)] text-[1.75rem] sm:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight mb-4">
+            <h1 id="blog-heading" className="font-display text-[1.75rem] sm:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight mb-4">
               Sfaturi electrice
             </h1>
             <p className="text-[1.0625rem] text-[var(--text-secondary)] leading-[1.65]">
@@ -92,7 +92,7 @@ export default function BlogPage() {
           </div>
 
           <div className="text-center mt-16 p-8 sm:p-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-[var(--shadow-md)]">
-            <h3 className="font-[var(--font-display)] text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
+            <h3 className="font-display text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
               Ai nevoie de un electrician?
             </h3>
             <p className="text-[var(--text-body)] text-[var(--text-secondary)] mb-6">

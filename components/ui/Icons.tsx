@@ -1,8 +1,3 @@
-/**
- * Centralized Icon System
- * Reusable SVG icons with consistent sizing and styling
- */
-
 import { FC, SVGProps } from "react";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
@@ -18,7 +13,6 @@ const sizes = {
 
 const iconBase = (size: IconProps["size"] = "md") => sizes[size];
 
-// Phone icon
 export const PhoneIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -36,7 +30,6 @@ export const PhoneIcon: FC<IconProps> = ({ size = "md", className = "", ...props
   </svg>
 );
 
-// Mail icon
 export const MailIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -54,7 +47,6 @@ export const MailIcon: FC<IconProps> = ({ size = "md", className = "", ...props 
   </svg>
 );
 
-// Location/Map pin icon
 export const LocationIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -77,7 +69,6 @@ export const LocationIcon: FC<IconProps> = ({ size = "md", className = "", ...pr
   </svg>
 );
 
-// Clock icon
 export const ClockIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -95,7 +86,6 @@ export const ClockIcon: FC<IconProps> = ({ size = "md", className = "", ...props
   </svg>
 );
 
-// Check/Checkmark icon
 export const CheckIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -111,7 +101,6 @@ export const CheckIcon: FC<IconProps> = ({ size = "md", className = "", ...props
   </svg>
 );
 
-// Arrow right icon
 export const ArrowRightIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -125,7 +114,6 @@ export const ArrowRightIcon: FC<IconProps> = ({ size = "md", className = "", ...
   </svg>
 );
 
-// Arrow left icon
 export const ArrowLeftIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -139,7 +127,6 @@ export const ArrowLeftIcon: FC<IconProps> = ({ size = "md", className = "", ...p
   </svg>
 );
 
-// Chevron right
 export const ChevronRightIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -153,7 +140,6 @@ export const ChevronRightIcon: FC<IconProps> = ({ size = "md", className = "", .
   </svg>
 );
 
-// Arrow top-right (external/link)
 export const ArrowTopRightIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -169,7 +155,6 @@ export const ArrowTopRightIcon: FC<IconProps> = ({ size = "md", className = "", 
   </svg>
 );
 
-// Menu (hamburger)
 export const MenuIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -186,7 +171,6 @@ export const MenuIcon: FC<IconProps> = ({ size = "md", className = "", ...props 
   </svg>
 );
 
-// Close/X icon
 export const CloseIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -200,7 +184,6 @@ export const CloseIcon: FC<IconProps> = ({ size = "md", className = "", ...props
   </svg>
 );
 
-// Plus icon
 export const PlusIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -214,7 +197,6 @@ export const PlusIcon: FC<IconProps> = ({ size = "md", className = "", ...props 
   </svg>
 );
 
-// Minus icon
 export const MinusIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -228,7 +210,6 @@ export const MinusIcon: FC<IconProps> = ({ size = "md", className = "", ...props
   </svg>
 );
 
-// Lightning bolt icon
 export const BoltIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -242,7 +223,6 @@ export const BoltIcon: FC<IconProps> = ({ size = "md", className = "", ...props 
   </svg>
 );
 
-// Shield/Verified icon
 export const ShieldIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -260,7 +240,6 @@ export const ShieldIcon: FC<IconProps> = ({ size = "md", className = "", ...prop
   </svg>
 );
 
-// Tool/Wrench icon
 export const ToolIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -278,7 +257,6 @@ export const ToolIcon: FC<IconProps> = ({ size = "md", className = "", ...props 
   </svg>
 );
 
-// Document/Clipboard icon
 export const ClipboardIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -296,7 +274,6 @@ export const ClipboardIcon: FC<IconProps> = ({ size = "md", className = "", ...p
   </svg>
 );
 
-// Money/Currency icon
 export const CurrencyIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}
@@ -314,7 +291,6 @@ export const CurrencyIcon: FC<IconProps> = ({ size = "md", className = "", ...pr
   </svg>
 );
 
-// Certificate/Badge icon  
 export const CertificateIcon: FC<IconProps> = ({ size = "md", className = "", ...props }) => (
   <svg
     className={`${iconBase(size)} ${className}`}

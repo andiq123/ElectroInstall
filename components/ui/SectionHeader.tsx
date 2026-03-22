@@ -10,7 +10,7 @@ interface SectionHeaderProps {
   inverted?: boolean;
 }
 
-const titleClass = "font-[var(--font-display)] text-[var(--text-h2)] font-semibold tracking-tight leading-[var(--leading-tight)]";
+const titleClass = "font-display text-[var(--text-h2)] font-semibold tracking-tight leading-[var(--leading-tight)]";
 const subtitleClass = "text-[var(--text-body)] leading-[var(--leading-relaxed)]";
 
 export default function SectionHeader({

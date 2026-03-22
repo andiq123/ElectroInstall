@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, Outfit } from "next/font/google";
+import { Manrope, Space_Grotesk } from "next/font/google";
 import { SITE_URL, BUSINESS_INFO } from "@/lib/constants";
 
 const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-display",
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const outfit = Outfit({
-  subsets: ["latin"],
+const manrope = Manrope({
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -231,7 +231,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${fraunces.variable} ${outfit.variable} font-sans m-0 p-0 antialiased bg-[var(--page-bg)] text-[var(--text-primary)] selection:bg-[var(--accent)] selection:text-white`} suppressHydrationWarning>
+      <body className={`${spaceGrotesk.variable} ${manrope.variable} font-sans m-0 p-0 antialiased bg-[var(--page-bg)] text-[var(--text-primary)] selection:bg-[var(--accent-light)] selection:text-zinc-900`} suppressHydrationWarning>
         <LanguageProvider>
           <a href="#main-content" className="skip-link">
             Sari la conținut

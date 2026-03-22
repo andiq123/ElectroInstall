@@ -1,32 +1,10 @@
-/* ============================================
-   ELECTROINSTALL - DESIGN SYSTEM
-   Modular CSS Architecture
-   ============================================ */
-
 @import "tailwindcss";
 
-/* Design Tokens & Variables (colors, shadows, gradients) */
 @import "./styles/variables.css";
-
-/* Base Styles (reset, typography, utilities) */
 @import "./styles/base.css";
-
-/* Core Components (buttons, cards, badges) */
 @import "./styles/components.css";
-
-/* Animations & Micro-interactions */
 @import "./styles/animations.css";
-
-/* Section Components (modal, inputs, FAQ, process, why-us) */
+@import "./styles/reveal.css";
 @import "./styles/sections.css";
-
-/* Blog Styles */
 @import "./styles/blog.css";
-
-
-
-/* Page Entrance Animations */
-@import "./styles/page-entrance.css";
-
-/* Mobile & Accessibility */
 @import "./styles/mobile.css";

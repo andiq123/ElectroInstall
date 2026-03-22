@@ -16,17 +16,19 @@ export const ro = {
   },
   nav: {
     services: "Servicii",
+    benefits: "De ce noi",
     about: "Despre noi",
     contact: "Contact",
     faq: "Întrebări frecvente",
     appointments: "Programări",
   },
   hero: {
+    eyebrow: "Electrician autorizat · Chișinău",
     headline: "Electrician Chișinău. Reparații și instalații, fără bătăi de cap.",
-    headline_1: "Electrician Chișinău",
-    highlight_1: "Chișinău",
-    headline_2: "Reparații și instalații, fără bătăi de cap.",
-    highlight_2: "fără bătăi de cap.",
+    headline_1: "ELECTRICIAN ÎN",
+    highlight_1: "CHIȘINĂU",
+    headline_2: "REPARAȚII ȘI INSTALAȚII,",
+    highlight_2: "FĂRĂ BĂTĂI DE CAP.",
     subhead: "Afli prețul înainte să începem. Lucrări conform normelor, cu garanție. Pentru urgențe răspund non-stop.",
     cta: "Solicită o ofertă gratuită",
     cta_tagline: "pentru o casă sigură",
@@ -34,11 +36,32 @@ export const ro = {
     top_line_left: "Servicii electrice",
     top_line_right: "Solicită ofertă",
     badge_text: "Clienți Mulțumiți",
-    call_us: "Sună la "
+    call_us: "Sună la ",
+    progress_from: "01",
+    progress_to: "04",
   },
   home: {
-    features_title: "De ce ElectroInstall",
-    features_subtitle: "Preț clar înainte de orice lucrare. Lucrări conform normelor, cu materiale de calitate. La urgențe suni și rezolv.",
+    features_title: "De ce ElectroInstall?",
+    features_subtitle: "Nu doar „tragem cabluri” — facem instalații sigure, explicate pe înțeles și gata de folosit mulți ani. Preț spus din start, materiale de încredere, răspuns la urgențe.",
+    bento_cards: [
+      {
+        title: "Autorizat & conform normelor",
+        body: "Lucrări făcute cum trebuie, cu garanție și acte în regulă când e nevoie.",
+      },
+      {
+        title: "Program flexibil",
+        body: "Găsim împreună un interval care ți se potrivește, inclusiv după program.",
+      },
+      {
+        title: "Soluții durabile",
+        body: "Materiale serioase și montaj curat — fără improvizații care te costă mai târziu.",
+      },
+    ],
+    stats: [
+      { value: "10+", label: "Ani de practică" },
+      { value: "100+", label: "Lucrări în Chișinău" },
+      { value: "24/7", label: "La urgențe" },
+    ],
     features: [
       { label: "Preț spus din start", icon: "currency" },
       { label: "Lucrări conform normelor", icon: "shield" },
@@ -55,6 +78,7 @@ export const ro = {
     hook_title_part2: "LUCRURILE CORECT",
     hook_subtitle: "Fie că ai o mică problemă sau vrei o instalație noua, sunt gata să te ajut. Lucrez în tot Chișinăul și suburbii.",
     contact_prompt: "Ai nevoie de unul dintre acestea? Sună sau trimite cererea în secțiunea Contact mai jos.",
+    showcase_explore: "Vezi serviciile în detaliu",
     request_below: "Trimite cerere",
     emergency_badge: "Intervenții Rapide",
     best_for_label: "Ideal pentru",
@@ -149,6 +173,8 @@ export const ro = {
   },
   testimonials: {
     title: "Ce spun clienții",
+    eyebrow: "Încrederea clienților",
+    headline: "SIGURANȚĂ ȘI CLARITATE.",
     items: [
       {
         quote: "Mi-a spus cât costă înainte să înceapă. A terminat mai repede decât mă așteptam și a lăsat curat după el.",
@@ -168,6 +194,7 @@ export const ro = {
     ],
   },
   faq: {
+    title_centered: "Întrebări frecvente",
     title_part1: "Întrebări",
     title_part2: "frecvente",
     items: [

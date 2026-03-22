@@ -1,3 +1,8 @@
+import { cn } from "@/lib/utils";
+
+const LOGO_AMBER = "#D9943B";
+const LOGO_INDIGO = "#4B5E8C";
+
 interface LogoProps {
   size?: "sm" | "md" | "lg";
   showText?: boolean;
@@ -8,108 +13,93 @@ interface LogoProps {
 
 const sizes = {
   sm: {
-    container: "w-10 h-10 sm:w-11 sm:h-11",
-    icon: "w-6 h-6 sm:w-7 sm:h-7",
-    titleSize: "text-base sm:text-lg",
-    subtitleSize: "text-xs sm:text-sm",
+    container: "h-10 w-10 sm:h-11 sm:w-11",
+    icon: "h-6 w-6 sm:h-7 sm:w-7",
+    rowGap: "gap-[11px] sm:gap-[12px]",
+    titleSize: "text-[1.0625rem] sm:text-lg",
+    subtitleSize: "text-[0.6875rem] sm:text-xs",
+    lineGap: "gap-0.5",
   },
   md: {
-    container: "w-12 h-12 sm:w-14 sm:h-14",
-    icon: "w-7 h-7 sm:w-8 sm:h-8",
+    container: "h-12 w-12 sm:h-14 sm:w-14",
+    icon: "h-7 w-7 sm:h-8 sm:w-8",
+    rowGap: "gap-4 sm:gap-[17px]",
     titleSize: "text-lg sm:text-xl",
-    subtitleSize: "text-xs sm:text-sm",
+    subtitleSize: "text-[0.6875rem] sm:text-xs",
+    lineGap: "gap-0.5 sm:gap-1",
   },
   lg: {
-    container: "w-14 h-14 sm:w-16 sm:h-16",
-    icon: "w-8 h-8 sm:w-9 sm:h-9",
+    container: "h-14 w-14 sm:h-16 sm:w-16",
+    icon: "h-8 w-8 sm:h-9 sm:w-9",
+    rowGap: "gap-5 sm:gap-6",
     titleSize: "text-xl sm:text-2xl",
-    subtitleSize: "text-sm",
+    subtitleSize: "text-xs sm:text-sm",
+    lineGap: "gap-1",
   },
-};
+} as const;
+
+const faceGradient = `linear-gradient(135deg, ${LOGO_AMBER} 0%, ${LOGO_INDIGO} 100%)`;
+const glowGradient = `linear-gradient(135deg, ${LOGO_AMBER} 0%, ${LOGO_INDIGO} 100%)`;
+const shineStrong =
+  "linear-gradient(180deg, transparent, rgba(255,255,255,0.55), transparent)";
+const shineSoft = "linear-gradient(180deg, transparent, rgba(255,255,255,0.35), transparent)";
+const radialHover = "radial-gradient(circle at center, rgba(255,255,255,0.18) 0%, transparent 70%)";
+const pingGradient = `linear-gradient(135deg, ${LOGO_AMBER} 0%, transparent 50%)`;
 
 export function LogoIcon({
   size = "sm",
   animated = true,
   className = "",
-}: Omit<LogoProps, "showText">) {
+}: Omit<LogoProps, "showText" | "light">) {
   const s = sizes[size];
 
   return (
-    <div className={`relative ${s.container} ${className}`}>
-      {animated && (
+    <div className={cn("relative shrink-0", s.container, className)}>
+      {animated ? (
         <div
-          className="absolute inset-0 rounded-xl opacity-60 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-500"
-          style={{
-            background:
-              "linear-gradient(135deg, var(--accent) 0%, var(--accent-cobalt) 100%)",
-          }}
+          className="absolute inset-0 rounded-[32%] opacity-50 blur-sm transition-all duration-500 group-hover:opacity-90 group-hover:blur-md"
+          style={{ background: glowGradient }}
         />
-      )}
+      ) : null}
 
       <div
-        className="relative w-full h-full rounded-xl flex items-center justify-center overflow-hidden"
+        className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[32%]"
         style={{
-          background:
-            "linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 50%, var(--accent-cobalt) 100%)",
-          boxShadow: "var(--shadow-accent)",
+          background: faceGradient,
+          boxShadow: "0 4px 14px -2px rgba(75, 94, 140, 0.35), 0 0 0 1px rgba(0,0,0,0.04)",
         }}
       >
-        <div className="absolute inset-0 opacity-30" aria-hidden>
-          <div
-            className="absolute top-0 left-1/4 w-px h-full"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent, rgba(255,255,255,0.8), transparent)",
-            }}
-          />
-          <div
-            className="absolute top-0 right-1/3 w-px h-full"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent, rgba(255,255,255,0.5), transparent)",
-            }}
-          />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.22]" aria-hidden>
+          <div className="absolute left-[22%] top-0 h-full w-px" style={{ background: shineStrong }} />
+          <div className="absolute left-[38%] top-0 h-full w-[2px]" style={{ background: shineSoft }} />
+          <div className="absolute right-[28%] top-0 h-full w-px" style={{ background: shineSoft }} />
         </div>
 
         <svg
           viewBox="0 0 32 32"
           fill="none"
-          className={`${s.icon} relative z-10 drop-shadow-lg`}
-          aria-hidden="true"
+          className={cn(s.icon, "relative z-10")}
+          aria-hidden
         >
-          <path
-            d="M18.5 3L8 17h7l-2 12L25 15h-7l2.5-12z"
-            fill="white"
-            className="drop-shadow-lg"
-          />
-          <path
-            d="M17 6l-7 9h5l-1.5 8.5L22 16h-5l1.5-7z"
-            fill="rgba(255,255,255,0.3)"
-          />
-          <circle cx="10" cy="10" r="1.5" fill="white" opacity="0.8" />
-          <circle cx="22" cy="22" r="1" fill="white" opacity="0.6" />
+          <path d="M18.5 3L8 17h7l-2 12L25 15h-7l2.5-12z" fill="white" />
+          <circle cx="10.2" cy="11" r="1.35" fill="white" />
+          <circle cx="22.5" cy="21.5" r="1.15" fill="white" />
         </svg>
 
-        {animated && (
+        {animated ? (
           <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%)",
-            }}
+            className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{ background: radialHover }}
           />
-        )}
+        ) : null}
       </div>
 
-      {animated && (
+      {animated ? (
         <div
-          className="absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-100 group-hover:animate-ping pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(135deg, var(--accent) 0%, transparent 50%)",
-          }}
+          className="pointer-events-none absolute -inset-1 rounded-[32%] opacity-0 transition-opacity group-hover:opacity-100 group-hover:animate-ping"
+          style={{ background: pingGradient }}
         />
-      )}
+      ) : null}
     </div>
   );
 }
@@ -119,20 +109,31 @@ export function LogoText({
   className = "",
   light = false,
 }: {
-  size?: "sm" | "md" | "lg";
+  size?: keyof typeof sizes;
   className?: string;
   light?: boolean;
 }) {
   const s = sizes[size];
 
   return (
-    <div className={`flex flex-col leading-none ${className}`}>
+    <div className={cn("flex min-w-0 flex-col justify-center", s.lineGap, className)}>
       <span
-        className={`${s.titleSize} font-bold tracking-tight ${light ? "text-white" : "text-[var(--text-primary)]"}`}
+        className={cn(
+          s.titleSize,
+          "font-display font-black uppercase leading-none tracking-tight",
+          light ? "text-white" : "text-black"
+        )}
       >
         ELECTRO
       </span>
-      <span className={`${s.subtitleSize} font-semibold tracking-widest ${light ? "text-white/90" : "text-[var(--accent)]"}`}>
+      <span
+        className={cn(
+          s.subtitleSize,
+          "font-display font-medium uppercase leading-none tracking-[0.14em]",
+          light ? "text-amber-200" : undefined
+        )}
+        style={light ? undefined : { color: LOGO_AMBER }}
+      >
         INSTALL
       </span>
     </div>
@@ -146,10 +147,12 @@ export default function Logo({
   className = "",
   light = false,
 }: LogoProps) {
+  const s = sizes[size];
+
   return (
-    <div className={`flex items-center gap-3 group ${className}`}>
+    <div className={cn("group flex items-center", s.rowGap, className)}>
       <LogoIcon size={size} animated={animated} />
-      {showText && <LogoText size={size} light={light} />}
+      {showText ? <LogoText size={size} light={light} /> : null}
     </div>
   );
 }

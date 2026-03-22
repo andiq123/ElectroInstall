@@ -160,7 +160,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </button>
 
         <header className="text-left mb-10">
-          <h2 className="font-[var(--font-display)] text-[var(--text-h2)] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] mb-3">
+          <h2 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] mb-3">
             {t.contact_form.title}
           </h2>
           <p className="text-[var(--text-body)] text-[var(--text-secondary)] leading-[var(--leading-relaxed)]">
@@ -175,7 +175,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="font-[var(--font-display)] text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">{t.contact_form.success_title}</h3>
+            <h3 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">{t.contact_form.success_title}</h3>
             <p className="text-[var(--text-body)] text-[var(--text-secondary)]">{t.contact_form.success_subtitle}</p>
           </div>
         ) : (

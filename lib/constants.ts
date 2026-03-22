@@ -5,7 +5,7 @@ export const SITE_URL =
   DEFAULT_SITE_URL;
 
 export const CTA_ACCENT_CLASS =
-  "bg-[var(--accent)] text-[var(--text-inverted)] hover:opacity-92 transition-opacity";
+  "bg-[var(--accent-light)] text-zinc-900 ring-1 ring-amber-600/15 hover:bg-[#ffcd38] transition-colors";
 
 export const BUSINESS_INFO = {
   name: 'ElectroInstall (Radu)',

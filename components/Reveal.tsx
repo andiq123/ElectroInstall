@@ -1,61 +1,68 @@
 "use client";
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+
+export type RevealVariant = "up" | "up-sm" | "up-lg" | "left" | "right" | "scale" | "blur";
+
+const variantClass: Record<RevealVariant, string> = {
+  up: "reveal-io",
+  "up-sm": "reveal-io reveal-io--sm",
+  "up-lg": "reveal-io reveal-io--lg",
+  left: "reveal-io reveal-io--left",
+  right: "reveal-io reveal-io--right",
+  scale: "reveal-io reveal-io--scale",
+  blur: "reveal-io reveal-io--blur",
+};
 
 interface RevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
-  yOffset?: number;
-  duration?: number;
+  variant?: RevealVariant;
+  rootMargin?: string;
+  threshold?: number;
 }
 
-export default function Reveal({ 
-  children, 
-  className, 
+export default function Reveal({
+  children,
+  className,
   delay = 0,
-  yOffset = 40,
-  duration = 0.6
+  variant = "up",
+  rootMargin = "-48px 0px -8% 0px",
+  threshold = 0.06,
 }: RevealProps) {
-  const [isVisible, setIsVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setVisible(true);
           observer.unobserve(entry.target);
         }
       },
-      {
-        rootMargin: "-100px",
-        threshold: 0.1,
-      }
+      { rootMargin, threshold }
     );
 
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rootMargin, threshold]);
 
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, []);
+  const style = {
+    "--reveal-delay": `${delay}ms`,
+  } as CSSProperties;
 
   return (
     <div
       ref={ref}
-      style={{
-        transform: isVisible ? "translateY(0)" : `translateY(${yOffset}px)`,
-        opacity: isVisible ? 1 : 0,
-        transition: `all ${duration}s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
-      }}
-      className={cn("w-full h-full", className)}
+      data-visible={visible ? "true" : "false"}
+      style={style}
+      className={cn(variantClass[variant], className)}
     >
       {children}
     </div>

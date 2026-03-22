@@ -118,7 +118,7 @@ export default async function BlogPostPage({ params }: Props) {
               </span>
             </div>
 
-            <h1 className="font-[var(--font-display)] text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight">
+            <h1 className="font-display text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight">
               {post.title}
             </h1>
           </div>
@@ -136,7 +136,7 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="border-t border-[var(--border-default)] py-16 sm:py-20 lg:py-24 bg-[var(--bg-elevated)]">
         <div className="container-inner text-center">
           <div className="max-w-xl mx-auto">
-            <h2 className="font-[var(--font-display)] text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
+            <h2 className="font-display text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
               Ai nevoie de un electrician?
             </h2>
             <p className="text-[var(--text-body)] text-[var(--text-secondary)] mb-6">
@@ -155,7 +155,7 @@ export default async function BlogPostPage({ params }: Props) {
       {relatedPosts.length > 0 && (
         <section className="py-16 sm:py-20 lg:py-24 bg-[var(--bg-base)]">
           <div className="container-inner">
-            <h2 className="font-[var(--font-display)] text-[1.5rem] sm:text-[1.75rem] font-bold text-[var(--text-primary)] mb-8 text-center">
+            <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] font-bold text-[var(--text-primary)] mb-8 text-center">
               Articole similare
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -178,7 +178,6 @@ export default async function BlogPostPage({ params }: Props) {
   );
 }
 
-// Simple markdown-like formatting
 function formatContent(content: string): string {
   return content
     .replace(/^# (.+)$/gm, '<h1 class="blog-h1">$1</h1>')
