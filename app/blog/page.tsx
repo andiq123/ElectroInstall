@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/constants";
+import { homeUi } from "@/lib/homeUi";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Blog – Sfaturi și Noutăți Electrice",
@@ -50,27 +52,30 @@ export default function BlogPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white" role="main">
+    <main id="main-content" className={cn(homeUi.pageMain)} role="main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
-      <section className="border-b border-[var(--border-default)] bg-white py-16 sm:py-20 lg:py-24" aria-labelledby="blog-heading">
-        <div className="container-inner">
+      <section className={homeUi.blogSectionIntro} aria-labelledby="blog-heading">
+        <div className={homeUi.container}>
           <div className="max-w-3xl">
-            <h1 id="blog-heading" className="font-display text-[1.75rem] sm:text-[2.25rem] font-bold text-[var(--text-primary)] leading-tight tracking-tight mb-4">
+            <h1
+              id="blog-heading"
+              className={cn(homeUi.blogArticleTitle, "mb-4 text-balance")}
+            >
               Sfaturi electrice
             </h1>
-            <p className="text-[1.0625rem] text-[var(--text-secondary)] leading-[1.65]">
+            <p className={homeUi.bodyLead}>
               Resurse despre siguranța casei tale, noutăți și ghiduri practice de la ElectroInstall.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 lg:py-24 bg-[var(--bg-base)]">
-        <div className="container-inner">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className={homeUi.blogSectionListing}>
+        <div className={homeUi.container}>
+          <div className={cn(homeUi.gridGapWide, "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3")}>
             {BLOG_POSTS.map((post) => (
               <article key={post.slug} className="blog-card">
                 <div className="blog-card-header">
@@ -82,23 +87,21 @@ export default function BlogPage() {
                 </h2>
                 <p className="blog-excerpt">{post.excerpt}</p>
                 <div className="blog-footer">
-                  <span className="blog-read-time">⏱ {post.readTime}</span>
+                  <span className="blog-read-time">{post.readTime}</span>
                   <Link href={`/blog/${post.slug}`} className="blog-read-more">
-                    Citește mai mult →
+                    Citește articolul →
                   </Link>
                 </div>
               </article>
             ))}
           </div>
 
-          <div className="text-center mt-16 p-8 sm:p-10 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-[var(--shadow-md)]">
-            <h3 className="font-display text-[1.25rem] font-semibold text-[var(--text-primary)] mb-2">
-              Ai nevoie de un electrician?
-            </h3>
-            <p className="text-[var(--text-body)] text-[var(--text-secondary)] mb-6">
-              ElectroInstall – servicii electrice în Chișinău. Preț clar, disponibil 24/7.
+          <div className={cn(homeUi.blogCtaCard, "mt-16")}>
+            <h2 className={cn(homeUi.cardTitle, "mb-2")}>Ai nevoie de un electrician?</h2>
+            <p className={cn(homeUi.bodyLead, "mb-6")}>
+              ElectroInstall — servicii electrice în Chișinău. Preț clar, disponibil pentru urgențe non-stop.
             </p>
-            <Link href="/#contact" className="inline-flex items-center justify-center min-h-[48px] px-6 py-3 rounded-lg text-[1rem] font-semibold text-white bg-[var(--text-primary)] hover:opacity-90 transition-opacity">
+            <Link href="/#contact" className={homeUi.pillPrimarySm}>
               Contactează-ne
             </Link>
           </div>

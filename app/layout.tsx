@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Space_Grotesk } from "next/font/google";
 import { SITE_URL, BUSINESS_INFO } from "@/lib/constants";
+import { absoluteOgImageUrl } from "@/lib/seo/og";
 
 const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 import "./globals.css";
@@ -77,9 +78,15 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
     },
   },
+  formatDetection: {
+    telephone: true,
+    email: false,
+    address: false,
+  },
   openGraph: {
     type: "website",
     locale: "ro_MD",
+    alternateLocale: ["ru_MD"],
     url: SITE_URL,
     siteName: "ElectroInstall",
     title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
@@ -87,9 +94,7 @@ export const metadata: Metadata = {
       `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. Preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații.`,
     images: [
       {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
+        url: absoluteOgImageUrl(),
         alt: "ElectroInstall - Electrician Chișinău cu recomandări",
       },
     ],
@@ -99,13 +104,14 @@ export const metadata: Metadata = {
     title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
     description:
       `Sună la ${PHONE_DISPLAY}. Electrician Chișinău cu recomandări: preț corect, intervenții rapide, 24/7.`,
-    images: ["/og-image.jpg"],
+    images: [absoluteOgImageUrl()],
   },
   alternates: {
     canonical: SITE_URL,
     languages: {
       "ro-MD": SITE_URL,
       "ru-MD": `${SITE_URL}?lang=ru`,
+      "x-default": SITE_URL,
     },
   },
   verification: {
@@ -148,7 +154,7 @@ const organizationSchema = {
     closes: "23:59",
   },
   priceRange: "MDL",
-  image: `${SITE_URL}/og-image.jpg`,
+  image: absoluteOgImageUrl(),
   hasMap: "https://www.google.com/maps?q=Chisinau,Moldova",
   knowsAbout: ["Instalații electrice", "Reparații electrice", "Tablouri electrice", "Electrician autorizat"],
   contactPoint: {
@@ -201,10 +207,10 @@ const websiteSchema = {
   description: "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: ["ro", "ru"],
-  potentialAction: {
-    "@type": "ReadAction",
-    target: [{ "@type": "EntryPoint", url: `${SITE_URL}/blog` }],
-  },
+  potentialAction: [
+    { "@type": "ReadAction", target: `${SITE_URL}/blog` },
+    { "@type": "ReadAction", target: `${SITE_URL}/servicii-chisinau` },
+  ],
 };
 
 import { Analytics } from "@vercel/analytics/next";

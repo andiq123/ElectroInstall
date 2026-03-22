@@ -3,8 +3,11 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { BUSINESS_INFO, CTA_ACCENT_CLASS, PHONE_HREF } from "@/lib/constants";
+import { PhoneIcon } from "@/components/ui/Icons";
+import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
 import { useLanguage } from "@/context/LanguageContext";
+import { homeUi } from "@/lib/homeUi";
+import { cn } from "@/lib/utils";
 
 const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 
@@ -17,117 +20,110 @@ export default function ServiciiChisinauClient() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[var(--bg-base)]">
-        <header className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 overflow-hidden">
+      <main id="main-content" className={homeUi.pageMain}>
+        <header className="relative overflow-hidden pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20">
           <div className="absolute inset-0 bg-[var(--bg-section-alt)]" aria-hidden />
-          <div className="absolute inset-0 opacity-100" style={{ backgroundImage: "var(--gradient-hero-glow)" }} aria-hidden />
-          <div className="container relative z-10 px-6 sm:px-8 max-w-4xl mx-auto text-center">
-            <p className="text-sm font-semibold tracking-widest text-[var(--accent)] uppercase mb-4">
-              {data.title_part1}
-            </p>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight leading-tight">
-              {BUSINESS_INFO.location}
-            </h1>
-            <p className="mt-4 text-xl sm:text-2xl font-semibold text-[var(--text-primary)]">
-              <a href={PHONE_HREF} className="hover:text-[var(--accent-dark)] transition-colors" aria-label={t.common.call_now}>
-                Sună <span className="font-bold tracking-tight">{PHONE_DISPLAY}</span>
+          <div
+            className="absolute inset-0 opacity-100"
+            style={{ backgroundImage: "var(--gradient-hero-glow)" }}
+            aria-hidden
+          />
+          <div className={cn(homeUi.containerNarrow, "relative z-10 text-center")}>
+            <p className={cn(homeUi.kicker, "w-full text-center")}>{data.title_part1}</p>
+            <h1 className={cn(homeUi.titleLeadCard, "text-balance")}>{BUSINESS_INFO.location}</h1>
+            <p className="mt-4">
+              <a
+                href={PHONE_HREF}
+                className={cn(homeUi.cardTitleLg, "text-[var(--text-primary)] transition-colors hover:text-[var(--accent-dark)]")}
+                aria-label={`${t.common.call_now} ${PHONE_DISPLAY}`}
+              >
+                {PHONE_DISPLAY}
               </a>
             </p>
-            {data.intro && (
-              <p className="mt-6 text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-                {data.intro}
-              </p>
-            )}
-            <Link
-              href="/#contact"
-              className={`inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full font-semibold text-sm ${CTA_ACCENT_CLASS}`}
-            >
+            {data.intro ? <p className={cn(homeUi.bodyLead, "mx-auto mt-6 max-w-2xl text-balance")}>{data.intro}</p> : null}
+            <Link href="/#contact" className={cn(homeUi.pillPrimarySm, "mt-8 inline-flex gap-2")}>
               {t.common.cta_primary}
             </Link>
           </div>
         </header>
 
-        <div className="container px-6 sm:px-8 max-w-4xl mx-auto py-16 sm:py-20 space-y-20">
-          <section>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-6">
-              {data.coverage_title}
-            </h2>
-            <div className="space-y-4 text-[var(--text-secondary)] leading-relaxed">
-              <p>
+        <div className={cn(homeUi.containerNarrow, homeUi.gridGap, "flex flex-col py-16 sm:py-20")}>
+          <section className={cn(homeUi.gridGap, "flex flex-col")}>
+            <h2 className={cn(homeUi.cardTitle, "text-xl sm:text-2xl")}>{data.coverage_title}</h2>
+            <div className={cn(homeUi.gridGap, "flex flex-col text-[var(--text-secondary)]")}>
+              <p className={homeUi.bodyLead}>
                 {data.coverage_text1}
-                <span className="text-[var(--text-primary)] font-semibold"> {data.sectors}</span>
+                <span className="font-semibold text-[var(--text-primary)]"> {data.sectors}</span>
               </p>
-              <p>
+              <p className={homeUi.bodyLead}>
                 {data.coverage_text2}
-                <span className="text-[var(--text-primary)] font-semibold"> {data.suburbs}</span>
+                <span className="font-semibold text-[var(--text-primary)]"> {data.suburbs}</span>
               </p>
             </div>
           </section>
 
-          {data.services_list_title && servicesList.length > 0 && (
-            <section>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
-                {data.services_list_title}
-              </h2>
-              <ul className="grid sm:grid-cols-2 gap-3">
+          {data.services_list_title && servicesList.length > 0 ? (
+            <section className={cn(homeUi.gridGap, "flex flex-col")}>
+              <h2 className={cn(homeUi.cardTitle, "text-xl sm:text-2xl")}>{data.services_list_title}</h2>
+              <ul className={cn(homeUi.gridGap, "grid sm:grid-cols-2")}>
                 {servicesList.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 py-3 px-4 rounded-[var(--radius-xl)] bg-[var(--bg-elevated)] border border-[var(--border-glass)] text-[var(--text-secondary)]"
+                    className={cn(
+                      homeUi.cardSurface,
+                      "flex items-start gap-3 !bg-[var(--bg-elevated)] py-3 ps-4 pe-4"
+                    )}
                   >
-                    <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[var(--accent)] mt-2" />
-                    <span>{item}</span>
+                    <span
+                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]"
+                      aria-hidden
+                    />
+                    <span className={homeUi.bodySm}>{item}</span>
                   </li>
                 ))}
               </ul>
             </section>
-          )}
+          ) : null}
 
-          {data.why_local_title && whyReasons.length > 0 && (
-            <section>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-8">
-                {data.why_local_title}
-              </h2>
-              <ul className="space-y-4">
+          {data.why_local_title && whyReasons.length > 0 ? (
+            <section className={cn(homeUi.gridGap, "flex flex-col")}>
+              <h2 className={cn(homeUi.cardTitle, "text-xl sm:text-2xl")}>{data.why_local_title}</h2>
+              <ul className={homeUi.gridGap}>
                 {whyReasons.map((reason, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-4 p-5 rounded-[var(--radius-xl)] border border-[var(--border-glass)] bg-[var(--bg-elevated)] text-[var(--text-secondary)] leading-relaxed"
+                    className={cn(
+                      homeUi.cardSurface,
+                      "flex items-start gap-4 !bg-[var(--bg-elevated)] p-5"
+                    )}
                   >
-                    <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-[var(--accent-muted)] text-[var(--accent)] font-display font-bold text-sm flex items-center justify-center">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-muted)] font-display text-sm font-bold text-[var(--accent)]">
                       {i + 1}
                     </span>
-                    {reason}
+                    <span className={homeUi.bodyLead}>{reason}</span>
                   </li>
                 ))}
               </ul>
             </section>
-          )}
+          ) : null}
 
-          <section className="glass-panel p-8 sm:p-10 text-center">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight mb-4">
-              {data.urgent_title}
-            </h2>
-            {data.urgent_text && (
-              <p className="text-[var(--text-secondary)] max-w-xl mx-auto mb-8 leading-relaxed">
-                {data.urgent_text}
-              </p>
-            )}
+          <section className={cn(homeUi.cardSurface, "mx-auto max-w-2xl text-center")}>
+            <h2 className={cn(homeUi.cardTitle, "mb-4 text-xl sm:text-2xl")}>{data.urgent_title}</h2>
+            {data.urgent_text ? (
+              <p className={cn(homeUi.bodyLead, "mx-auto mb-8 max-w-xl")}>{data.urgent_text}</p>
+            ) : null}
             <a
               href={PHONE_HREF}
-              className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm ${CTA_ACCENT_CLASS}`}
-              aria-label={t.common.call_now}
+              className={cn(homeUi.pillPrimarySm, "inline-flex items-center gap-2")}
+              aria-label={`${t.common.call_now} ${PHONE_DISPLAY}`}
             >
-              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2.5}>
-                <path d="M3 5.5A2.5 2.5 0 015.5 3h1.5a2.5 2.5 0 012.3 1.5l1.0 2.2a2.5 2.5 0 01-.6 2.8l-1.3 1.3a11 11 0 005.4 5.4l1.3-1.3a2.5 2.5 0 012.8-.6l2.2 1.0a2.5 2.5 0 011.5 2.3v1.5a2.5 2.5 0 01-2.5 2.5H18.5a15.5 15.5 0 01-15.5-15.5V5.5z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <PhoneIcon size="sm" className="shrink-0" aria-hidden />
               {t.common.call_now} · {PHONE_DISPLAY}
             </a>
           </section>
         </div>
-
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

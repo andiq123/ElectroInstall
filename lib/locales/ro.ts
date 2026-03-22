@@ -3,16 +3,16 @@ export const ro = {
     phone: "+373 067596246",
     location: "Chișinău, Moldova",
     email: "radu@electroinstall.md",
-    cta_primary: "Solicită o ofertă gratuită",
+    cta_primary: "Solicită ofertă",
     cta_secondary: "Sună acum",
-    cta_rapid: "Solicită ofertă",
+    cta_rapid: "Cere ofertă",
     phone_personal: "Telefon",
     location_central: "Chișinău",
     email_personal: "Email",
     call_now: "Sună acum",
     send_message: "Trimite mesaj",
     chisinau_suburbs: "Chișinău și suburbii",
-    work_done_right: "Muncă făcută cu cap",
+    work_done_right: "Lucrări făcute corect",
   },
   nav: {
     services: "Servicii",
@@ -24,37 +24,39 @@ export const ro = {
   },
   hero: {
     eyebrow: "Electrician autorizat · Chișinău",
-    headline: "Electrician Chișinău. Reparații și instalații, fără bătăi de cap.",
+    headline: "Electrician Chișinău. Reparații și instalații, cu calm și claritate.",
     headline_1: "ELECTRICIAN ÎN",
     highlight_1: "CHIȘINĂU",
     headline_2: "REPARAȚII ȘI INSTALAȚII,",
-    highlight_2: "FĂRĂ BĂTĂI DE CAP.",
-    subhead: "Afli prețul înainte să începem. Lucrări conform normelor, cu garanție. Pentru urgențe răspund non-stop.",
-    cta: "Solicită o ofertă gratuită",
-    cta_tagline: "pentru o casă sigură",
-    trust_line: "Preț înainte de lucru · Conform normelor · Disponibil 24/7",
+    highlight_2: "PREȚ CLAR ȘI GARANȚIE.",
+    subhead:
+      "Îți spun prețul înainte să începem. Respectăm normele, lucrăm curat, cu garanție. La urgențe, sunt disponibil non-stop.",
+    cta: "Solicită ofertă",
+    cta_tagline: "pentru o casă în siguranță",
+    trust_line: "Preț agreat dinainte · În standarde · Urgențe 24/7",
     top_line_left: "Servicii electrice",
     top_line_right: "Solicită ofertă",
-    badge_text: "Clienți Mulțumiți",
+    badge_text: "Clienți mulțumiți",
     call_us: "Sună la ",
     progress_from: "01",
     progress_to: "04",
   },
   home: {
-    features_title: "De ce ElectroInstall?",
-    features_subtitle: "Nu doar „tragem cabluri” — facem instalații sigure, explicate pe înțeles și gata de folosit mulți ani. Preț spus din start, materiale de încredere, răspuns la urgențe.",
+    features_title: "Cum lucrăm",
+    features_subtitle:
+      "Instalații sigure, explicate pe înțeles. Materiale potrivite pentru fiecare lucrare. Preț stabilit din start; la urgențe răspundem repede.",
     bento_cards: [
       {
-        title: "Autorizat & conform normelor",
-        body: "Lucrări făcute cum trebuie, cu garanție și acte în regulă când e nevoie.",
+        title: "Autorizat, în standarde",
+        body: "Lucrări corecte, cu garanție și documente când situația o cere.",
       },
       {
-        title: "Program flexibil",
-        body: "Găsim împreună un interval care ți se potrivește, inclusiv după program.",
+        title: "Program adaptat",
+        body: "Stabilim împreună un interval care ți se potrivește, inclusiv în afara orelor obișnuite.",
       },
       {
-        title: "Soluții durabile",
-        body: "Materiale serioase și montaj curat — fără improvizații care te costă mai târziu.",
+        title: "Montaj curat, pe termen lung",
+        body: "Fără improvizații: alegem soluții care țin și arată îngrijit.",
       },
     ],
     stats: [
@@ -63,24 +65,26 @@ export const ro = {
       { value: "24/7", label: "La urgențe" },
     ],
     features: [
-      { label: "Preț spus din start", icon: "currency" },
-      { label: "Lucrări conform normelor", icon: "shield" },
+      { label: "Preț clar din start", icon: "currency" },
+      { label: "În conformitate cu normele", icon: "shield" },
       { label: "Urgențe 24/7", icon: "bolt" },
-      { label: "Estimare gratuită", icon: "clipboard" },
+      { label: "Estimare fără obligații", icon: "clipboard" },
     ],
   },
   services: {
     badge: "Servicii Electrice",
-    title_part1: "CUM TE POT",
-    title_part2: "AJUTA",
-    subtitle: "Rezolv orice problemă electrică din locuința ta, de la prize defecte până la tablouri electrice complet noi. Simplu, sigur și la preț corect.",
-    hook_title_part1: "HAI SĂ FACEM",
-    hook_title_part2: "LUCRURILE CORECT",
-    hook_subtitle: "Fie că ai o mică problemă sau vrei o instalație noua, sunt gata să te ajut. Lucrez în tot Chișinăul și suburbii.",
-    contact_prompt: "Ai nevoie de unul dintre acestea? Sună sau trimite cererea în secțiunea Contact mai jos.",
-    showcase_explore: "Vezi serviciile în detaliu",
+    title_part1: "SERVICII",
+    title_part2: "ELECTRICE",
+    subtitle:
+      "De la o priză sau un automat, până la tablou nou sau instalație completă — totul explicat clar, executat sigur, la un preț corect.",
+    hook_title_part1: "LUCRĂM",
+    hook_title_part2: "CORECT DIN START",
+    hook_subtitle:
+      "Lucrare mică sau proiect mai mare — același nivel de atenție. Chișinău și împrejurimi.",
+    contact_prompt: "Potrivit pentru situația ta? Sună sau scrie din secțiunea de contact.",
+    showcase_explore: "Detalii despre servicii",
     request_below: "Trimite cerere",
-    emergency_badge: "Intervenții Rapide",
+    emergency_badge: "Intervenții rapide",
     best_for_label: "Ideal pentru",
     work_strip_title: "Lucrări și calitate",
     work_strip_caption1: "Verificare și testare",
@@ -114,16 +118,18 @@ export const ro = {
     }
   },
   about_section: {
-    title: "Electricianul tău",
+    title: "Despre mine",
     subtitle: "Siguranță și claritate",
     name: "Radu",
     role: "Electrician autorizat",
-    description: "Instalații făcute cum trebuie: preț spus din start, lucrări conform normelor. La urgențe răspund non-stop.",
+    description:
+      "Preț agreat înainte de lucru, execuție în standarde, garanție. Pentru urgențe — linie deschisă.",
   },
   why_us: {
-    title_part1: "De ce să lucrăm",
-    title_part2: "împreună",
-    subtitle: "Preț clar înainte de lucru. Lucrez curat, explic ce fac, ofer garanție. Conform normelor, disponibil 24/7 la urgențe.",
+    title_part1: "De ce",
+    title_part2: "să lucrăm împreună",
+    subtitle:
+      "Preț clar din start, execuție îngrijită, explicații pe înțeles și garanție. Norme respectate; la urgențe, disponibil non-stop.",
     stats: {
       experience: "Experiență",
       cases: "Case Sigure",
@@ -131,27 +137,27 @@ export const ro = {
     },
     reasons: [
       {
-        title: "Electrician Autorizat",
-        description: "Lucrăm conform normelor tehnice, cu autorizație în regulă. Oferim garanție pentru fiecare intervenție.",
+        title: "Autorizat",
+        description: "Lucrări în normele în vigoare, cu acte în regulă acolo unde e cazul. Garanție pe manoperă.",
       },
       {
-        title: "Program Flexibil",
-        description: "Ai nevoie de o programare după lucru? Găsim împreună momentul potrivit pentru vizită.",
+        title: "Program flexibil",
+        description: "Putem stabili o vizită și după programul obișnuit de lucru, când ai nevoie.",
       },
       {
-        title: "Soluții Durabile",
-        description: "Folosesc doar materiale de calitate (cupru, protecții automate) pentru o instalație sigură pe termen lung.",
+        title: "Materiale și montaj alese corect",
+        description: "Cupru unde trebuie, protecții adecvate — fără scurtături care costă mai târziu.",
       },
       {
-        title: "Estimare Corectă",
-        description: "Analizăm problema și stabilim prețul înainte de a începe. Fără surprize la finalul lucrării.",
+        title: "Preț înainte de start",
+        description: "După evaluare, îți spun costul manoperei înainte să începem. Fără surprize la final.",
       },
     ]
   },
   process: {
-    title_part1: "Simplu și",
-    title_part2: "eficient",
-    subtitle: "Stabilim ce e de făcut, îți spun prețul, apoi execut. Fără surprize, fără mizerie după lucru.",
+    title_part1: "Pași",
+    title_part2: "simpli",
+    subtitle: "Ne înțelegem asupra lucrării și a prețului, apoi execut. Spațiu lăsat curat la final.",
     steps: [
       {
         title: "Discuția",
@@ -173,8 +179,8 @@ export const ro = {
   },
   testimonials: {
     title: "Ce spun clienții",
-    eyebrow: "Încrederea clienților",
-    headline: "SIGURANȚĂ ȘI CLARITATE.",
+    eyebrow: "Părerea celor cu care am lucrat",
+    headline: "CLAR, CURAT, LA TIMP.",
     items: [
       {
         quote: "Mi-a spus cât costă înainte să înceapă. A terminat mai repede decât mă așteptam și a lăsat curat după el.",
@@ -200,47 +206,56 @@ export const ro = {
     items: [
       {
         question: "Cât costă intervenția unui electrician?",
-        answer: "Fiecare lucrare este diferită. Înainte de a începe, îți spun exact cât va costa manopera. Pentru lucrări mici (schimbat o priză, un automat), am prețuri fixe, corecte.",
+        answer:
+          "Depinde de lucrare. Înainte de start îți spun clar costul manoperei. Pentru intervenții mici (priză, automat) am prețuri fixe, stabilite dinainte.",
       },
       {
         question: "Vii și pentru lucrări mici?",
-        answer: "Desigur. Nicio lucrare nu este prea mică. Fie că e vorba de un întrerupător defect sau de montarea unei lustre, mă ocup cu aceeași atenție.",
+        answer:
+          "Da. O priză, un întrerupător sau o lustă primesc aceeași atenție ca orice altă lucrare.",
       },
       {
         question: "Puteți veni în aceeași zi?",
-        answer: "Dacă programul îmi permite și este o problemă care nu poate aștepta, încerc să ajung în cel mai scurt timp posibil.",
+        answer:
+          "Când programul permite și situația nu suportă amânare, mă străduiesc să ajung cât mai repede.",
       },
       {
         question: "Oferiți factură?",
-        answer: "Da, munca mea este transparentă. Primești dovadă pentru plată și garanție pentru lucrarea efectuată.",
+        answer:
+          "Da. Primești confirmarea plății și garanție pe lucrarea făcută.",
       },
       {
         question: "Ce materiale folosiți?",
-        answer: "Prefer să lucrez cu mărci de încredere (Schneider, Legrand, Viko). Putem folosi materialele tale sau le pot cumpăra eu, oferinduți bonul fiscal.",
+        answer:
+          "Lucrez cu branduri recunoscute (Schneider, Legrand, Viko). Putem folosi materialele tale sau le achiziționez eu, cu bon fiscal.",
       },
       {
         question: "Sunteți electrician autorizat?",
-        answer: "Da. Lucrez conform normelor tehnice și am autorizație în regulă. Pentru lucrări care necesită acte oficiale sau garanție pe termen lung, asta contează.",
+        answer:
+          "Da. Lucrez în normele tehnice, cu autorizație în regulă — important acolo unde contează documentația și garanția pe termen lung.",
       },
       {
         question: "Veniți și la urgențe, inclusiv noaptea?",
-        answer: "Da. Pentru probleme care nu pot aștepta (până de curent, scurtcircuit, tablou care dă probleme) sunt disponibil 24/7. Sună-mă direct.",
+        answer:
+          "Da. Pentru pene de curent, scurtcircuite sau tablou defect sunt disponibil 24/7. Sună direct.",
       },
       {
         question: "De ce să aleg un electrician cu recomandări?",
-        answer: "Recomandările arată că lucrarea a fost făcută corect și că oamenii au avut încredere. Ofer transparență la preț, garanție și răspund rapid la apeluri.",
+        answer:
+          "Recomandările confirmă că lucrarea a fost făcută bine. Ofer preț clar, garanție și răspund prompt la telefon.",
       },
     ]
   },
   contact: {
-    title_part1: "Hai să",
-    title_part2: "discutăm",
-    subtitle: "Spune-mi ce ai nevoie: ofertă, estimare sau programare. Răspund rapid. Sunt Radu, electrician în Chișinău.",
-    trust_line: "Răspund rapid · Estimare gratuită",
+    title_part1: "Scrie-mi",
+    title_part2: "când ai nevoie",
+    subtitle:
+      "Ofertă, estimare sau o întrebare scurtă — răspund în timp util. Radu, electrician în Chișinău.",
+    trust_line: "Răspuns prompt · Estimare fără obligații",
   },
   contact_form: {
-    title: "Cerere ofertă",
-    subtitle: "Lasă numele și telefonul. Te sun în scurt timp cu o ofertă sau o programare.",
+    title: "Ofertă sau programare",
+    subtitle: "Lasă numele și telefonul; revin cu un apel scurt.",
     name_label: "Nume",
     name_placeholder: "Numele tău",
     phone_label: "Telefon",
@@ -250,7 +265,7 @@ export const ro = {
     submit_btn: "Trimite cererea",
     submitting_btn: "Se trimite…",
     success_title: "Mulțumim",
-    success_subtitle: "Te contactez în scurt timp cu o ofertă sau o programare.",
+    success_subtitle: "Revin în curând cu o ofertă sau o propunere de programare.",
     error_msg: "Ceva n-a mers bine. Încearcă din nou.",
     validation: {
       name_required: "Numele este obligatoriu",
@@ -260,8 +275,8 @@ export const ro = {
     quick_call: "Sau sună direct:",
   },
   footer: {
-    about_title: "Cine e Radu",
-    about_text: "Electrician în Chișinău. Instalații sigure, preț clar, disponibil 24/7 la urgențe.",
+    about_title: "Radu",
+    about_text: "Electrician în Chișinău. Instalații sigure, preț agreat dinainte, disponibil pentru urgențe non-stop.",
     program: "Luni–Duminică, 24/7 la urgențe",
     rights: "Toate drepturile rezervate.",
     privacy: "Politica de confidențialitate",

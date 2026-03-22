@@ -11,7 +11,7 @@ export function GET() {
     "## Principal",
     "",
     `- [Pagina principală](${SITE_URL}): Electrician Chișinău, servicii electrice, recomandări, contact.`,
-    `- [Contact / Ofertă](${SITE_URL}/#contact): Cerere ofertă gratuită, programări.`,
+    `- [Contact / Ofertă](${SITE_URL}/#contact): Ofertă sau programare, răspuns prompt.`,
     `- [Servicii Chișinău](${SITE_URL}/servicii-chisinau): Servicii electrice în toate sectoarele și suburbiile.`,
     `- [Întrebări frecvente](${SITE_URL}/#faq): Răspunsuri despre prețuri, programări, urgențe.`,
     "",

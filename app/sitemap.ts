@@ -1,8 +1,9 @@
 import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-posts";
+import { SITE_URL } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.electro-install.xyz";
+  const baseUrl = SITE_URL.replace(/\/$/, "");
   const lastModified = new Date();
 
   const blogEntries: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({

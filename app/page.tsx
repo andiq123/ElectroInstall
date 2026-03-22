@@ -1,40 +1,44 @@
-"use client";
+import type { Metadata } from "next";
+import HomePageClient from "@/components/HomePageClient";
+import HomeStructuredData from "@/components/seo/HomeStructuredData";
+import { BUSINESS_INFO, SITE_URL } from "@/lib/constants";
+import { absoluteOgImageUrl } from "@/lib/seo/og";
 
-import { useState } from "react";
-import { useLanguage } from "@/context/LanguageContext";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import ServicesShowcaseSection from "@/components/ServicesShowcaseSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import FAQSection from "@/components/FAQSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
-import { ContactModal } from "@/components/ui";
+const phone = BUSINESS_INFO.phoneDisplay;
 
-export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { locale } = useLanguage();
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+export const metadata: Metadata = {
+  title: `Electrician Chișinău - ${phone} | ElectroInstall`,
+  description: `Cauți electrician în Chișinău? Sună la ${phone}. ElectroInstall: servicii electrice rapide, preț corect înainte de lucru, intervenții 24/7. Montaj tablouri, prize, instalații.`,
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "ro-MD": SITE_URL,
+      "ru-MD": `${SITE_URL}?lang=ru`,
+      "x-default": SITE_URL,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ro_MD",
+    alternateLocale: ["ru_MD"],
+    siteName: "ElectroInstall",
+    url: SITE_URL,
+    title: `Electrician Chișinău - ${phone} | ElectroInstall`,
+    description: `Sună la ${phone}. Preț corect, lucrări conform normelor, disponibil 24/7 la urgențe.`,
+    images: [{ url: absoluteOgImageUrl(), alt: `ElectroInstall – electrician Chișinău, ${phone}` }],
+  },
+  twitter: {
+    title: `Electrician Chișinău - ${phone} | ElectroInstall`,
+    description: `Sună la ${phone}. Electrician Chișinău: preț corect, intervenții rapide, 24/7.`,
+    images: [absoluteOgImageUrl()],
+  },
+};
 
+export default function HomePage() {
   return (
-    <div className="min-h-screen w-full bg-[var(--page-bg)] font-body-ui">
-      <Navbar onOpenModal={openModal} />
-
-      <div key={locale} className="animate-page-fade">
-          <main id="main-content">
-            <HeroSection onOpenModal={openModal} />
-            <FeaturesSection />
-            <ServicesShowcaseSection />
-            <TestimonialsSection />
-            <FAQSection />
-            <ContactSection onOpenModal={openModal} />
-          </main>
-          <Footer />
-        </div>
-
-      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
-    </div>
+    <>
+      <HomeStructuredData />
+      <HomePageClient />
+    </>
   );
 }

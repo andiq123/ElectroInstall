@@ -4,9 +4,6 @@ export const SITE_URL =
   (typeof process !== "undefined" && process.env.NEXT_PUBLIC_SITE_URL) ||
   DEFAULT_SITE_URL;
 
-export const CTA_ACCENT_CLASS =
-  "bg-[var(--accent-light)] text-zinc-900 ring-1 ring-amber-600/15 hover:bg-[#ffcd38] transition-colors";
-
 export const BUSINESS_INFO = {
   name: 'ElectroInstall (Radu)',
   phone: '+373 067596246',

@@ -3,6 +3,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
+import { homeUi } from "@/lib/homeUi";
+import { cn } from "@/lib/utils";
 
 export default function PrivacyClient() {
   const { t, locale } = useLanguage();
@@ -10,36 +12,40 @@ export default function PrivacyClient() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-32 pb-20 bg-[var(--bg-base)]">
-        <div className="container px-6 sm:px-8 max-w-4xl mx-auto">
-          <header className="mb-16">
-            <h1 className="text-4xl sm:text-6xl font-black tracking-tighter italic uppercase text-[var(--text-primary)] leading-tight">
-              {t.legal.privacy.title_part1} <br />
-              <span className="text-[var(--accent)] not-italic">{t.legal.privacy.title_part2}</span>
+      <main id="main-content" className={cn(homeUi.pageMain, homeUi.pageContent)}>
+        <div className={homeUi.containerNarrow}>
+          <header className="mb-12 sm:mb-16">
+            <h1 className={cn(homeUi.displayTitle, "text-left")}>
+              <span className="block">{t.legal.privacy.title_part1}</span>
+              <span className="block text-[var(--accent)]">{t.legal.privacy.title_part2}</span>
             </h1>
-            <div className="h-1.5 w-20 bg-[var(--accent)] mt-8 rounded-full" />
+            <div className="mt-6 h-px w-16 bg-[var(--border-decorative)]" aria-hidden />
           </header>
 
-          <div className="prose prose-lg max-w-none text-[var(--text-secondary)] space-y-12">
-            {t.legal.privacy.sections.map((section: { title: string; content: string; list?: string[] }, i: number) => (
-              <section key={i}>
-                <h2 className="text-2xl font-black text-[var(--text-primary)] uppercase tracking-tight italic">{section.title}</h2>
-                <p className="mt-4 font-medium leading-relaxed">
-                  {section.content}
-                </p>
-                {section.list && (
-                  <ul className="list-disc pl-6 mt-4 space-y-2">
-                    {section.list.map((item: string, j: number) => (
-                      <li key={j}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
+          <div className={cn(homeUi.legalStack)}>
+            {t.legal.privacy.sections.map(
+              (
+                section: { title: string; content: string; list?: string[] },
+                i: number
+              ) => (
+                <section key={i}>
+                  <h2 className={homeUi.legalH2}>{section.title}</h2>
+                  <p className={homeUi.legalBody}>{section.content}</p>
+                  {section.list ? (
+                    <ul className="mt-4 list-disc space-y-2 ps-5 text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg">
+                      {section.list.map((item: string, j: number) => (
+                        <li key={j}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </section>
+              )
+            )}
 
-            <section className="pt-10 border-t border-[var(--border-glass)]">
-              <p className="text-sm italic opacity-60">
-                {t.legal.last_update}: {new Date().toLocaleDateString(locale === 'ro' ? 'ro-RO' : 'ru-RU')}
+            <section className={homeUi.legalDivider}>
+              <p className={homeUi.legalMeta}>
+                {t.legal.last_update}:{" "}
+                {new Date().toLocaleDateString(locale === "ro" ? "ro-RO" : "ru-RU")}
               </p>
             </section>
           </div>
