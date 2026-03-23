@@ -10,7 +10,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { ContactModal } from "@/components/ui";
+import ContactModal from "@/components/ui/ContactModal";
 
 export default function HomePageClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);

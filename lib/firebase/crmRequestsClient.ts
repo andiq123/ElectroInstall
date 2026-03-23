@@ -5,7 +5,6 @@ import {
   ref,
   set,
   update,
-  get,
   remove,
   onValue,
   type DataSnapshot,
@@ -43,11 +42,6 @@ export async function createRequest(input: NewCrmRequest): Promise<void> {
   };
 
   await set(newRef, record);
-}
-
-export async function listRequests(): Promise<CrmRequest[]> {
-  const snap = await get(ref(db(), CRM_REQUESTS_RTD_PATH));
-  return parseRequests(snap);
 }
 
 export type CrmRequestUpdate = {

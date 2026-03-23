@@ -238,7 +238,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
             <button
               type="submit"
-              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 text-[var(--text-small)] font-semibold bg-[var(--accent)] text-[var(--text-inverted)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 text-[var(--text-small)] font-semibold bg-[var(--accent-light)] text-zinc-900 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
               disabled={formState === "submitting"}
             >
               {formState === "submitting" ? (
