@@ -1,7 +1,17 @@
 import { firebaseClientApp } from "@/lib/firebase/client";
-import { getDatabase, push, ref, set, update, get, remove } from "firebase/database";
+import {
+  getDatabase,
+  push,
+  ref,
+  set,
+  update,
+  get,
+  remove,
+  onValue,
+  type DataSnapshot,
+} from "firebase/database";
 import type { CrmLocale, CrmRequest, CrmRequestStatus } from "@/lib/crm/types";
-import { CRM_ADMINS_RTD_PATH, CRM_REQUESTS_RTD_PATH } from "@/lib/crm/env";
+import { CRM_REQUESTS_RTD_PATH } from "@/lib/crm/env";
 
 function db() {
   if (!firebaseClientApp) throw new Error("Firebase not configured.");
@@ -37,12 +47,7 @@ export async function createRequest(input: NewCrmRequest): Promise<void> {
 
 export async function listRequests(): Promise<CrmRequest[]> {
   const snap = await get(ref(db(), CRM_REQUESTS_RTD_PATH));
-  const data = snap.val() as Record<string, CrmRequest> | null;
-  if (!data) return [];
-
-  return Object.values(data)
-    .filter((r): r is CrmRequest => r != null && typeof r === "object")
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return parseRequests(snap);
 }
 
 export type CrmRequestUpdate = {
@@ -67,19 +72,27 @@ export async function deleteRequest(id: string): Promise<void> {
   await remove(ref(db(), `${CRM_REQUESTS_RTD_PATH}/${id}`));
 }
 
-export type CrmAdminDebug = {
-  crmAdmins: { exists: boolean; value: unknown | null };
-  staff: { exists: boolean; value: unknown | null };
-};
+function parseRequests(snap: DataSnapshot): CrmRequest[] {
+  const data = snap.val() as Record<string, CrmRequest> | null;
+  if (!data) return [];
 
-export async function debugGetCrmAdminFlags(uid: string): Promise<CrmAdminDebug> {
-  const [adminsSnap, staffSnap] = await Promise.all([
-    get(ref(db(), `${CRM_ADMINS_RTD_PATH}/${uid}`)),
-    get(ref(db(), `staff/${uid}`)),
-  ]);
+  return Object.values(data)
+    .filter((r): r is CrmRequest => r != null && typeof r === "object")
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
 
-  return {
-    crmAdmins: { exists: adminsSnap.exists(), value: adminsSnap.val() },
-    staff: { exists: staffSnap.exists(), value: staffSnap.val() },
-  };
+export function subscribeRequests(
+  onData: (requests: CrmRequest[]) => void,
+  onError?: (err: unknown) => void
+): () => void {
+  const r = ref(db(), CRM_REQUESTS_RTD_PATH);
+  return onValue(
+    r,
+    (snap) => {
+      onData(parseRequests(snap));
+    },
+    (err) => {
+      onError?.(err);
+    }
+  );
 }

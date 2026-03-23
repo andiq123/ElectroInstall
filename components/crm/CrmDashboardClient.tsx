@@ -8,10 +8,9 @@ import { homeUi } from "@/lib/homeUi";
 import { cn } from "@/lib/utils";
 import { firebaseAuth } from "@/lib/firebase/client";
 import {
-  listRequests,
   updateRequest,
   deleteRequest,
-  debugGetCrmAdminFlags,
+  subscribeRequests,
 } from "@/lib/firebase/crmRequestsClient";
 
 type StatusFilter = "all" | "new" | "reviewed";
@@ -22,30 +21,6 @@ type EditFields = {
   message: string;
   status: CrmRequestStatus;
 };
-
-function serializeUnknownError(err: unknown) {
-  if (err instanceof Error) {
-    return {
-      name: err.name,
-      message: err.message,
-      stack: err.stack,
-    };
-  }
-
-  if (typeof err === "object" && err !== null) {
-    const maybe = err as Record<string, unknown>;
-    return {
-      message: typeof maybe.message === "string" ? maybe.message : undefined,
-      code: typeof maybe.code === "string" ? maybe.code : undefined,
-      serverCode:
-        typeof maybe.serverCode === "string" ? maybe.serverCode : undefined,
-      stack: typeof maybe.stack === "string" ? maybe.stack : undefined,
-      raw: err,
-    };
-  }
-
-  return { raw: err };
-}
 
 export default function CrmDashboardClient() {
   const router = useRouter();
@@ -62,41 +37,35 @@ export default function CrmDashboardClient() {
       setError("Firebase nu este configurat.");
       return;
     }
-    let mounted = true;
-    const unsub = onAuthStateChanged(firebaseAuth, (user) => {
-      if (!user) return;
-      const uid = user.uid;
-      listRequests()
-        .then((data) => {
-          if (mounted) {
-            setRequests(data);
-            setError(null);
-          }
-        })
-        .catch((err) => {
-          if (mounted) {
-            setRequests([]);
-            console.error("[CRM] loadRequests failed", {
-              uid,
-              error: serializeUnknownError(err),
-            });
-            debugGetCrmAdminFlags(uid)
-              .then((flags) => {
-                console.error("[CRM] admin flags", flags);
-              })
-              .catch((flagsErr) => {
-                console.error("[CRM] reading admin flags failed", {
-                  uid,
-                  error: serializeUnknownError(flagsErr),
-                });
-              });
-            setError("Nu ai acces la CRM.");
-          }
-        });
+    let unsubscribeRequests: (() => void) | null = null;
+    const unsubAuth = onAuthStateChanged(firebaseAuth, (user) => {
+      if (!user) {
+        unsubscribeRequests?.();
+        unsubscribeRequests = null;
+        setRequests([]);
+        setEditing(null);
+        setEditFields(null);
+        setError(null);
+        return;
+      }
+
+      unsubscribeRequests?.();
+      setError(null);
+      unsubscribeRequests = subscribeRequests(
+        (data) => {
+          setRequests(data);
+          setError(null);
+        },
+        (err) => {
+          setRequests([]);
+          console.error("[CRM] subscribeRequests failed", { uid: user.uid, err });
+          setError("Nu ai acces la CRM.");
+        }
+      );
     });
     return () => {
-      mounted = false;
-      unsub();
+      unsubscribeRequests?.();
+      unsubAuth();
     };
   }, []);
 
@@ -126,19 +95,6 @@ export default function CrmDashboardClient() {
     });
   }, [requests, filter, query]);
 
-  async function reload() {
-    setLoading(true);
-    setError(null);
-    try {
-      setRequests(await listRequests());
-    } catch (err) {
-      console.error("[CRM] reload failed", { error: serializeUnknownError(err) });
-      setError("Nu s-au putut încărca cererile.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function logout() {
     if (firebaseAuth) await signOut(firebaseAuth);
     router.push("/crm/login");
@@ -151,27 +107,9 @@ export default function CrmDashboardClient() {
     setError(null);
     try {
       await updateRequest(editing.id, editFields);
-      setRequests((prev) =>
-        prev.map((r) =>
-          r.id === editing.id
-            ? {
-                ...r,
-                ...editFields,
-                reviewedAt:
-                  editFields.status === "reviewed"
-                    ? new Date().toISOString()
-                    : undefined,
-              }
-            : r
-        )
-      );
       setEditing(null);
     } catch (err) {
-      console.error("[CRM] updateRequest failed", {
-        id: editing.id,
-        fields: editFields,
-        error: serializeUnknownError(err),
-      });
+      console.error("[CRM] updateRequest failed", { id: editing.id, fields: editFields, err });
       setError("Nu s-a putut salva.");
     } finally {
       setLoading(false);
@@ -183,13 +121,9 @@ export default function CrmDashboardClient() {
     setLoading(true);
     try {
       await deleteRequest(id);
-      setRequests((prev) => prev.filter((r) => r.id !== id));
       if (editing?.id === id) setEditing(null);
     } catch (err) {
-      console.error("[CRM] deleteRequest failed", {
-        id,
-        error: serializeUnknownError(err),
-      });
+      console.error("[CRM] deleteRequest failed", { id, err });
       setError("Nu s-a putut șterge.");
     } finally {
       setLoading(false);
@@ -216,14 +150,6 @@ export default function CrmDashboardClient() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={reload}
-                  disabled={loading}
-                  className="rounded-2xl border border-[var(--border-default)] bg-white px-4 py-2 text-sm font-semibold text-[var(--text-primary)] shadow-sm transition-colors hover:border-[var(--accent)] disabled:opacity-50"
-                >
-                  {loading ? "Se încarcă..." : "Actualizează"}
-                </button>
                 <button
                   type="button"
                   onClick={logout}
