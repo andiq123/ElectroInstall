@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "crm_requests": {
+      ".read": "auth != null && auth.token.crmAdmin == true",
+      "$id": {
+        ".write": "auth != null && (!data.exists() ? (
+          newData.child('id').isString() &&
+          newData.child('name').isString() &&
+          newData.child('phone').isString() &&
+          newData.child('message').isString() &&
+          (newData.child('locale').val() == 'ro' || newData.child('locale').val() == 'ru') &&
+          newData.child('emailSent').isBoolean() &&
+          newData.child('createdAt').isString() &&
+          newData.child('status').val() == 'new' &&
+          newData.child('reviewedAt').exists() == false
+        ) : (
+          auth.token.crmAdmin == true &&
+          newData.child('status').val() == 'reviewed' &&
+          newData.child('reviewedAt').isString()
+        ))",
+        ".validate": "true"
+      }
+    }
+  }
+}
+

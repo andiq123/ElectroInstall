@@ -5,6 +5,12 @@ import emailjs from "@emailjs/browser";
 import { Input, PhoneInput, Textarea } from "./Input";
 import { useLanguage } from "@/context/LanguageContext";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
+import { type Auth, signInAnonymously } from "firebase/auth";
+import { firebaseAuth } from "@/lib/firebase/client";
+import {
+  createCrmRequestInRtdb,
+  type CreateCrmRequestForRtdbInput,
+} from "@/lib/firebase/crmRequestsClient";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
@@ -17,8 +23,15 @@ interface ContactModalProps {
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
+async function persistCrmRequest(auth: Auth, input: CreateCrmRequestForRtdbInput) {
+  if (!auth.currentUser) {
+    await signInAnonymously(auth).catch(() => undefined);
+  }
+  await createCrmRequestInRtdb(input).catch(() => undefined);
+}
+
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [shouldRender, setShouldRender] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
   const [name, setName] = useState("");
@@ -122,22 +135,46 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+
+    const input: CreateCrmRequestForRtdbInput = {
+      name: name.trim(),
+      phone: phone.trim(),
+      message: message.trim() || "—",
+      locale,
+      emailSent: false,
+    };
+
+    const hasEmailJs =
+      Boolean(EMAILJS_SERVICE_ID) &&
+      Boolean(EMAILJS_TEMPLATE_ID) &&
+      Boolean(EMAILJS_PUBLIC_KEY);
+
+    if (!hasEmailJs) {
+      if (firebaseAuth) {
+        await persistCrmRequest(firebaseAuth, { ...input, emailSent: false });
+      }
       setFormState("error");
       return;
     }
+
     setFormState("submitting");
     try {
       emailjs.init(EMAILJS_PUBLIC_KEY);
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        name: name.trim(),
-        phone: phone.trim(),
-        message: message.trim() || "—",
+        name: input.name,
+        phone: input.phone,
+        message: input.message,
       });
+      if (firebaseAuth) {
+        await persistCrmRequest(firebaseAuth, { ...input, emailSent: true });
+      }
       setFormState("success");
       setTimeout(() => onClose(), 2000);
     } catch (error) {
       console.error("EmailJS error:", error);
+      if (firebaseAuth) {
+        await persistCrmRequest(firebaseAuth, { ...input, emailSent: false });
+      }
       setFormState("error");
     }
   };
