@@ -1,7 +1,7 @@
 import { firebaseClientApp } from "@/lib/firebase/client";
 import { getDatabase, push, ref, set, update, get, remove } from "firebase/database";
 import type { CrmLocale, CrmRequest, CrmRequestStatus } from "@/lib/crm/types";
-import { CRM_REQUESTS_RTD_PATH } from "@/lib/crm/env";
+import { CRM_ADMINS_RTD_PATH, CRM_REQUESTS_RTD_PATH } from "@/lib/crm/env";
 
 function db() {
   if (!firebaseClientApp) throw new Error("Firebase not configured.");
@@ -65,4 +65,21 @@ export async function updateRequest(id: string, input: CrmRequestUpdate): Promis
 
 export async function deleteRequest(id: string): Promise<void> {
   await remove(ref(db(), `${CRM_REQUESTS_RTD_PATH}/${id}`));
+}
+
+export type CrmAdminDebug = {
+  crmAdmins: { exists: boolean; value: unknown | null };
+  staff: { exists: boolean; value: unknown | null };
+};
+
+export async function debugGetCrmAdminFlags(uid: string): Promise<CrmAdminDebug> {
+  const [adminsSnap, staffSnap] = await Promise.all([
+    get(ref(db(), `${CRM_ADMINS_RTD_PATH}/${uid}`)),
+    get(ref(db(), `staff/${uid}`)),
+  ]);
+
+  return {
+    crmAdmins: { exists: adminsSnap.exists(), value: adminsSnap.val() },
+    staff: { exists: staffSnap.exists(), value: staffSnap.val() },
+  };
 }

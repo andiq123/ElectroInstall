@@ -11,6 +11,7 @@ import {
   listRequests,
   updateRequest,
   deleteRequest,
+  debugGetCrmAdminFlags,
 } from "@/lib/firebase/crmRequestsClient";
 
 type StatusFilter = "all" | "new" | "reviewed";
@@ -79,6 +80,16 @@ export default function CrmDashboardClient() {
               uid,
               error: serializeUnknownError(err),
             });
+            debugGetCrmAdminFlags(uid)
+              .then((flags) => {
+                console.error("[CRM] admin flags", flags);
+              })
+              .catch((flagsErr) => {
+                console.error("[CRM] reading admin flags failed", {
+                  uid,
+                  error: serializeUnknownError(flagsErr),
+                });
+              });
             setError("Nu ai acces la CRM.");
           }
         });
