@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy:rtdb-rules": "npx firebase-tools deploy --only database"
+    "deploy:rtdb-rules": "firebase deploy --only database"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -28,6 +28,7 @@
     "serialize-javascript": "^7.0.4"
   },
   "devDependencies": {
+    "firebase-tools": "^14.24.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

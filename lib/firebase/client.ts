@@ -1,4 +1,4 @@
-import { getApps, initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "";
@@ -22,7 +22,7 @@ const hasFirebaseConfig =
 
 export const firebaseClientApp = hasFirebaseConfig
   ? getApps().length > 0
-    ? getApps()[0]!
+    ? getApp()
     : initializeApp(firebaseClientConfig)
   : null;
 

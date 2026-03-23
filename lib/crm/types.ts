@@ -1,5 +1,4 @@
 export type CrmLocale = "ro" | "ru";
-
 export type CrmRequestStatus = "new" | "reviewed";
 
 export type CrmRequest = {
@@ -11,7 +10,5 @@ export type CrmRequest = {
   emailSent: boolean;
   createdAt: string;
   status: CrmRequestStatus;
-  adminNotes?: string;
   reviewedAt?: string;
 };
-

@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useCallback, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
+import { ensureEmailjsReady } from "@/lib/emailjs/ensureReady";
 import { Input, PhoneInput, Textarea } from "./Input";
 import { useLanguage } from "@/context/LanguageContext";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
-import { type Auth, signInAnonymously } from "firebase/auth";
-import { firebaseAuth } from "@/lib/firebase/client";
 import {
-  createCrmRequestInRtdb,
-  type CreateCrmRequestForRtdbInput,
+  createRequest,
+  type NewCrmRequest,
 } from "@/lib/firebase/crmRequestsClient";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
@@ -22,13 +21,6 @@ interface ContactModalProps {
 }
 
 type FormState = "idle" | "submitting" | "success" | "error";
-
-async function persistCrmRequest(auth: Auth, input: CreateCrmRequestForRtdbInput) {
-  if (!auth.currentUser) {
-    await signInAnonymously(auth).catch(() => undefined);
-  }
-  await createCrmRequestInRtdb(input).catch(() => undefined);
-}
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const { t, locale } = useLanguage();
@@ -136,7 +128,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const input: CreateCrmRequestForRtdbInput = {
+    const input: NewCrmRequest = {
       name: name.trim(),
       phone: phone.trim(),
       message: message.trim() || "—",
@@ -144,37 +136,29 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       emailSent: false,
     };
 
-    const hasEmailJs =
-      Boolean(EMAILJS_SERVICE_ID) &&
-      Boolean(EMAILJS_TEMPLATE_ID) &&
-      Boolean(EMAILJS_PUBLIC_KEY);
+    setFormState("submitting");
 
-    if (!hasEmailJs) {
-      if (firebaseAuth) {
-        await persistCrmRequest(firebaseAuth, { ...input, emailSent: false });
+    let emailSent = false;
+    if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+      try {
+        ensureEmailjsReady(EMAILJS_PUBLIC_KEY);
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          name: input.name,
+          phone: input.phone,
+          message: input.message,
+        });
+        emailSent = true;
+      } catch (err) {
+        console.error("EmailJS error:", err);
       }
-      setFormState("error");
-      return;
     }
 
-    setFormState("submitting");
     try {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        name: input.name,
-        phone: input.phone,
-        message: input.message,
-      });
-      if (firebaseAuth) {
-        await persistCrmRequest(firebaseAuth, { ...input, emailSent: true });
-      }
+      await createRequest({ ...input, emailSent });
       setFormState("success");
       setTimeout(() => onClose(), 2000);
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      if (firebaseAuth) {
-        await persistCrmRequest(firebaseAuth, { ...input, emailSent: false });
-      }
+    } catch (err) {
+      console.error("RTDB write failed:", err);
       setFormState("error");
     }
   };

@@ -1,18 +1,50 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { CrmRequest } from "@/lib/crm/types";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import type { CrmRequest, CrmRequestStatus } from "@/lib/crm/types";
 import { homeUi } from "@/lib/homeUi";
 import { cn } from "@/lib/utils";
 import { firebaseAuth } from "@/lib/firebase/client";
-import { signOut } from "firebase/auth";
 import {
-  listCrmRequestsFromRtdb,
-  updateCrmRequestStatusInRtdb,
+  listRequests,
+  updateRequest,
+  deleteRequest,
 } from "@/lib/firebase/crmRequestsClient";
 
 type StatusFilter = "all" | "new" | "reviewed";
+
+type EditFields = {
+  name: string;
+  phone: string;
+  message: string;
+  status: CrmRequestStatus;
+};
+
+function serializeUnknownError(err: unknown) {
+  if (err instanceof Error) {
+    return {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+    };
+  }
+
+  if (typeof err === "object" && err !== null) {
+    const maybe = err as Record<string, unknown>;
+    return {
+      message: typeof maybe.message === "string" ? maybe.message : undefined,
+      code: typeof maybe.code === "string" ? maybe.code : undefined,
+      serverCode:
+        typeof maybe.serverCode === "string" ? maybe.serverCode : undefined,
+      stack: typeof maybe.stack === "string" ? maybe.stack : undefined,
+      raw: err,
+    };
+  }
+
+  return { raw: err };
+}
 
 export default function CrmDashboardClient() {
   const router = useRouter();
@@ -21,25 +53,54 @@ export default function CrmDashboardClient() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState<CrmRequest | null>(null);
+  const [editFields, setEditFields] = useState<EditFields | null>(null);
 
   useEffect(() => {
+    if (!firebaseAuth) {
+      setError("Firebase nu este configurat.");
+      return;
+    }
     let mounted = true;
-    (async () => {
-      if (!firebaseAuth) {
-        setError("Firebase not configured.");
-        return;
-      }
-      try {
-        const data = await listCrmRequestsFromRtdb(200);
-        if (mounted) setRequests(data);
-      } catch {
-        if (mounted) setError("No access to CRM data.");
-      }
-    })();
+    const unsub = onAuthStateChanged(firebaseAuth, (user) => {
+      if (!user) return;
+      const uid = user.uid;
+      listRequests()
+        .then((data) => {
+          if (mounted) {
+            setRequests(data);
+            setError(null);
+          }
+        })
+        .catch((err) => {
+          if (mounted) {
+            setRequests([]);
+            console.error("[CRM] loadRequests failed", {
+              uid,
+              error: serializeUnknownError(err),
+            });
+            setError("Nu ai acces la CRM.");
+          }
+        });
+    });
     return () => {
       mounted = false;
+      unsub();
     };
   }, []);
+
+  useEffect(() => {
+    if (!editing) {
+      setEditFields(null);
+      return;
+    }
+    setEditFields({
+      name: editing.name,
+      phone: editing.phone,
+      message: editing.message,
+      status: editing.status,
+    });
+  }, [editing]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -54,34 +115,71 @@ export default function CrmDashboardClient() {
     });
   }, [requests, filter, query]);
 
-  async function refresh() {
+  async function reload() {
     setLoading(true);
     setError(null);
     try {
-      const data = await listCrmRequestsFromRtdb(200);
-      setRequests(data);
+      setRequests(await listRequests());
+    } catch (err) {
+      console.error("[CRM] reload failed", { error: serializeUnknownError(err) });
+      setError("Nu s-au putut încărca cererile.");
     } finally {
       setLoading(false);
     }
   }
 
   async function logout() {
-    if (!firebaseAuth) {
-      router.push("/crm/login");
-      return;
-    }
-    await signOut(firebaseAuth);
+    if (firebaseAuth) await signOut(firebaseAuth);
     router.push("/crm/login");
   }
 
-  async function markReviewed(id: string) {
+  async function onSaveEdit(e: FormEvent) {
+    e.preventDefault();
+    if (!editing || !editFields) return;
     setLoading(true);
     setError(null);
     try {
-      const updated = await updateCrmRequestStatusInRtdb(id, "reviewed");
-      setRequests((prev) => prev.map((r) => (r.id === id ? updated : r)));
-    } catch {
-      setError("Could not update request.");
+      await updateRequest(editing.id, editFields);
+      setRequests((prev) =>
+        prev.map((r) =>
+          r.id === editing.id
+            ? {
+                ...r,
+                ...editFields,
+                reviewedAt:
+                  editFields.status === "reviewed"
+                    ? new Date().toISOString()
+                    : undefined,
+              }
+            : r
+        )
+      );
+      setEditing(null);
+    } catch (err) {
+      console.error("[CRM] updateRequest failed", {
+        id: editing.id,
+        fields: editFields,
+        error: serializeUnknownError(err),
+      });
+      setError("Nu s-a putut salva.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Ștergi această cerere?")) return;
+    setLoading(true);
+    try {
+      await deleteRequest(id);
+      setRequests((prev) => prev.filter((r) => r.id !== id));
+      if (editing?.id === id) setEditing(null);
+    } catch (err) {
+      console.error("[CRM] deleteRequest failed", {
+        id,
+        error: serializeUnknownError(err),
+      });
+      setError("Nu s-a putut șterge.");
     } finally {
       setLoading(false);
     }
@@ -100,27 +198,27 @@ export default function CrmDashboardClient() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h1 className="font-display text-2xl font-black tracking-tight text-[var(--text-primary)]">
-                  CRM
+                  Cereri clienți
                 </h1>
                 <p className="mt-1 text-base text-[var(--text-secondary)]">
-                  Cereri de la clienți (email + stocare în CRM).
+                  Din formularul de contact de pe site
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={refresh}
-                  className="rounded-2xl border border-[var(--border-default)] bg-white px-4 py-2 text-sm font-semibold text-[var(--text-primary)] shadow-sm transition-colors hover:border-[var(--accent)]"
+                  onClick={reload}
                   disabled={loading}
+                  className="rounded-2xl border border-[var(--border-default)] bg-white px-4 py-2 text-sm font-semibold text-[var(--text-primary)] shadow-sm transition-colors hover:border-[var(--accent)] disabled:opacity-50"
                 >
-                  {loading ? "Actualizez..." : "Actualizează"}
+                  {loading ? "Se încarcă..." : "Actualizează"}
                 </button>
                 <button
                   type="button"
                   onClick={logout}
                   className="rounded-2xl bg-[var(--text-primary)] px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                 >
-                  Logout
+                  Ieșire
                 </button>
               </div>
             </div>
@@ -150,7 +248,7 @@ export default function CrmDashboardClient() {
             </div>
           </div>
 
-          <div className={cn("rounded-2xl border border-[var(--border-default)] bg-white shadow-sm overflow-hidden")}>
+          <div className="rounded-2xl border border-[var(--border-default)] bg-white shadow-sm overflow-hidden">
             <div className="overflow-auto">
               <table className="w-full min-w-[760px] border-collapse">
                 <thead className="bg-[var(--bg-elevated)]">
@@ -159,6 +257,7 @@ export default function CrmDashboardClient() {
                     <th className="px-6 py-4 font-semibold">Nume</th>
                     <th className="px-6 py-4 font-semibold">Telefon</th>
                     <th className="px-6 py-4 font-semibold">Mesaj</th>
+                    <th className="px-6 py-4 font-semibold">Email</th>
                     <th className="px-6 py-4 font-semibold">Status</th>
                     <th className="px-6 py-4 font-semibold">Acțiuni</th>
                   </tr>
@@ -166,13 +265,19 @@ export default function CrmDashboardClient() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-10 text-center text-[var(--text-secondary)]">
-                        Nimic de afișat.
+                      <td
+                        colSpan={7}
+                        className="px-6 py-10 text-center text-[var(--text-secondary)]"
+                      >
+                        Nicio cerere.
                       </td>
                     </tr>
                   ) : (
                     filtered.map((r) => (
-                      <tr key={r.id} className="border-t border-[var(--border-default)]">
+                      <tr
+                        key={r.id}
+                        className="border-t border-[var(--border-default)]"
+                      >
                         <td className="px-6 py-5 text-sm text-[var(--text-secondary)] whitespace-nowrap">
                           {new Date(r.createdAt).toLocaleString()}
                         </td>
@@ -183,9 +288,15 @@ export default function CrmDashboardClient() {
                           {r.phone}
                         </td>
                         <td className="px-6 py-5 text-sm text-[var(--text-secondary)]">
-                          <div className="max-w-[340px] truncate" title={r.message}>
+                          <div
+                            className="max-w-[340px] truncate"
+                            title={r.message}
+                          >
                             {r.message}
                           </div>
+                        </td>
+                        <td className="px-6 py-5 text-sm text-[var(--text-secondary)] whitespace-nowrap">
+                          {r.emailSent ? "Da" : "Nu"}
                         </td>
                         <td className="px-6 py-5 text-sm whitespace-nowrap">
                           <span
@@ -196,21 +307,28 @@ export default function CrmDashboardClient() {
                                 : "border-[var(--border-default)] bg-[var(--bg-section-alt)] text-[var(--text-secondary)]"
                             )}
                           >
-                            {r.status === "new" ? "Nou" : "Verificată"}
+                            {r.status === "new" ? "Nou" : "Verificat"}
                           </span>
                         </td>
                         <td className="px-6 py-5 whitespace-nowrap">
-                          {r.status === "new" ? (
+                          <div className="flex items-center gap-2">
                             <button
                               type="button"
-                              onClick={() => markReviewed(r.id)}
-                              className="rounded-2xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--text-inverted)] shadow-accent-sm transition-opacity hover:opacity-90"
+                              onClick={() => setEditing(r)}
+                              disabled={loading}
+                              className="rounded-2xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--text-inverted)] shadow-accent-sm transition-opacity hover:opacity-90 disabled:opacity-50"
                             >
-                              Marchez
+                              Editează
                             </button>
-                          ) : (
-                            <span className="text-sm text-[var(--text-secondary)]">—</span>
-                          )}
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(r.id)}
+                              disabled={loading}
+                              className="rounded-2xl border border-[var(--border-default)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)] transition-colors hover:border-red-400 hover:text-red-500 disabled:opacity-50"
+                            >
+                              Șterge
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -221,7 +339,110 @@ export default function CrmDashboardClient() {
           </div>
         </div>
       </div>
+
+      {editing && editFields ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="crm-edit-title"
+        >
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            aria-label="Închide"
+            onClick={() => setEditing(null)}
+          />
+          <form
+            onSubmit={onSaveEdit}
+            className="relative z-10 w-full max-w-lg rounded-2xl border border-[var(--border-default)] bg-white p-6 shadow-lg"
+          >
+            <h2
+              id="crm-edit-title"
+              className="font-display text-lg font-bold text-[var(--text-primary)]"
+            >
+              Editează cererea
+            </h2>
+            <div className="mt-4 space-y-3">
+              <div>
+                <label className="input-label">Nume</label>
+                <input
+                  className="input-field w-full"
+                  value={editFields.name}
+                  onChange={(e) =>
+                    setEditFields((f) =>
+                      f ? { ...f, name: e.target.value } : f
+                    )
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="input-label">Telefon</label>
+                <input
+                  className="input-field w-full"
+                  value={editFields.phone}
+                  onChange={(e) =>
+                    setEditFields((f) =>
+                      f ? { ...f, phone: e.target.value } : f
+                    )
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="input-label">Mesaj</label>
+                <textarea
+                  className="input-field w-full min-h-[100px]"
+                  value={editFields.message}
+                  onChange={(e) =>
+                    setEditFields((f) =>
+                      f ? { ...f, message: e.target.value } : f
+                    )
+                  }
+                  rows={4}
+                />
+              </div>
+              <div>
+                <label className="input-label">Status</label>
+                <select
+                  className="input-field w-full"
+                  value={editFields.status}
+                  onChange={(e) =>
+                    setEditFields((f) =>
+                      f
+                        ? {
+                            ...f,
+                            status: e.target.value as CrmRequestStatus,
+                          }
+                        : f
+                    )
+                  }
+                >
+                  <option value="new">Nou</option>
+                  <option value="reviewed">Verificat</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setEditing(null)}
+                className="rounded-2xl border border-[var(--border-default)] px-4 py-2 text-sm font-semibold text-[var(--text-secondary)]"
+              >
+                Anulează
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="rounded-2xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--text-inverted)] disabled:opacity-50"
+              >
+                Salvează
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : null}
     </main>
   );
 }
-

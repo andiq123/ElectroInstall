@@ -1,26 +1,22 @@
 {
   "rules": {
+    "staff": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": false
+      }
+    },
+    "crm_admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": false
+      }
+    },
     "crm_requests": {
-      ".read": "auth != null && auth.token.crmAdmin == true",
+      ".read": "auth != null && (root.child('crm_admins').child(auth.uid).exists() || root.child('staff').child(auth.uid).exists())",
       "$id": {
-        ".write": "auth != null && (!data.exists() ? (
-          newData.child('id').isString() &&
-          newData.child('name').isString() &&
-          newData.child('phone').isString() &&
-          newData.child('message').isString() &&
-          (newData.child('locale').val() == 'ro' || newData.child('locale').val() == 'ru') &&
-          newData.child('emailSent').isBoolean() &&
-          newData.child('createdAt').isString() &&
-          newData.child('status').val() == 'new' &&
-          newData.child('reviewedAt').exists() == false
-        ) : (
-          auth.token.crmAdmin == true &&
-          newData.child('status').val() == 'reviewed' &&
-          newData.child('reviewedAt').isString()
-        ))",
-        ".validate": "true"
+        ".write": "!data.exists() ? (newData.exists() && newData.child('id').isString() && newData.child('name').isString() && newData.child('phone').isString() && newData.child('message').isString() && (newData.child('locale').val() == 'ro' || newData.child('locale').val() == 'ru') && newData.child('emailSent').isBoolean() && newData.child('createdAt').isString() && newData.child('status').val() == 'new') : (auth != null && (root.child('crm_admins').child(auth.uid).exists() || root.child('staff').child(auth.uid).exists()))"
       }
     }
   }
 }
-

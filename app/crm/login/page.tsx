@@ -28,11 +28,8 @@ export default function CrmLoginPage() {
         return;
       }
 
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        email,
-        password
-      );
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
+      await firebaseAuth.currentUser?.getIdToken(true);
       router.push("/crm");
     } catch {
       setErrorMessage("Login failed.");
@@ -53,7 +50,7 @@ export default function CrmLoginPage() {
               CRM
             </h1>
             <p className="mt-2 text-base text-[var(--text-secondary)] leading-relaxed">
-              Acces staff protejat.
+              Doar contul admin.
             </p>
 
             <form onSubmit={onSubmit} className="mt-8 space-y-4">

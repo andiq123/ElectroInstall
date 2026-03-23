@@ -1,20 +1,14 @@
 import { firebaseClientApp } from "@/lib/firebase/client";
-import { getDatabase, push, ref, set, update, get } from "firebase/database";
+import { getDatabase, push, ref, set, update, get, remove } from "firebase/database";
 import type { CrmLocale, CrmRequest, CrmRequestStatus } from "@/lib/crm/types";
 import { CRM_REQUESTS_RTD_PATH } from "@/lib/crm/env";
 
-function isoNow(): string {
-  return new Date().toISOString();
-}
-
-function getDb() {
-  if (!firebaseClientApp) {
-    throw new Error("Firebase client is not configured.");
-  }
+function db() {
+  if (!firebaseClientApp) throw new Error("Firebase not configured.");
   return getDatabase(firebaseClientApp);
 }
 
-export type CreateCrmRequestForRtdbInput = {
+export type NewCrmRequest = {
   name: string;
   phone: string;
   message: string;
@@ -22,77 +16,53 @@ export type CreateCrmRequestForRtdbInput = {
   emailSent: boolean;
 };
 
-export async function createCrmRequestInRtdb(
-  input: CreateCrmRequestForRtdbInput
-): Promise<CrmRequest> {
-  const db = getDb();
-  const requestsRef = ref(db, CRM_REQUESTS_RTD_PATH);
-  const nextRef = push(requestsRef);
+export async function createRequest(input: NewCrmRequest): Promise<void> {
+  const newRef = push(ref(db(), CRM_REQUESTS_RTD_PATH));
+  const id = newRef.key;
+  if (!id) throw new Error("Failed to allocate RTDB key.");
 
-  const id = nextRef.key;
-  if (!id) throw new Error("Failed to create RTDB key.");
-
-  const request: CrmRequest = {
+  const record: CrmRequest = {
     id,
-    name: input.name.trim(),
-    phone: input.phone.trim(),
-    message: input.message.trim(),
+    name: input.name,
+    phone: input.phone,
+    message: input.message,
     locale: input.locale,
     emailSent: input.emailSent,
-    createdAt: isoNow(),
+    createdAt: new Date().toISOString(),
     status: "new",
   };
 
-  await set(nextRef, request);
-  return request;
+  await set(newRef, record);
 }
 
-export async function listCrmRequestsFromRtdb(
-  limit = 200
-): Promise<CrmRequest[]> {
-  const db = getDb();
-  const snap = await get(ref(db, CRM_REQUESTS_RTD_PATH));
+export async function listRequests(): Promise<CrmRequest[]> {
+  const snap = await get(ref(db(), CRM_REQUESTS_RTD_PATH));
   const data = snap.val() as Record<string, CrmRequest> | null;
   if (!data) return [];
 
   return Object.values(data)
-    .filter((r) => r && typeof r === "object")
-    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-    .slice(0, limit);
+    .filter((r): r is CrmRequest => r != null && typeof r === "object")
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export async function updateCrmRequestStatusInRtdb(
-  id: string,
-  status: CrmRequestStatus,
-  adminNotes?: string
-): Promise<CrmRequest> {
-  const db = getDb();
-  const requestRef = ref(db, `${CRM_REQUESTS_RTD_PATH}/${id}`);
-  const snap = await get(requestRef);
-  if (!snap.exists()) throw new Error("Request not found.");
+export type CrmRequestUpdate = {
+  name: string;
+  phone: string;
+  message: string;
+  status: CrmRequestStatus;
+};
 
-  const existing = snap.val() as CrmRequest;
-
-  const patch: Partial<CrmRequest> = {
-    status,
-    reviewedAt: status === "reviewed" ? isoNow() : undefined,
+export async function updateRequest(id: string, input: CrmRequestUpdate): Promise<void> {
+  const payload: Record<string, string | null> = {
+    name: input.name.trim(),
+    phone: input.phone.trim(),
+    message: input.message.trim(),
+    status: input.status,
+    reviewedAt: input.status === "reviewed" ? new Date().toISOString() : null,
   };
-
-  const cleanedNotes = typeof adminNotes === "string" ? adminNotes.trim() : "";
-  if (cleanedNotes) patch.adminNotes = cleanedNotes;
-  else patch.adminNotes = undefined;
-
-  await update(requestRef, {
-    status: patch.status,
-    reviewedAt: patch.reviewedAt ?? null,
-    adminNotes: patch.adminNotes ?? null,
-  });
-
-  return {
-    ...existing,
-    ...patch,
-    reviewedAt: status === "reviewed" ? patch.reviewedAt : undefined,
-    adminNotes: cleanedNotes ? cleanedNotes : undefined,
-  } as CrmRequest;
+  await update(ref(db(), `${CRM_REQUESTS_RTD_PATH}/${id}`), payload);
 }
 
+export async function deleteRequest(id: string): Promise<void> {
+  await remove(ref(db(), `${CRM_REQUESTS_RTD_PATH}/${id}`));
+}
