@@ -1,9 +1,7 @@
-"use client";
-
 import { Fragment } from "react";
 import { ArrowRight, BadgeCheck, Cable, Timer } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { staggerMs } from "@/lib/stagger";
 import { cn } from "@/lib/utils";
 import { BoltIcon } from "@/components/ui/Icons";
@@ -12,14 +10,14 @@ import Reveal from "@/components/Reveal";
 type BentoCard = { title: string; body: string };
 type Stat = { value: string; label: string };
 
-export default function FeaturesSection() {
-  const { t } = useLanguage();
-  const home = t.home as {
-    features_title: string;
-    features_subtitle: string;
+type FeaturesSectionProps = {
+  home: Translations["home"] & {
     bento_cards: BentoCard[];
     stats: Stat[];
   };
+};
+
+export default function FeaturesSection({ home }: FeaturesSectionProps) {
 
   const cards = home.bento_cards ?? [];
   const stats = home.stats ?? [];

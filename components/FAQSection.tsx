@@ -2,20 +2,22 @@
 
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { staggerMs } from "@/lib/stagger";
 import { cn } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
 
-export default function FAQSection() {
-  const { t } = useLanguage();
-  const faq = t.faq as {
+type FAQSectionProps = {
+  faq: Translations["faq"] & {
     title_centered?: string;
     title_part1: string;
     title_part2: string;
     items: Array<{ question: string; answer: string }>;
   };
+};
+
+export default function FAQSection({ faq }: FAQSectionProps) {
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const title = faq.title_centered ?? `${faq.title_part1} ${faq.title_part2}`;

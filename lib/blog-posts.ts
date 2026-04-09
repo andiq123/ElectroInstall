@@ -27,9 +27,9 @@ Un electrician profesionist trebuie să aibă toate actele în regulă. Întreab
 
 Verifică recenziile online și cere referințe de la clienți anteriori.
 
-## 3. Solicită o estimare detaliată
+## 3. Solicită o evaluare clară
 
-Înainte de a începe lucrarea, cere o estimare clară a costurilor.
+Înainte de a începe lucrarea, cere o evaluare clară a situației și a pașilor de lucru.
 
 ## 4. Verifică garanția
 

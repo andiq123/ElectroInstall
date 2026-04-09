@@ -1,18 +1,22 @@
 "use client";
 
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
-import { useLanguage } from "@/context/LanguageContext";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { cn } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
 
 interface ContactSectionProps {
+  common: Translations["common"];
+  contact: Translations["contact"];
   onOpenModal?: () => void;
 }
 
-export default function ContactSection({ onOpenModal }: ContactSectionProps) {
-  const { t } = useLanguage();
-
+export default function ContactSection({
+  common,
+  contact,
+  onOpenModal,
+}: ContactSectionProps) {
   return (
     <section
       id="contact"
@@ -59,9 +63,9 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
                   "mb-6 sm:mb-8"
                 )}
               >
-                {t.contact.title_part1}{" "}
+                {contact.title_part1}{" "}
                 <span className="text-[var(--accent-light)]">
-                  {t.contact.title_part2}
+                  {contact.title_part2}
                 </span>
               </h2>
 
@@ -71,7 +75,7 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
                   "mb-8 !text-zinc-300 sm:mb-12"
                 )}
               >
-                {t.contact.subtitle}
+                {contact.subtitle}
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
@@ -83,7 +87,7 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
                     homeUi.pillPrimary
                   )}
                 >
-                  {t.common.cta_primary}
+                  {common.cta_primary}
                 </button>
                 <a
                   href={PHONE_HREF}
@@ -96,9 +100,9 @@ export default function ContactSection({ onOpenModal }: ContactSectionProps) {
                 </a>
               </div>
 
-              {t.contact.trust_line && (
+              {contact.trust_line && (
                 <p className="mt-8 text-sm font-medium text-zinc-500 sm:mt-10">
-                  {t.contact.trust_line}
+                  {contact.trust_line}
                 </p>
               )}
             </div>

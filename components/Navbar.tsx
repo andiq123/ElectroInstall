@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { CloseIcon, MenuIcon } from "@/components/ui/Icons";
-import Logo from "@/components/ui/Logo";
+import { getHomeChrome, type HomeChromeCopy } from "@/lib/homeChrome";
+import type { Locale, Translations } from "@/lib/locales";
 import { BUSINESS_INFO } from "@/lib/constants";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { CloseIcon, MenuIcon } from "@/components/ui/Icons";
+import Logo from "@/components/ui/Logo";
 import { homeUi } from "@/lib/homeUi";
 import { cn } from "@/lib/utils";
 
@@ -18,25 +20,50 @@ const NAV_LINKS = [
 ] as const;
 
 interface NavbarProps {
+  chrome?: HomeChromeCopy;
+  common?: Pick<Translations["common"], "cta_primary" | "cta_rapid">;
+  locale?: Locale;
+  nav?: Pick<
+    Translations["nav"],
+    "appointments" | "benefits" | "contact" | "faq" | "services"
+  >;
   onOpenModal?: () => void;
 }
 
-export default function Navbar({ onOpenModal }: NavbarProps) {
-  const { t } = useLanguage();
+export default function Navbar({
+  chrome,
+  common,
+  locale,
+  nav,
+  onOpenModal,
+}: NavbarProps) {
+  const { locale: contextLocale, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const resolvedLocale = locale ?? contextLocale;
+  const resolvedChrome = chrome ?? getHomeChrome(resolvedLocale);
+  const resolvedCommon = common ?? {
+    cta_primary: t.common.cta_primary,
+    cta_rapid: t.common.cta_rapid,
+  };
+  const resolvedNav = nav ?? {
+    appointments: t.nav.appointments,
+    benefits: t.nav.benefits,
+    contact: t.nav.contact,
+    faq: t.nav.faq,
+    services: t.nav.services,
+  };
+
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
-  // Elevate navbar once user scrolls past 12 px
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll(); // set correct initial state
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while mobile drawer is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -44,28 +71,30 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
     };
   }, [menuOpen]);
 
-  // Close drawer on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [closeMenu]);
 
   const navLinks = NAV_LINKS.map(({ href, labelKey }) => ({
     href,
-    label: t.nav[labelKey],
+    label: resolvedNav[labelKey],
   }));
 
   return (
     <>
       <header
         className={cn(
-          "nav-bar-in fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-300",
+          "nav-bar-in fixed left-0 right-0 top-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-300",
           scrolled
-            ? "bg-white/92 backdrop-blur-2xl border-black/[0.07] shadow-[0_4px_24px_rgba(0,0,0,0.07)]"
-            : "bg-white/75 backdrop-blur-xl border-black/[0.04] shadow-[0_20px_80px_rgba(25,28,30,0.06)]"
+            ? "border-black/[0.07] bg-white/92 shadow-[0_4px_24px_rgba(0,0,0,0.07)] backdrop-blur-2xl"
+            : "border-black/[0.04] bg-white/75 shadow-[0_20px_80px_rgba(25,28,30,0.06)] backdrop-blur-xl"
         )}
       >
         <div
@@ -76,15 +105,15 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         >
           <Link
             href="/"
-            className="flex items-center shrink-0 min-w-0"
-            aria-label="ElectroInstall – Pagina principală"
+            className="flex min-w-0 shrink-0 items-center"
+            aria-label={resolvedChrome.homeLabel}
           >
             <Logo size="sm" showText animated={false} light={false} />
           </Link>
 
           <nav
-            className="hidden lg:flex items-center gap-8 xl:gap-10"
-            aria-label="Navigare principală"
+            className="hidden items-center gap-8 lg:flex xl:gap-10"
+            aria-label={resolvedChrome.mainNavigation}
           >
             {navLinks.map(({ href, label }) => (
               <Link key={href} href={href} className={homeUi.navLinkDesktop}>
@@ -93,15 +122,17 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <LanguageSwitcher />
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <LanguageSwitcher locale={resolvedLocale} />
             <button
               type="button"
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full text-[var(--text-primary)] hover:bg-black/[0.05] transition-colors"
-              onClick={() => setMenuOpen((o) => !o)}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-primary)] transition-colors hover:bg-black/[0.05] lg:hidden"
+              onClick={() => setMenuOpen((open) => !open)}
               aria-expanded={menuOpen}
               aria-controls="nav-drawer"
-              aria-label={menuOpen ? "Închide meniul" : "Deschide meniul"}
+              aria-label={
+                menuOpen ? resolvedChrome.closeMenu : resolvedChrome.openMenu
+              }
             >
               {menuOpen ? <CloseIcon size="lg" /> : <MenuIcon size="lg" />}
             </button>
@@ -110,20 +141,18 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
               onClick={() => onOpenModal?.()}
               className={homeUi.navCta}
             >
-              {t.common.cta_rapid}
+              {resolvedCommon.cta_rapid}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile drawer — always in DOM so CSS transitions work correctly */}
       <div
         id="nav-drawer"
         className="fixed inset-0 z-[100] lg:hidden"
         aria-hidden={!menuOpen}
         style={{ pointerEvents: menuOpen ? "auto" : "none" }}
       >
-        {/* Backdrop */}
         <div
           className={cn(
             "absolute inset-0 bg-black/30 transition-opacity duration-300",
@@ -133,61 +162,60 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
           aria-hidden
         />
 
-        {/* Drawer panel */}
         <aside
           className={cn(
-            "absolute top-0 right-0 w-full max-w-[min(320px,88vw)] h-full bg-[var(--page-bg)] border-l border-black/[0.06] shadow-xl flex flex-col transition-transform duration-300 ease-out",
+            "absolute right-0 top-0 flex h-full w-full max-w-[min(320px,88vw)] flex-col border-l border-black/[0.06] bg-[var(--page-bg)] shadow-xl transition-transform duration-300 ease-out",
             menuOpen ? "translate-x-0" : "translate-x-full"
           )}
         >
-          <div className="flex items-center justify-between p-4 border-b border-black/[0.06]">
+          <div className="flex items-center justify-between border-b border-black/[0.06] p-4">
             <Link
               href="/"
               onClick={closeMenu}
-              className="flex items-center min-w-0"
-              aria-label="ElectroInstall"
+              className="flex min-w-0 items-center"
+              aria-label={resolvedChrome.homeLabel}
             >
               <Logo size="sm" showText animated={false} light={false} />
             </Link>
             <button
               type="button"
-              className="w-10 h-10 flex items-center justify-center rounded-full text-[var(--text-secondary)] hover:bg-black/[0.05]"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-secondary)] hover:bg-black/[0.05]"
               onClick={closeMenu}
-              aria-label="Închide"
+              aria-label={resolvedChrome.close}
             >
               <CloseIcon size="md" />
             </button>
           </div>
 
           <nav
-            className="flex flex-col p-4 gap-1 overflow-auto flex-1"
-            aria-label="Meniu mobil"
+            className="flex flex-1 flex-col gap-1 overflow-auto p-4"
+            aria-label={resolvedChrome.mobileMenu}
           >
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={closeMenu}
-                className="py-3.5 px-4 text-base font-display font-bold text-[var(--text-primary)] hover:bg-white rounded-xl transition-colors"
+                className="rounded-xl px-4 py-3.5 font-display text-base font-bold text-[var(--text-primary)] transition-colors hover:bg-white"
               >
                 {label}
               </Link>
             ))}
           </nav>
 
-          <div className="p-4 border-t border-black/[0.06] space-y-3">
+          <div className="space-y-3 border-t border-black/[0.06] p-4">
             <button
               type="button"
               onClick={() => {
                 closeMenu();
                 onOpenModal?.();
               }}
-              className="w-full rounded-full bg-[var(--accent-light)] text-zinc-900 py-3.5 font-display font-bold text-sm shadow-md ring-1 ring-amber-600/15 hover:bg-[#ffcd38] transition-colors"
+              className="w-full rounded-full bg-[var(--accent-light)] py-3.5 font-display text-sm font-bold text-zinc-900 shadow-md ring-1 ring-amber-600/15 transition-colors hover:bg-[#ffcd38]"
             >
-              {t.common.cta_primary}
+              {resolvedCommon.cta_primary}
             </button>
             <p className="text-xs text-[var(--text-muted)]">
-              {t.nav.appointments}: {BUSINESS_INFO.phone}
+              {resolvedNav.appointments}: {BUSINESS_INFO.phone}
             </p>
           </div>
         </aside>

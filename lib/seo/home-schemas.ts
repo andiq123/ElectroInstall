@@ -10,7 +10,7 @@ export function webPageSchema() {
     url: SITE_URL,
     name: "ElectroInstall – Electrician Chișinău",
     description:
-      "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
+      "Electrician Chișinău cu recomandări: servicii electrice și intervenții rapide 24/7.",
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#organization` },
     primaryImageOfPage: {

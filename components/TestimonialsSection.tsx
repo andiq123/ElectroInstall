@@ -2,8 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { type HomeChromeCopy } from "@/lib/homeChrome";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { cn } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
 
@@ -15,15 +16,17 @@ interface Testimonial {
 
 const STARS = [0, 1, 2, 3, 4] as const;
 
-export default function TestimonialsSection() {
-  const { t } = useLanguage();
-  const data = t.testimonials as {
-    title: string;
-    eyebrow?: string;
-    headline?: string;
+type TestimonialsSectionProps = {
+  chrome: HomeChromeCopy;
+  data: Translations["testimonials"] & {
     items: Testimonial[];
   };
+};
 
+export default function TestimonialsSection({
+  chrome,
+  data,
+}: TestimonialsSectionProps) {
   const items = data.items;
   const [index, setIndex] = useState(0);
   const current = items[index] ?? items[0];
@@ -43,6 +46,8 @@ export default function TestimonialsSection() {
 
   const eyebrow = data.eyebrow ?? data.title;
   const headline = data.headline ?? data.title;
+  const previousLabel = `${chrome.previousTestimonial} (${index + 1} ${chrome.ofLabel} ${items.length})`;
+  const nextLabel = `${chrome.nextTestimonial} (${index + 1} ${chrome.ofLabel} ${items.length})`;
 
   return (
     <section
@@ -70,13 +75,13 @@ export default function TestimonialsSection() {
             <div
               className="flex gap-3"
               role="group"
-              aria-label="Navigare testimoniale"
+              aria-label={chrome.testimonialsNavigation}
             >
               <button
                 type="button"
                 onClick={() => go(-1)}
                 className="flex h-12 w-12 touch-manipulation items-center justify-center rounded-full border border-[var(--border-decorative)] bg-white text-[var(--text-primary)] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent-light)] hover:text-zinc-900 sm:h-13 sm:w-13"
-                aria-label={`Testimonial anterior (${index + 1} din ${items.length})`}
+                aria-label={previousLabel}
               >
                 <ChevronLeft className="h-5 w-5" strokeWidth={2} aria-hidden />
               </button>
@@ -84,7 +89,7 @@ export default function TestimonialsSection() {
                 type="button"
                 onClick={() => go(1)}
                 className="flex h-12 w-12 touch-manipulation items-center justify-center rounded-full border border-[var(--border-decorative)] bg-white text-[var(--text-primary)] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent-light)] hover:text-zinc-900 sm:h-13 sm:w-13"
-                aria-label={`Testimonial următor (${index + 1} din ${items.length})`}
+                aria-label={nextLabel}
               >
                 <ChevronRight className="h-5 w-5" strokeWidth={2} aria-hidden />
               </button>
@@ -94,7 +99,7 @@ export default function TestimonialsSection() {
             <div
               className="mt-6 flex items-center gap-2"
               role="tablist"
-              aria-label="Selectare testimonial"
+              aria-label={chrome.testimonialsPagination}
             >
               {items.map((_, i) => (
                 <button

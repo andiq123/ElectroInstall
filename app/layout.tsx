@@ -9,63 +9,39 @@ import "./globals.css";
 
 const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
 
+// Display font — only the two weights actually used in the design:
+//   font-semibold (600) for nav links / subtitles
+//   font-bold/black (700) for headings, CTAs, hero H1
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700"],
 });
 
+// Body font — three weights cover all UI text:
+//   400 regular prose, 500 medium labels, 600 semibold buttons
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
-  display: "swap",
+  display: "optional",   // ← "optional": if not cached, skip FOUT entirely
   variable: "--font-body",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall`,
+    default: "Electrician Chișinău 24/7 | ElectroInstall",
     template: "%s | ElectroInstall",
   },
-  description: `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. ElectroInstall oferă servicii electrice rapide, preț corect, intervenții 24/7. Montaj tablouri, prize, instalații.`,
+  description: `Electrician autorizat în Chișinău pentru urgențe, prize, tablouri și instalații complete. Sună: ${PHONE_DISPLAY}.`,
   keywords: [
-    "electrician bun Chisinau",
-    "electrician Chisinau recomandări",
-    "electrician Chisinau 2025",
-    "electrician Chisinau 2026",
+    "electrician Chișinău",
     "electrician autorizat Chisinau",
-    "electrician Chisinau urgent 24/7",
-    "electrician Chisinau",
-    "electrician Moldova",
-    "servicii electrice Chisinau",
-    "reparatii electrice",
-    "montaj prize Chisinau",
-    "instalare tablouri electrice",
-    "electrician Botanica",
-    "electrician Buiucani",
-    "electrician Riscani",
-    "electrician Ciocana",
-    "electrician Centru",
-    "electrician Durlesti",
-    "intervenție rapidă electrician",
-    "mester electric",
+    "instalații electrice Chișinău",
+    "electrician urgent 24/7 Chișinău",
+    "tablouri electrice Chișinău",
     "ElectroInstall",
-    "servicii electrice Moldova",
-    "reparatii prize",
-    "montaj lustre Chisinau",
-    "электрик Кишинев",
-    "электрик Кишинев отзывы",
-    "услуги электрика Кишинев",
-    "электромонтаж",
-    "ремонт электрики",
-    "вызов электрика",
-    "установка розеток",
-    "электрик ботаника",
-    "электрик чеканы",
-    "электрик рышкановка",
-    "электрик буюканы",
   ],
   authors: [{ name: "ElectroInstall" }],
   creator: "ElectroInstall",
@@ -91,19 +67,21 @@ export const metadata: Metadata = {
     alternateLocale: ["ru_MD"],
     url: SITE_URL,
     siteName: "ElectroInstall",
-    title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
-    description: `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. Preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații.`,
+    title: "Electrician Chișinău 24/7 | ElectroInstall",
+    description: `Prize, tablouri, instalații complete și intervenții rapide în Chișinău. Sună la ${PHONE_DISPLAY}.`,
     images: [
       {
         url: absoluteOgImageUrl(),
+        width: 1200,
+        height: 630,
         alt: "ElectroInstall - Electrician Chișinău cu recomandări",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
-    description: `Sună la ${PHONE_DISPLAY}. Electrician Chișinău cu recomandări: preț corect, intervenții rapide, 24/7.`,
+    title: "Electrician Chișinău 24/7 | ElectroInstall",
+    description: `Prize, tablouri și intervenții rapide în Chișinău. Sună la ${PHONE_DISPLAY}.`,
     images: [absoluteOgImageUrl()],
   },
   alternates: {
@@ -126,8 +104,9 @@ const organizationSchema = {
   name: "ElectroInstall",
   alternateName: "Mester Electric",
   description:
-    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7. Montaj tablouri, prize, instalații în toate sectoarele și suburbiile.",
+    "Electrician Chișinău cu recomandări: servicii electrice, intervenții rapide 24/7, montaj tablouri, prize și instalații în toate sectoarele și suburbiile.",
   url: SITE_URL,
+  logo: absoluteOgImageUrl(),
   telephone: "+373067596246",
   email: "radu@electroinstall.md",
   address: {
@@ -147,6 +126,7 @@ const organizationSchema = {
     { "@type": "City", name: "Codru" },
     { "@type": "City", name: "Trușeni" },
   ],
+  openingHours: "Mo-Su 00:00-23:59",
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: [
@@ -161,7 +141,6 @@ const organizationSchema = {
     opens: "00:00",
     closes: "23:59",
   },
-  priceRange: "MDL",
   image: absoluteOgImageUrl(),
   hasMap: "https://www.google.com/maps?q=Chisinau,Moldova",
   knowsAbout: [
@@ -230,7 +209,7 @@ const websiteSchema = {
   url: SITE_URL,
   name: "ElectroInstall – Electrician Chișinău",
   description:
-    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
+    "Electrician Chișinău cu recomandări: servicii electrice și intervenții rapide 24/7.",
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: ["ro", "ru"],
   potentialAction: [
@@ -247,13 +226,6 @@ export default function RootLayout({
   return (
     <html lang="ro" suppressHydrationWarning>
       <head>
-        {/* Resource hints — speeds up font + analytics connections */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
         <link rel="dns-prefetch" href="https://api.emailjs.com" />
 

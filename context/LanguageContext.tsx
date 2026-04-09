@@ -33,7 +33,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem("locale") as Locale | null;
     if (saved === "ro" || saved === "ru") {
-      setLocaleState(saved);
+      let cancelled = false;
+
+      queueMicrotask(() => {
+        if (!cancelled) {
+          setLocaleState(saved);
+        }
+      });
+
+      return () => {
+        cancelled = true;
+      };
     }
   }, []);
 
@@ -46,6 +56,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
     localStorage.setItem("locale", newLocale);
+    document.cookie = `locale=${newLocale}; path=/; max-age=31536000; samesite=lax`;
   };
 
   const t = locale === "ro" ? ro : ru;

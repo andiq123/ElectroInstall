@@ -71,83 +71,82 @@
   --reveal-y: 1rem;
 }
 
-/* ---- Hero: on-load sequence (no IO) ---- */
-@keyframes hero-reveal {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 1.25rem, 0);
-    filter: blur(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    filter: blur(0);
-  }
+/* ---- Hero + Navbar: on-load flow (no IO) ----
+ *
+ * Previous implementation used delayed keyframe animations. That creates
+ * a visible "blink" on first load when the animation begins (element jumps
+ * to the `from` state). Here we use simple transitions with `@starting-style`
+ * so the browser can interpolate cleanly without a glitch.
+ *
+ * Important: starting opacity is not 0. This keeps content visible for FCP,
+ * while still giving a subtle fade/slide-in feel.
+ * -------------------------------------------------------------------- */
+
+.hero-in-1,
+.hero-in-2,
+.hero-in-3,
+.hero-in-4,
+.hero-in-5,
+.hero-in-6,
+.hero-progress-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 520ms var(--reveal-ease),
+    transform 520ms var(--reveal-ease);
+  transition-delay: var(--hero-delay, 0ms);
+  will-change: opacity, transform;
 }
 
-@keyframes hero-reveal-subtle {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.75rem, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes hero-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.hero-in-1 {
-  animation: hero-reveal 0.75s var(--reveal-ease) 0.08s both;
-}
-.hero-in-2 {
-  animation: hero-reveal 0.8s var(--reveal-ease) 0.2s both;
-}
-.hero-in-3 {
-  animation: hero-reveal 0.82s var(--reveal-ease) 0.32s both;
-}
-.hero-in-4 {
-  animation: hero-reveal-subtle 0.65s var(--reveal-ease) 0.44s both;
-}
-.hero-in-5 {
-  animation: hero-reveal-subtle 0.65s var(--reveal-ease) 0.54s both;
-}
-.hero-in-6 {
-  animation: hero-reveal-subtle 0.65s var(--reveal-ease) 0.64s both;
-}
+.hero-in-1 { --hero-delay: 40ms;  --hero-y: 14px; --hero-o: 0.72; }
+.hero-in-2 { --hero-delay: 70ms;  --hero-y: 18px; --hero-o: 0.70; }
+.hero-in-3 { --hero-delay: 140ms; --hero-y: 18px; --hero-o: 0.70; }
+.hero-in-4 { --hero-delay: 190ms; --hero-y: 12px; --hero-o: 0.78; }
+.hero-in-5 { --hero-delay: 230ms; --hero-y: 12px; --hero-o: 0.78; }
+.hero-in-6 { --hero-delay: 280ms; --hero-y: 12px; --hero-o: 0.78; }
+.hero-progress-in { --hero-delay: 360ms; --hero-y: 10px; --hero-o: 0.80; }
 
 .hero-bg-in {
-  animation: hero-scale-in 1.1s var(--reveal-ease) 0.05s both;
-}
-
-.hero-progress-in {
-  animation: hero-reveal-subtle 0.7s var(--reveal-ease) 0.85s both;
-}
-
-/* ---- Navbar load ---- */
-@keyframes nav-slide-down {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -0.75rem, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 700ms var(--reveal-ease),
+    transform 900ms var(--reveal-ease);
+  transition-delay: 20ms;
+  will-change: opacity, transform;
 }
 
 .nav-bar-in {
-  animation: nav-slide-down 0.55s var(--reveal-ease) 0.02s both;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 420ms var(--reveal-ease),
+    transform 420ms var(--reveal-ease);
+  transition-delay: 10ms;
+  will-change: opacity, transform;
+}
+
+@starting-style {
+  .hero-in-1,
+  .hero-in-2,
+  .hero-in-3,
+  .hero-in-4,
+  .hero-in-5,
+  .hero-in-6,
+  .hero-progress-in {
+    opacity: var(--hero-o, 0.76);
+    transform: translate3d(0, var(--hero-y, 14px), 0);
+  }
+
+  .hero-bg-in {
+    opacity: 0.92;
+    transform: translate3d(0, 0, 0) scale(1.02);
+  }
+
+  .nav-bar-in {
+    opacity: 0.86;
+    transform: translate3d(0, -10px, 0);
+  }
 }
 
 /* ---- Testimonial slide change ---- */
@@ -186,9 +185,9 @@
   .hero-progress-in,
   .nav-bar-in {
     animation: none !important;
+    transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    filter: none !important;
   }
 
   .testimonial-quote-swap {

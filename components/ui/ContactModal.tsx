@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { ensureEmailjsReady } from "@/lib/emailjs/ensureReady";
-import { Input, PhoneInput, Textarea } from "./Input";
-import { useLanguage } from "@/context/LanguageContext";
+import { type HomeChromeCopy } from "@/lib/homeChrome";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
+import { ensureEmailjsReady } from "@/lib/emailjs/ensureReady";
 import {
   createRequest,
   type NewCrmRequest,
 } from "@/lib/firebase/crmRequestsClient";
+import type { Locale, Translations } from "@/lib/locales";
+import { Input, PhoneInput, Textarea } from "./Input";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
@@ -19,85 +20,94 @@ const FOCUSABLE =
   'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 interface ContactModalProps {
+  chrome: HomeChromeCopy;
+  contactForm: Translations["contact_form"];
   isOpen: boolean;
+  locale: Locale;
   onClose: () => void;
 }
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
-export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const { t, locale } = useLanguage();
+export default function ContactModal({
+  chrome,
+  contactForm,
+  isOpen,
+  locale,
+  onClose,
+}: ContactModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
-  // useRef instead of useState — no re-render needed, avoids stale-closure issues
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  const [shouldRender, setShouldRender] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
-  // Mount / unmount with animation buffer
   useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        setFormState("idle");
-        setName("");
-        setPhone("");
-        setMessage("");
-        setErrors({});
-      }, 300);
-      return () => clearTimeout(timer);
+    if (!isOpen) {
+      return;
     }
+
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
-  // Focus management — capture trigger, auto-focus first field, restore on close
   useEffect(() => {
-    if (isOpen) {
-      previousFocusRef.current = document.activeElement as HTMLElement;
-      const timer = setTimeout(() => {
-        const first = panelRef.current?.querySelector<HTMLElement>(FOCUSABLE);
-        first?.focus();
-      }, 80);
-      return () => clearTimeout(timer);
-    } else {
+    if (!isOpen) {
+      return;
+    }
+
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    const timer = setTimeout(() => {
+      const firstFocusable = panelRef.current?.querySelector<HTMLElement>(
+        FOCUSABLE
+      );
+      firstFocusable?.focus();
+    }, 80);
+
+    return () => {
+      clearTimeout(timer);
       previousFocusRef.current?.focus();
       previousFocusRef.current = null;
-    }
+    };
   }, [isOpen]);
 
-  // Keyboard: Escape closes, Tab traps focus inside the panel
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!isOpen) return;
+    (event: KeyboardEvent) => {
+      if (!isOpen) {
+        return;
+      }
 
-      if (e.key === "Escape") {
+      if (event.key === "Escape") {
         onClose();
         return;
       }
 
-      if (e.key === "Tab") {
-        const focusable = Array.from(
-          panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []
-        );
-        if (focusable.length === 0) return;
+      if (event.key !== "Tab") {
+        return;
+      }
 
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+      const focusableElements = Array.from(
+        panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []
+      );
 
-        if (e.shiftKey && document.activeElement === first) {
-          last.focus();
-          e.preventDefault();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          first.focus();
-          e.preventDefault();
-        }
+      if (focusableElements.length === 0) {
+        return;
+      }
+
+      const first = focusableElements[0];
+      const last = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        last.focus();
+        event.preventDefault();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        first.focus();
+        event.preventDefault();
       }
     },
     [isOpen, onClose]
@@ -108,28 +118,36 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  const validateForm = (): boolean => {
-    const newErrors: typeof errors = {};
-    if (!name.trim()) newErrors.name = t.contact_form.validation.name_required;
-    if (!phone.trim()) {
-      newErrors.phone = t.contact_form.validation.phone_required;
-    } else if (phone.replace(/\D/g, "").length < 8) {
-      newErrors.phone = t.contact_form.validation.phone_invalid;
+  const validateForm = () => {
+    const nextErrors: typeof errors = {};
+
+    if (!name.trim()) {
+      nextErrors.name = contactForm.validation.name_required;
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    if (!phone.trim()) {
+      nextErrors.phone = contactForm.validation.phone_required;
+    } else if (phone.replace(/\D/g, "").length < 8) {
+      nextErrors.phone = contactForm.validation.phone_invalid;
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const input: NewCrmRequest = {
+      emailSent: false,
+      locale,
+      message: message.trim() || "—",
       name: name.trim(),
       phone: phone.trim(),
-      message: message.trim() || "—",
-      locale,
-      emailSent: false,
     };
 
     setFormState("submitting");
@@ -139,13 +157,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       try {
         ensureEmailjsReady(EMAILJS_PUBLIC_KEY);
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          message: input.message,
           name: input.name,
           phone: input.phone,
-          message: input.message,
         });
         emailSent = true;
-      } catch (err) {
-        console.error("EmailJS error:", err);
+      } catch (error) {
+        console.error("EmailJS error:", error);
       }
     }
 
@@ -153,20 +171,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       await createRequest({ ...input, emailSent });
       setFormState("success");
       setTimeout(() => onClose(), 2000);
-    } catch (err) {
-      console.error("RTDB write failed:", err);
+    } catch (error) {
+      console.error("RTDB write failed:", error);
       setFormState("error");
     }
   };
 
-  if (!shouldRender) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
       className="modal-overlay"
       aria-modal="true"
       role="dialog"
-      aria-label={t.contact_form.title}
+      aria-label={contactForm.title}
     >
       <div
         className={`modal-backdrop ${isOpen ? "opacity-100" : "opacity-0"}`}
@@ -181,10 +201,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         <button
           onClick={onClose}
           className="modal-close-btn"
-          aria-label="Închide"
+          aria-label={chrome.closeDialog}
         >
           <svg
-            className="w-5 h-5"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -199,12 +219,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </svg>
         </button>
 
-        <header className="text-left mb-10">
-          <h2 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] leading-[var(--leading-tight)] mb-3">
-            {t.contact_form.title}
+        <header className="mb-10 text-left">
+          <h2 className="mb-3 font-display text-[var(--text-h2)] font-semibold leading-[var(--leading-tight)] text-[var(--text-primary)]">
+            {contactForm.title}
           </h2>
-          <p className="text-[var(--text-body)] text-[var(--text-secondary)] leading-[var(--leading-relaxed)]">
-            {t.contact_form.subtitle}
+          <p className="text-[var(--text-body)] leading-[var(--leading-relaxed)] text-[var(--text-secondary)]">
+            {contactForm.subtitle}
           </p>
         </header>
 
@@ -212,7 +232,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <div className="modal-success" role="status" aria-live="polite">
             <div className="modal-success-icon" aria-hidden="true">
               <svg
-                className="w-12 h-12"
+                className="h-12 w-12"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -225,28 +245,28 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 />
               </svg>
             </div>
-            <h3 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">
-              {t.contact_form.success_title}
+            <h3 className="mb-3 font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)]">
+              {contactForm.success_title}
             </h3>
             <p className="text-[var(--text-body)] text-[var(--text-secondary)]">
-              {t.contact_form.success_subtitle}
+              {contactForm.success_subtitle}
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <Input
-              label={t.contact_form.name_label}
-              placeholder={t.contact_form.name_placeholder}
+              label={contactForm.name_label}
+              placeholder={contactForm.name_placeholder}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(event) => setName(event.target.value)}
               error={errors.name}
               required
               disabled={formState === "submitting"}
             />
 
             <PhoneInput
-              label={t.contact_form.phone_label}
-              placeholder={t.contact_form.phone_placeholder}
+              label={contactForm.phone_label}
+              placeholder={contactForm.phone_placeholder}
               value={phone}
               onChange={setPhone}
               error={errors.phone}
@@ -255,39 +275,39 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
 
             <Textarea
-              label={t.contact_form.message_label}
-              placeholder={t.contact_form.message_placeholder}
+              label={contactForm.message_label}
+              placeholder={contactForm.message_placeholder}
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(event) => setMessage(event.target.value)}
               rows={3}
               disabled={formState === "submitting"}
             />
 
             {formState === "error" && (
               <div className="modal-error" role="alert">
-                <span>{t.contact_form.error_msg}</span>
+                <span>{contactForm.error_msg}</span>
               </div>
             )}
 
             <button
               type="submit"
-              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 text-[var(--text-small)] font-semibold bg-[var(--accent-light)] text-zinc-900 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-[var(--accent-light)] px-6 py-3 text-[var(--text-small)] font-semibold text-zinc-900 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
               disabled={formState === "submitting"}
             >
               {formState === "submitting" ? (
                 <>
                   <span className="modal-spinner" aria-hidden="true" />
-                  {t.contact_form.submitting_btn}
+                  {contactForm.submitting_btn}
                 </>
               ) : (
-                t.contact_form.submit_btn
+                contactForm.submit_btn
               )}
             </button>
           </form>
         )}
 
         <div className="modal-quick-call">
-          <span>{t.contact_form.quick_call}</span>
+          <span>{contactForm.quick_call}</span>
           <a href={PHONE_HREF} className="modal-phone-link">
             {BUSINESS_INFO.phone}
           </a>

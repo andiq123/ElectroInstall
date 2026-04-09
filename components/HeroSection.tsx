@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useLanguage } from "@/context/LanguageContext";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { cn } from "@/lib/utils";
 
 interface HeroSectionProps {
+  hero: Translations["hero"];
   onOpenModal?: () => void;
 }
 
@@ -22,21 +23,7 @@ function renderHeadline(line: string, highlight: string) {
   );
 }
 
-export default function HeroSection({ onOpenModal }: HeroSectionProps) {
-  const { t } = useLanguage();
-  const hero = t.hero as {
-    eyebrow?: string;
-    headline_1?: string;
-    highlight_1?: string;
-    headline_2?: string;
-    highlight_2?: string;
-    subhead: string;
-    cta: string;
-    call_us?: string;
-    progress_from?: string;
-    progress_to?: string;
-  };
-
+export default function HeroSection({ hero, onOpenModal }: HeroSectionProps) {
   const hasSplit =
     hero.headline_1 &&
     hero.highlight_1 &&
@@ -69,12 +56,14 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
         {/* Photo */}
         <div className="absolute inset-0 hero-bg-in">
           <Image
-            src="/male-elictirican-at-the-panel.jpg"
+            src="/male-electrician-at-the-panel.webp"
             alt=""
             fill
             priority
+            fetchPriority="high"
             className="object-cover object-center opacity-[0.48] brightness-[1.02] contrast-[1.06] saturate-[0.72]"
             sizes="100vw"
+            quality={60}
             aria-hidden
           />
         </div>
@@ -105,7 +94,7 @@ export default function HeroSection({ onOpenModal }: HeroSectionProps) {
                 </>
               ) : (
                 <span className="hero-in-2 inline-block">
-                  {(t.hero as { headline: string }).headline}
+                  {hero.headline}
                 </span>
               )}
             </h1>

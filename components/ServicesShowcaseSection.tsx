@@ -1,26 +1,28 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 import { homeUi } from "@/lib/homeUi";
+import type { Translations } from "@/lib/locales";
 import { staggerMs } from "@/lib/stagger";
 import { cn } from "@/lib/utils";
 import Reveal from "@/components/Reveal";
 
 const SERVICE_KEYS = ["installation", "repair", "emergency"] as const;
+const SERVICE_HREFS = {
+  installation: "/instalatii-electrice-chisinau",
+  repair: "/preturi-instalatii-electrice",
+  emergency: "/electrician-24-7-chisinau",
+} as const;
 const IMAGES = [
-  "/electric-panel-photo.jpg",
-  "/electric-panel-being-tested.jpg",
-  "/male-elictirican-at-the-panel.jpg",
+  "/electric-panel-photo.webp",
+  "/electric-panel-being-tested.webp",
+  "/male-electrician-at-the-panel.webp",
 ] as const;
 
 const SERVICE_NUMBERS = ["01", "02", "03"] as const;
 
-export default function ServicesShowcaseSection() {
-  const { t } = useLanguage();
-  const services = t.services as {
+type ServicesShowcaseSectionProps = {
+  services: Translations["services"] & {
     title_part1: string;
     title_part2: string;
     subtitle: string;
@@ -30,6 +32,11 @@ export default function ServicesShowcaseSection() {
       { title: string; subtitle: string }
     >;
   };
+};
+
+export default function ServicesShowcaseSection({
+  services,
+}: ServicesShowcaseSectionProps) {
 
   return (
     <section
@@ -88,14 +95,16 @@ export default function ServicesShowcaseSection() {
                 delay={staggerMs(index, 110, 120)}
                 className={offset}
               >
-                <article className="group h-full">
+                <Link href={SERVICE_HREFS[key]} className="group block h-full">
                   {/* Image with overlays */}
                   <div className="relative overflow-hidden rounded-t-2xl rounded-br-none rounded-bl-2xl aspect-[3/4] mb-6 sm:mb-8 bg-[var(--bg-section-alt)]">
                     <Image
                       src={img}
                       alt={cat.title}
                       fill
+                      loading="lazy"
                       sizes="(max-width: 768px) 100vw, 33vw"
+                      quality={65}
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
@@ -121,7 +130,11 @@ export default function ServicesShowcaseSection() {
 
                   {/* Below-image text */}
                   <p className={homeUi.bodySm}>{cat.subtitle}</p>
-                </article>
+                  <span className="mt-4 inline-flex items-center gap-1.5 font-display text-sm font-bold text-[var(--accent-dark)]">
+                    Vezi detalii
+                    <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                  </span>
+                </Link>
               </Reveal>
             );
           })}

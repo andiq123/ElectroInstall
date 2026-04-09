@@ -1,45 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { Children, type ReactNode, useState } from "react";
 import dynamic from "next/dynamic";
-import { useLanguage } from "@/context/LanguageContext";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import ServicesShowcaseSection from "@/components/ServicesShowcaseSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import FAQSection from "@/components/FAQSection";
+import { type HomeChromeCopy } from "@/lib/homeChrome";
+import type { Locale, Translations } from "@/lib/locales";
 import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import FAQSection from "@/components/FAQSection";
+import HeroSection from "@/components/HeroSection";
+import Navbar from "@/components/Navbar";
+import TestimonialsSection from "@/components/TestimonialsSection";
 
-// Defer the modal bundle — it's never needed on initial paint
 const ContactModal = dynamic(() => import("@/components/ui/ContactModal"), {
   ssr: false,
 });
 
-export default function HomePageClient() {
+interface HomePageClientProps {
+  chrome: HomeChromeCopy;
+  common: Translations["common"];
+  contact: Translations["contact"];
+  contactForm: Translations["contact_form"];
+  faq: Translations["faq"];
+  featuresSection: ReactNode;
+  footer: ReactNode;
+  hero: Translations["hero"];
+  locale: Locale;
+  nav: Translations["nav"];
+  servicesSection: ReactNode;
+  testimonials: Translations["testimonials"];
+}
+
+export default function HomePageClient({
+  chrome,
+  common,
+  contact,
+  contactForm,
+  faq,
+  featuresSection,
+  footer,
+  hero,
+  locale,
+  nav,
+  servicesSection,
+  testimonials,
+}: HomePageClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { locale } = useLanguage();
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const featuresNodes = Children.toArray(featuresSection);
+  const servicesNodes = Children.toArray(servicesSection);
+  const footerNodes = Children.toArray(footer);
 
   return (
     <div className="min-h-screen w-full bg-[var(--page-bg)] font-body-ui">
-      <Navbar onOpenModal={openModal} />
+      <Navbar
+        chrome={chrome}
+        common={common}
+        locale={locale}
+        nav={nav}
+        onOpenModal={() => setIsModalOpen(true)}
+      />
 
-      <div key={locale} className="animate-page-fade">
+      <div className="animate-page-fade">
         <main id="main-content">
-          <HeroSection onOpenModal={openModal} />
-          <FeaturesSection />
-          <ServicesShowcaseSection />
-          <TestimonialsSection />
-          <FAQSection />
-          <ContactSection onOpenModal={openModal} />
+          <HeroSection hero={hero} onOpenModal={() => setIsModalOpen(true)} />
+          {featuresNodes}
+          {servicesNodes}
+          <TestimonialsSection chrome={chrome} data={testimonials} />
+          <FAQSection faq={faq} />
+          <ContactSection
+            common={common}
+            contact={contact}
+            onOpenModal={() => setIsModalOpen(true)}
+          />
         </main>
-        <Footer />
+        {footerNodes}
       </div>
 
-      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
+      {isModalOpen ? (
+        <ContactModal
+          chrome={chrome}
+          contactForm={contactForm}
+          isOpen={isModalOpen}
+          locale={locale}
+          onClose={() => setIsModalOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }

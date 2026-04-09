@@ -3,13 +3,24 @@
 import Link from "next/link";
 import { Phone, MapPin, Mail } from "lucide-react";
 import { BUSINESS_INFO, PHONE_HREF } from "@/lib/constants";
-import Logo from "@/components/ui/Logo";
+import { getHomeChrome, type HomeChromeCopy } from "@/lib/homeChrome";
+import type { Translations } from "@/lib/locales";
 import { useLanguage } from "@/context/LanguageContext";
+import Logo from "@/components/ui/Logo";
 import Reveal from "@/components/Reveal";
 
-export default function Footer() {
-  const { t } = useLanguage();
+type FooterProps = {
+  chrome?: HomeChromeCopy;
+  footer?: Translations["footer"];
+  nav?: Translations["nav"];
+};
+
+export default function Footer({ chrome, footer, nav }: FooterProps) {
+  const { locale, t } = useLanguage();
   const year = new Date().getFullYear();
+  const resolvedChrome = chrome ?? getHomeChrome(locale);
+  const resolvedFooter = footer ?? t.footer;
+  const resolvedNav = nav ?? t.nav;
 
   return (
     <footer
@@ -37,30 +48,32 @@ export default function Footer() {
               <Link
                 href="/"
                 className="inline-flex items-center"
-                aria-label="ElectroInstall – Pagina principală"
+                aria-label={resolvedChrome.homeLabel}
               >
                 <Logo size="sm" animated={false} showText />
               </Link>
               <p className="max-w-xs text-sm leading-relaxed text-[var(--text-muted)]">
-                Electrician autorizat în Chișinău. Lucrări electrice de calitate,
-                preț corect, disponibil 24/7.
+                {resolvedFooter.about_text}
               </p>
             </div>
 
             {/* Col 2: Nav links */}
             <nav
-              aria-label="Link-uri footer"
+              aria-label={resolvedChrome.footerNavigation}
               className="flex flex-col gap-3 md:items-center"
             >
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)] mb-1">
-                Navigare
+                {resolvedChrome.footerNavigation}
               </p>
               {[
                 { href: "/blog", label: "Blog" },
-                { href: "/servicii-chisinau", label: t.nav.services },
-                { href: "#contact", label: t.nav.contact },
-                { href: "/politica-confidentialitate", label: t.footer.privacy },
-                { href: "/termeni-conditii", label: t.footer.terms },
+                { href: "/servicii-chisinau", label: resolvedNav.services },
+                { href: "#contact", label: resolvedNav.contact },
+                {
+                  href: "/politica-confidentialitate",
+                  label: resolvedFooter.privacy,
+                },
+                { href: "/termeni-conditii", label: resolvedFooter.terms },
               ].map(({ href, label }) => (
                 <Link
                   key={href}
@@ -75,7 +88,7 @@ export default function Footer() {
             {/* Col 3: Contact info */}
             <div className="flex flex-col gap-4 md:items-end md:text-end">
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)] mb-1">
-                Contact
+                {resolvedChrome.footerContact}
               </p>
               <a
                 href={PHONE_HREF}
@@ -101,7 +114,7 @@ export default function Footer() {
           {/* ── Bottom bar ─────────────────────────────────── */}
           <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-black/[0.06] pt-8 sm:flex-row">
             <p className="text-xs text-[var(--text-muted)]">
-              &copy; {year} ElectroInstall. Toate drepturile rezervate.
+              &copy; {year} ElectroInstall. {resolvedFooter.rights}
             </p>
             <p className="text-xs text-[var(--text-muted)]/60">
               Chișinău, Moldova
