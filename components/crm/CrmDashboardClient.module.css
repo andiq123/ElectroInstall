@@ -1,40 +1,38 @@
+/* ─── Shimmer keyframe ───────────────────────────────────────────────────────── */
 @keyframes crmShimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-.skeletonBar {
-  border-radius: 9999px;
+/* ─── Skeleton cell (individual shimmer block) ───────────────────────────────── */
+.skeletonCell {
+  display: block;
+  border-radius: 6px;
   background: linear-gradient(
     90deg,
-    var(--bg-elevated) 0%,
-    var(--bg-section-alt) 45%,
-    var(--bg-elevated) 90%
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.09) 40%,
+    rgba(255, 255, 255, 0.04) 80%
   );
-  background-size: 220% 100%;
-  animation: crmShimmer 1.65s ease-in-out infinite;
+  background-size: 300% 100%;
+  animation: crmShimmer 1.6s ease-in-out infinite;
 }
 
-.skeletonStack > *:nth-child(1) {
-  animation-delay: 0ms;
-}
-.skeletonStack > *:nth-child(2) {
-  animation-delay: 110ms;
-}
-.skeletonStack > *:nth-child(3) {
-  animation-delay: 220ms;
-}
-.skeletonStack > *:nth-child(4) {
-  animation-delay: 330ms;
-}
+/* ─── Skeleton rows — staggered delay per row ────────────────────────────────── */
+.skeletonRow:nth-child(1) .skeletonCell { animation-delay: 0ms; }
+.skeletonRow:nth-child(2) .skeletonCell { animation-delay: 80ms; }
+.skeletonRow:nth-child(3) .skeletonCell { animation-delay: 160ms; }
+.skeletonRow:nth-child(4) .skeletonCell { animation-delay: 240ms; }
+.skeletonRow:nth-child(5) .skeletonCell { animation-delay: 320ms; }
 
+/* ─── Stat card skeleton reuses skeletonCell ─────────────────────────────────── */
+.skeletonCell.rounded-md { border-radius: 8px; }
+.skeletonCell.rounded-full { border-radius: 9999px; }
+
+/* ─── Reduced motion — no animation, static muted fill ──────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .skeletonBar {
+  .skeletonCell {
     animation: none;
-    background: var(--bg-elevated);
+    background: rgba(255, 255, 255, 0.05);
   }
 }
