@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useLanguage } from "@/context/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -10,7 +11,11 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import ContactModal from "@/components/ui/ContactModal";
+
+// Defer the modal bundle — it's never needed on initial paint
+const ContactModal = dynamic(() => import("@/components/ui/ContactModal"), {
+  ssr: false,
+});
 
 export default function HomePageClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);

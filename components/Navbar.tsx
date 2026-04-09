@@ -24,21 +24,27 @@ interface NavbarProps {
 export default function Navbar({ onOpenModal }: NavbarProps) {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
+  // Elevate navbar once user scrolls past 12 px
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll(); // set correct initial state
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Lock body scroll while mobile drawer is open
   useEffect(() => {
-    if (menuOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  // Close drawer on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeMenu();
@@ -54,7 +60,14 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
 
   return (
     <>
-      <header className="nav-bar-in fixed top-0 left-0 right-0 z-50 bg-white/75 backdrop-blur-xl shadow-[0_20px_80px_rgba(25,28,30,0.06)] border-b border-black/[0.04]">
+      <header
+        className={cn(
+          "nav-bar-in fixed top-0 left-0 right-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-300",
+          scrolled
+            ? "bg-white/92 backdrop-blur-2xl border-black/[0.07] shadow-[0_4px_24px_rgba(0,0,0,0.07)]"
+            : "bg-white/75 backdrop-blur-xl border-black/[0.04] shadow-[0_20px_80px_rgba(25,28,30,0.06)]"
+        )}
+      >
         <div
           className={cn(
             homeUi.container,
@@ -74,11 +87,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             aria-label="Navigare principală"
           >
             {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={homeUi.navLinkDesktop}
-              >
+              <Link key={href} href={href} className={homeUi.navLinkDesktop}>
                 {label}
               </Link>
             ))}
@@ -107,70 +116,82 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         </div>
       </header>
 
-      {mounted && (
+      {/* Mobile drawer — always in DOM so CSS transitions work correctly */}
+      <div
+        id="nav-drawer"
+        className="fixed inset-0 z-[100] lg:hidden"
+        aria-hidden={!menuOpen}
+        style={{ pointerEvents: menuOpen ? "auto" : "none" }}
+      >
+        {/* Backdrop */}
         <div
-          id="nav-drawer"
-          className="fixed inset-0 z-[100] lg:hidden"
-          aria-hidden={!menuOpen}
-          style={{ pointerEvents: menuOpen ? "auto" : "none" }}
+          className={cn(
+            "absolute inset-0 bg-black/30 transition-opacity duration-300",
+            menuOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={closeMenu}
+          aria-hidden
+        />
+
+        {/* Drawer panel */}
+        <aside
+          className={cn(
+            "absolute top-0 right-0 w-full max-w-[min(320px,88vw)] h-full bg-[var(--page-bg)] border-l border-black/[0.06] shadow-xl flex flex-col transition-transform duration-300 ease-out",
+            menuOpen ? "translate-x-0" : "translate-x-full"
+          )}
         >
-          <div
-            className={cn(
-              "absolute inset-0 bg-black/30 transition-opacity duration-300",
-              menuOpen ? "opacity-100" : "opacity-0"
-            )}
-            onClick={closeMenu}
-            aria-hidden
-          />
-          <aside
-            className={cn(
-              "absolute top-0 right-0 w-full max-w-[min(320px,88vw)] h-full bg-[var(--page-bg)] border-l border-black/[0.06] shadow-xl flex flex-col transition-transform duration-300 ease-out",
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            )}
+          <div className="flex items-center justify-between p-4 border-b border-black/[0.06]">
+            <Link
+              href="/"
+              onClick={closeMenu}
+              className="flex items-center min-w-0"
+              aria-label="ElectroInstall"
+            >
+              <Logo size="sm" showText animated={false} light={false} />
+            </Link>
+            <button
+              type="button"
+              className="w-10 h-10 flex items-center justify-center rounded-full text-[var(--text-secondary)] hover:bg-black/[0.05]"
+              onClick={closeMenu}
+              aria-label="Închide"
+            >
+              <CloseIcon size="md" />
+            </button>
+          </div>
+
+          <nav
+            className="flex flex-col p-4 gap-1 overflow-auto flex-1"
+            aria-label="Meniu mobil"
           >
-            <div className="flex items-center justify-between p-4 border-b border-black/[0.06]">
-              <Link href="/" onClick={closeMenu} className="flex items-center min-w-0" aria-label="ElectroInstall">
-                <Logo size="sm" showText animated={false} light={false} />
-              </Link>
-              <button
-                type="button"
-                className="w-10 h-10 flex items-center justify-center rounded-full text-[var(--text-secondary)] hover:bg-black/[0.05]"
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
                 onClick={closeMenu}
-                aria-label="Închide"
+                className="py-3.5 px-4 text-base font-display font-bold text-[var(--text-primary)] hover:bg-white rounded-xl transition-colors"
               >
-                <CloseIcon size="md" />
-              </button>
-            </div>
-            <nav className="flex flex-col p-4 gap-1 overflow-auto flex-1" aria-label="Meniu mobil">
-              {navLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={closeMenu}
-                  className="py-3.5 px-4 text-base font-display font-bold text-[var(--text-primary)] hover:bg-white rounded-xl transition-colors"
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <div className="p-4 border-t border-black/[0.06] space-y-3">
-              <button
-                type="button"
-                onClick={() => {
-                  closeMenu();
-                  onOpenModal?.();
-                }}
-                className="w-full rounded-full bg-[var(--accent-light)] text-zinc-900 py-3.5 font-display font-bold text-sm shadow-md ring-1 ring-amber-600/15 hover:bg-[#ffcd38] transition-colors"
-              >
-                {t.common.cta_primary}
-              </button>
-              <p className="text-xs text-[var(--text-muted)]">
-                {t.nav.appointments}: {BUSINESS_INFO.phone}
-              </p>
-            </div>
-          </aside>
-        </div>
-      )}
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="p-4 border-t border-black/[0.06] space-y-3">
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                onOpenModal?.();
+              }}
+              className="w-full rounded-full bg-[var(--accent-light)] text-zinc-900 py-3.5 font-display font-bold text-sm shadow-md ring-1 ring-amber-600/15 hover:bg-[#ffcd38] transition-colors"
+            >
+              {t.common.cta_primary}
+            </button>
+            <p className="text-xs text-[var(--text-muted)]">
+              {t.nav.appointments}: {BUSINESS_INFO.phone}
+            </p>
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

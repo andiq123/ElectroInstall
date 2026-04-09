@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { ro } from "@/lib/locales/ro";
 import { ru } from "@/lib/locales/ru";
 
@@ -13,24 +19,33 @@ interface LanguageContextType {
   t: Translations;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined
+);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window !== "undefined") {
-      const savedLocale = localStorage.getItem("locale") as Locale;
-      if (savedLocale && (savedLocale === "ro" || savedLocale === "ru")) {
-        return savedLocale;
-      }
+  // Always start with the default locale — reading localStorage in the
+  // useState initialiser runs during SSR too, causing a hydration mismatch
+  // when the stored value differs from the server-rendered default.
+  const [locale, setLocaleState] = useState<Locale>("ro");
+
+  // Restore persisted locale after first render (client-only).
+  useEffect(() => {
+    const saved = localStorage.getItem("locale") as Locale | null;
+    if (saved === "ro" || saved === "ru") {
+      setLocaleState(saved);
     }
-    return "ro";
-  });
+  }, []);
+
+  // Keep <html lang="…"> in sync so screen readers and browser
+  // translation heuristics always reflect the active language.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("locale", newLocale);
-    }
+    localStorage.setItem("locale", newLocale);
   };
 
   const t = locale === "ro" ? ro : ru;

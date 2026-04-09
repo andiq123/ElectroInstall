@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, FormEvent } from "react";
+import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { ensureEmailjsReady } from "@/lib/emailjs/ensureReady";
 import { Input, PhoneInput, Textarea } from "./Input";
@@ -15,6 +15,9 @@ const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
 
+const FOCUSABLE =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,19 +27,20 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const { t, locale } = useLanguage();
+  const panelRef = useRef<HTMLDivElement>(null);
+  // useRef instead of useState — no re-render needed, avoids stale-closure issues
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
   const [shouldRender, setShouldRender] = useState(false);
   const [formState, setFormState] = useState<FormState>("idle");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState<{
-    name?: string;
-    phone?: string;
-  }>({});
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
+  // Mount / unmount with animation buffer
   useEffect(() => {
     if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShouldRender(true);
       document.body.style.overflow = "hidden";
     } else {
@@ -53,73 +57,65 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }
   }, [isOpen]);
 
-  const handleEvents = useCallback(
+  // Focus management — capture trigger, auto-focus first field, restore on close
+  useEffect(() => {
+    if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      const timer = setTimeout(() => {
+        const first = panelRef.current?.querySelector<HTMLElement>(FOCUSABLE);
+        first?.focus();
+      }, 80);
+      return () => clearTimeout(timer);
+    } else {
+      previousFocusRef.current?.focus();
+      previousFocusRef.current = null;
+    }
+  }, [isOpen]);
+
+  // Keyboard: Escape closes, Tab traps focus inside the panel
+  const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) onClose();
-      
-      if (e.key === "Tab" && isOpen) {
-        const focusableElements = document.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      if (!isOpen) return;
+
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab") {
+        const focusable = Array.from(
+          panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []
         );
-        const modalElements = Array.from(focusableElements).filter(el => 
-          document.querySelector('.modal-panel-clean')?.contains(el)
-        );
-        
-        if (modalElements.length === 0) return;
-        
-        const firstElement = modalElements[0] as HTMLElement;
-        const lastElement = modalElements[modalElements.length - 1] as HTMLElement;
-        
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            lastElement.focus();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            firstElement.focus();
-            e.preventDefault();
-          }
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
         }
       }
     },
     [isOpen, onClose]
   );
 
-  const [previousFocus, setPreviousFocus] = useState<HTMLElement | null>(null);
-
   useEffect(() => {
-    if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setPreviousFocus(document.activeElement as HTMLElement);
-      setTimeout(() => {
-        const firstInput = document.querySelector('.modal-panel-clean input') as HTMLElement;
-        const closeBtn = document.querySelector('.modal-close-btn') as HTMLElement;
-        (firstInput || closeBtn)?.focus();
-      }, 100);
-    } else if (previousFocus) {
-      previousFocus.focus();
-    }
-  }, [isOpen, previousFocus]);
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleEvents);
-    return () => window.removeEventListener("keydown", handleEvents);
-  }, [handleEvents]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
-    
-    if (!name.trim()) {
-      newErrors.name = t.contact_form.validation.name_required;
-    }
-    
+    if (!name.trim()) newErrors.name = t.contact_form.validation.name_required;
     if (!phone.trim()) {
       newErrors.phone = t.contact_form.validation.phone_required;
     } else if (phone.replace(/\D/g, "").length < 8) {
       newErrors.phone = t.contact_form.validation.phone_invalid;
     }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -166,17 +162,40 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   if (!shouldRender) return null;
 
   return (
-    <div className="modal-overlay" aria-modal="true" role="dialog">
+    <div
+      className="modal-overlay"
+      aria-modal="true"
+      role="dialog"
+      aria-label={t.contact_form.title}
+    >
       <div
         className={`modal-backdrop ${isOpen ? "opacity-100" : "opacity-0"}`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div className={`modal-panel-clean ${isOpen ? "modal-enter" : "modal-exit"}`}>
-        <button onClick={onClose} className="modal-close-btn" aria-label="Închide">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <div
+        ref={panelRef}
+        className={`modal-panel-clean ${isOpen ? "modal-enter" : "modal-exit"}`}
+      >
+        <button
+          onClick={onClose}
+          className="modal-close-btn"
+          aria-label="Închide"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -190,17 +209,31 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </header>
 
         {formState === "success" ? (
-          <div className="modal-success">
-            <div className="modal-success-icon">
-              <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          <div className="modal-success" role="status" aria-live="polite">
+            <div className="modal-success-icon" aria-hidden="true">
+              <svg
+                className="w-12 h-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={3}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h3 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">{t.contact_form.success_title}</h3>
-            <p className="text-[var(--text-body)] text-[var(--text-secondary)]">{t.contact_form.success_subtitle}</p>
+            <h3 className="font-display text-[var(--text-h2)] font-semibold text-[var(--text-primary)] mb-3">
+              {t.contact_form.success_title}
+            </h3>
+            <p className="text-[var(--text-body)] text-[var(--text-secondary)]">
+              {t.contact_form.success_subtitle}
+            </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <Input
               label={t.contact_form.name_label}
               placeholder={t.contact_form.name_placeholder}
@@ -231,7 +264,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
 
             {formState === "error" && (
-              <div className="modal-error">
+              <div className="modal-error" role="alert">
                 <span>{t.contact_form.error_msg}</span>
               </div>
             )}
@@ -243,7 +276,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             >
               {formState === "submitting" ? (
                 <>
-                  <span className="modal-spinner" />
+                  <span className="modal-spinner" aria-hidden="true" />
                   {t.contact_form.submitting_btn}
                 </>
               ) : (

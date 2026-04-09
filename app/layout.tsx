@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Manrope, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { SITE_URL, BUSINESS_INFO } from "@/lib/constants";
 import { absoluteOgImageUrl } from "@/lib/seo/og";
+import "./globals.css";
 
 const PHONE_DISPLAY = BUSINESS_INFO.phoneDisplay;
-import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin", "latin-ext"],
@@ -26,8 +29,7 @@ export const metadata: Metadata = {
     default: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall`,
     template: "%s | ElectroInstall",
   },
-  description:
-    `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. ElectroInstall oferă servicii electrice rapide, preț corect, intervenții 24/7. Montaj tablouri, prize, instalații.`,
+  description: `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. ElectroInstall oferă servicii electrice rapide, preț corect, intervenții 24/7. Montaj tablouri, prize, instalații.`,
   keywords: [
     "electrician bun Chisinau",
     "electrician Chisinau recomandări",
@@ -90,8 +92,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "ElectroInstall",
     title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
-    description:
-      `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. Preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații.`,
+    description: `Cauți electrician în Chișinău? Sună la ${PHONE_DISPLAY}. Preț corect, intervenții rapide, disponibil 24/7. Montaj tablouri, prize, instalații.`,
     images: [
       {
         url: absoluteOgImageUrl(),
@@ -102,8 +103,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `Electrician Chișinău - ${PHONE_DISPLAY} | ElectroInstall | 24/7`,
-    description:
-      `Sună la ${PHONE_DISPLAY}. Electrician Chișinău cu recomandări: preț corect, intervenții rapide, 24/7.`,
+    description: `Sună la ${PHONE_DISPLAY}. Electrician Chișinău cu recomandări: preț corect, intervenții rapide, 24/7.`,
     images: [absoluteOgImageUrl()],
   },
   alternates: {
@@ -149,14 +149,27 @@ const organizationSchema = {
   ],
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
     opens: "00:00",
     closes: "23:59",
   },
   priceRange: "MDL",
   image: absoluteOgImageUrl(),
   hasMap: "https://www.google.com/maps?q=Chisinau,Moldova",
-  knowsAbout: ["Instalații electrice", "Reparații electrice", "Tablouri electrice", "Electrician autorizat"],
+  knowsAbout: [
+    "Instalații electrice",
+    "Reparații electrice",
+    "Tablouri electrice",
+    "Electrician autorizat",
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+373067596246",
@@ -165,7 +178,15 @@ const organizationSchema = {
     availableLanguage: ["Romanian", "Russian"],
     hoursAvailable: {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
       opens: "00:00",
       closes: "23:59",
     },
@@ -177,22 +198,26 @@ const organizationSchema = {
       {
         "@type": "Service",
         name: "Electrician urgent 24/7 – Intervenții de urgență",
-        description: "Electrician Chișinău disponibil 24/7 pentru intervenții rapide: scurtcircuite, pene de curent, defecțiuni electrice.",
+        description:
+          "Electrician Chișinău disponibil 24/7 pentru intervenții rapide: scurtcircuite, pene de curent, defecțiuni electrice.",
       },
       {
         "@type": "Service",
         name: "Montaj Instalații Electrice",
-        description: "Proiectare și execuție instalații electrice complete pentru apartamente, case și spații comerciale.",
+        description:
+          "Proiectare și execuție instalații electrice complete pentru apartamente, case și spații comerciale.",
       },
       {
         "@type": "Service",
         name: "Instalare Tablouri Electrice",
-        description: "Montaj și modernizare tablouri de distribuție, siguranțe automate și protecții diferențiale.",
+        description:
+          "Montaj și modernizare tablouri de distribuție, siguranțe automate și protecții diferențiale.",
       },
       {
         "@type": "Service",
         name: "Montaj Prize și Întrerupătoare",
-        description: "Instalare accesorii electrice, prize, întrerupătoare și variatoare de lumină.",
+        description:
+          "Instalare accesorii electrice, prize, întrerupătoare și variatoare de lumină.",
       },
     ],
   },
@@ -204,7 +229,8 @@ const websiteSchema = {
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
   name: "ElectroInstall – Electrician Chișinău",
-  description: "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
+  description:
+    "Electrician Chișinău cu recomandări: servicii electrice, preț corect, intervenții rapide 24/7.",
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: ["ro", "ru"],
   potentialAction: [
@@ -212,10 +238,6 @@ const websiteSchema = {
     { "@type": "ReadAction", target: `${SITE_URL}/servicii-chisinau` },
   ],
 };
-
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { LanguageProvider } from "@/context/LanguageContext";
 
 export default function RootLayout({
   children,
@@ -225,19 +247,35 @@ export default function RootLayout({
   return (
     <html lang="ro" suppressHydrationWarning>
       <head>
+        {/* Resource hints — speeds up font + analytics connections */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://api.emailjs.com" />
+
         <meta name="theme-color" content="#f8f9fb" />
         <meta name="color-scheme" content="light" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${manrope.variable} font-sans m-0 p-0 antialiased bg-[var(--page-bg)] text-[var(--text-primary)] selection:bg-[var(--accent-light)] selection:text-zinc-900`} suppressHydrationWarning>
+      <body
+        className={`${spaceGrotesk.variable} ${manrope.variable} font-sans m-0 p-0 antialiased bg-[var(--page-bg)] text-[var(--text-primary)] selection:bg-[var(--accent-light)] selection:text-zinc-900`}
+        suppressHydrationWarning
+      >
         <LanguageProvider>
           <a href="#main-content" className="skip-link">
             Sari la conținut
